@@ -1,0 +1,177 @@
+package com.piero.deliveryearningtracker
+
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.documentfile.provider.DocumentFile
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import com.piero.deliveryearningtracker.utils.sendAnonymousStats
+import com.piero.deliveryearningtracker.utils.scheduleStatsUpload
+import androidx.work.WorkManager
+import androidx.core.content.edit
+
+class SettingsFragment : PreferenceFragmentCompat() {
+    private lateinit var billingManager: BillingManager
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
+        // Gestione della preferenza "invite_friend"
+        val inviteFriendPref = findPreference<Preference>("invite_friend")
+        inviteFriendPref?.let {
+            // Imposta la visibilità in base a IS_INVITE_FRIEND_ENABLED
+            it.isVisible = InviteConfig.IS_INVITE_FRIEND_ENABLED
+
+            // Imposta il summary con i valori di FRIENDS_REQUIRED_FOR_REWARD e REWARD_DAYS
+            if (InviteConfig.IS_INVITE_FRIEND_ENABLED) {
+                val summaryText = getString(
+                    R.string.invite_friend_status,
+                    InviteConfig.FRIENDS_REQUIRED_FOR_REWARD,
+                    InviteConfig.REWARD_DAYS
+                )
+                it.summary = summaryText
+            }
+        }
+    }
+
+    private val selectFolderLauncher = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri != null) {
+            backupDatabaseToFolder(uri)
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.pref_backup_aborted), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val selectBackupLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            restoreDatabaseFromFile(uri)
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.pref_restore_aborted), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        return when (preference.key) {
+            "backup_data" -> {
+                selectFolderLauncher.launch(null)
+                true
+            }
+            "night_mode" -> {
+                val nightMode = (preference as SwitchPreferenceCompat).isChecked
+                AppCompatDelegate.setDefaultNightMode(
+                    if (nightMode) AppCompatDelegate.MODE_NIGHT_YES
+                    else AppCompatDelegate.MODE_NIGHT_NO
+                )
+                true
+            }
+            "restore_data" -> {
+                selectBackupLauncher.launch("application/octet-stream")
+                true
+            }
+            "reset_settings" -> {
+                resetSettings()
+                true
+            }
+            "remove_ads" -> {
+                billingManager.launchBillingFlow(requireActivity())
+                true
+            }
+            "share_anonymous_stats" -> {
+                val shareStasts  = (preference as SwitchPreferenceCompat).isChecked
+                if (shareStasts) {
+                    sendAnonymousStats(requireContext())
+                    scheduleStatsUpload(requireContext())
+                }else {
+                    WorkManager.getInstance(requireContext()).cancelUniqueWork("stats_upload")
+                }
+                true
+            }
+            "invite_friend" -> {
+                startActivity(Intent(context, InviteFriendActivity::class.java))
+                true
+            }
+            else -> super.onPreferenceTreeClick(preference)
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Inizializza il BillingManager con il contesto e il callback
+        billingManager = BillingManager(requireContext()) { isSubscribed ->
+            // Aggiorna le preferenze condivise per disabilitare gli annunci
+            val sharedPref = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            sharedPref.edit { putBoolean("ads_enabled", !isSubscribed) }
+        }
+    }
+
+    private fun restoreDatabaseFromFile(backupUri: Uri) {
+        val context = requireContext()
+        val dbFile = context.getDatabasePath("ordini.db")
+
+        try {
+            // Apri il file di backup come flusso di input
+            val inputStream = context.contentResolver.openInputStream(backupUri)
+            // Apri il file del database come flusso di output
+            val outputStream = FileOutputStream(dbFile)
+
+            // Copia il contenuto del backup nel database
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+
+            Toast.makeText(context, getString(R.string.pref_restore_success), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, String.format(getString(R.string.pref_error_restore), e.message), Toast.LENGTH_LONG).show()
+        }
+    }
+    private fun resetSettings() {
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+            .edit {
+                clear()
+            }
+        // Ricarica il fragment per aggiornare le impostazioni
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, SettingsFragment())
+            .commit()
+    }
+
+    private fun backupDatabaseToFolder(folderUri: Uri) {
+        val context = requireContext()
+        val dbFile = context.getDatabasePath("ordini.db")
+        val folder = DocumentFile.fromTreeUri(context, folderUri)
+
+        if (folder != null) {
+            // Genera un nome per il file di backup con timestamp
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val backupFile = folder.createFile("application/x-sqlite3", "backup_ordini_$timestamp.db")
+
+            if (backupFile != null) {
+                try {
+                    val inputStream = FileInputStream(dbFile)
+                    val outputStream = context.contentResolver.openOutputStream(backupFile.uri)
+                    inputStream.copyTo(outputStream!!)
+                    inputStream.close()
+                    outputStream.close()
+                    Toast.makeText(context, getString(R.string.pref_backup_completed), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(context, String.format(getString(R.string.pref_error_backup), e.message), Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toast.makeText(context, getString(R.string.pref_backup_unable_file), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(context, getString(R.string.pref_invalid_folder), Toast.LENGTH_SHORT).show()
+        }
+    }
+}

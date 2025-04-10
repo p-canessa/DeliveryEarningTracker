@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Kézi Bejegyzés</h1>
+<p>A kézi bejegyzési funkció lehetővé teszi, hogy közvetlenül a <a href="main.htm">főképernyőről</a> adj hozzá egy rendelést, megadva olyan részleteket, mint a kiszállítások száma, a teljes kereset és az eltöltött idő.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Hogyan Adhatunk Hozzá Rendelést Kézzel</h2>
+<ol>
+    <li>A főképernyőről koppints az "ÚJ RENDELÉS" gombra.</li>
+    <li>Írd be a rendelés részleteit:
+        <ul>
+            <li><strong>Dátum</strong>: A rendelés teljesítésének dátuma, amely automatikusan a mai napra van beállítva.</li>
+            <li><strong>Alapbér</strong>: A Deliveroo Rider alkalmazásban a "Kiszállított Rendelések" sor értéke.</li>
+            <li><strong>Készpénzben Beszedett</strong>: Az azonos nevű sor értéke, ha van ilyen.</li>
+            <li><strong>Extra Bér</strong>: Az extra bér értéke, ha van ilyen.</li>
+            <li><strong>Borravaló</strong>: Az alkalmazáson keresztül kapott borravaló értéke, ha van ilyen.</li>
+            <li><strong>Készpénzes Borravaló</strong>: A készpénzben kapott borravaló értéke.</li>
+            <li><strong>Rendelések Száma</strong>: Az ugyanabban a tételben kiszállított rendelések száma.</li>
+            <li><strong>Eltöltött Idő</strong>: A rendelések kiszállítására fordított idő, amely megadható percben vagy óra és perc intervallumban a Rider alkalmazás szerint (óó:pp-óó:pp).</li>
+        </ul>
+    </li>
+    <li>Erősítsd meg a bejegyzést a rendelés mentéséhez.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Hogyan Módosítsunk egy Rendelést</h2>
+<p>Egy meglévő rendelés módosításához kövesd ezeket a lépéseket:</p>
+<ol>
+    <li>A <a href="main.htm">főképernyőről</a> keresd meg a módosítani kívánt rendelést.</li>
+    <li>Koppints a rendelésre a szerkesztő képernyő megnyitásához (ugyanaz a képernyő, mint a kézi bejegyzésnél).</li>
+    <li>Frissítsd a részleteket, például a kiszállítások számát, az alapbért, az eltöltött időt vagy a borravalókat.</li>
+    <li>Erősítsd meg a változtatásokat a frissített rendelés mentéséhez.</li>
+</ol>
+
+<p>Ha inkább egy képernyőkép beolvasásával szeretnél rendelést megadni, lásd az <a href="insert_order.htm">OCR Bejegyzés</a> részt. Egy rendelés törléséhez lásd az <a href="delete_order.htm">Rendelés Törlése</a> részt.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-hu.jpg" alt="Kézi bevitel és szerkesztés képernyő" class="screenshot">
+</div>
+</body>
+</html>

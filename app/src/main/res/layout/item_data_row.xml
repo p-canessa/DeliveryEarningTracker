@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@color/background_color"
+    android:layout_marginBottom="4dp">
+
+    <!-- Nome del campo -->
+    <TextView
+        android:id="@+id/field_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="16sp" />
+
+    <!-- Visualizzazione valore / EditText -->
+    <TextView
+        android:id="@+id/field_value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/field_edit"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:background="@android:color/transparent"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <!-- Pulsanti -->
+    <ImageButton
+        android:id="@+id/edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:background="@android:color/transparent"
+        android:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_save"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/cancel_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
+</LinearLayout>

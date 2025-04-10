@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_color">#C0C0C0</color>
+    <color name="text_color">#000000</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="deliveroo_blue">#00CCBC</color>
+    <color name="colorPrimary">#1729DB</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#3F51B5</color>
+    <color name="colorPrimaryDarkTheme">#303030</color>
+    <color name="colorPrimaryDarkDarkTheme">#000000</color>
+    <color name="colorAccentDarkTheme">#00CCBC</color>
+</resources>

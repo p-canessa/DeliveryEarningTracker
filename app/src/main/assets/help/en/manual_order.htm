@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Manual Entry</h1>
+<p>The manual entry function allows you to add an order directly from the <a href="main.htm">main screen</a> by entering details such as the number of deliveries, total earned, and time spent.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>How to Manually Insert an Order</h2>
+<ol>
+    <li>From the main screen, tap the "NEW ORDER" button.</li>
+    <li>Enter the order details:
+        <ul>
+            <li><strong>Date</strong>: The date the order was completed, automatically set to today’s date.</li>
+            <li><strong>Base Pay</strong>: The value of the "Orders Delivered" line in the Deliveroo Rider app.</li>
+            <li><strong>Cash Collected</strong>: The value of the corresponding line, if present.</li>
+            <li><strong>Extra Pay</strong>: The value of any extra pay, if present.</li>
+            <li><strong>Tip</strong>: The value of the tip received in the app, if present.</li>
+            <li><strong>Cash Tip</strong>: The value of the tip received in cash.</li>
+            <li><strong>Number of Orders</strong>: The number of orders delivered in the same batch.</li>
+            <li><strong>Time Spent</strong>: The time taken to deliver the orders, which can be expressed in minutes or as a time range in hours and minutes as shown in the Rider app (hh:mm-hh:mm).</li>
+        </ul>
+    </li>
+    <li>Confirm the entry to save the order.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">How to Edit an Order</h2>
+<p>To edit an existing order, follow these steps:</p>
+<ol>
+    <li>From the <a href="main.htm">main screen</a>, locate the order you want to edit.</li>
+    <li>Tap the order to open the editing screen (the same screen used for manual entry).</li>
+    <li>Update the details, such as the number of deliveries, base pay, time spent, or tips.</li>
+    <li>Confirm the changes to save the updated order.</li>
+</ol>
+
+<p>If you prefer to insert an order by scanning a screenshot, see the <a href="insert_order.htm">OCR Entry</a> section. To delete an order, see the <a href="delete_order.htm">Delete Order</a> section.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-en.jpg" alt="Manual entry and edit screen" class="screenshot">
+</div>
+</body>
+</html>

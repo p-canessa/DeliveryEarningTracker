@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayuda - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logotipo de Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introducción -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker es una herramienta para monitorear y evaluar las ganancias generadas a través de plataformas de entrega a domicilio.</p>
+
+<!-- Funcionalidades principales -->
+<h2>Funcionalidades principales</h2>
+<ul>
+    <li><strong>Seguimiento de ganancias</strong>, incluidas las propinas recibidas directamente de los clientes. Puedes ver tus ganancias por cada pedido y hacer un seguimiento de las propinas.</li>
+    <li><strong>Cálculo del salario por hora</strong> tanto para pedidos individuales como para totales diarios, semanales y mensuales. Por ejemplo, descubre cuánto ganas en promedio por hora durante una semana ocupada.</li>
+    <li><strong>Almacenamiento de recibos de pago</strong> para ver los detalles de los pagos recibidos y conciliar posibles errores de ingreso. Importa tus recibos en formato PDF y accede a los detalles en cualquier momento. Para más información, consulta la sección <a href="import_paystub.htm">Importación de Recibos</a>.</li>
+    <li><strong>Estadísticas trimestrales y anuales</strong> útiles para la gestión de impuestos (pago de IVA e ingresos). Visualiza tus ganancias totales por trimestre o año para una mejor planificación fiscal. Para más detalles, consulta las secciones <a href="quarter_report.htm">Resúmenes Mensuales</a> y <a href="year_report.htm">Resúmenes Anuales</a>.</li>
+</ul>
+
+<!-- Descripción de la MainActivity -->
+<h2>Pantalla Principal</h2>
+<p>La pantalla principal de Delivery Earning Tracker te permite acceder rápidamente a todas las funcionalidades de la app. A continuación se describen los elementos principales de la interfaz:</p>
+
+<h3>Menú y Navegación</h3>
+<ul>
+    <li><strong>Menú lateral</strong>: Toca el ícono <img src="../images/hamburger.jpg" alt="Ícono del menú lateral" class="icon"> en la esquina superior izquierda para abrir el menú y navegar entre las secciones (por ejemplo, "Importación de Recibos", "Resumen Trimestral"). Para una descripción detallada de las opciones del menú, consulta la sección <a href="menu.htm">Menú Lateral</a>.</li>
+    <li><strong>Botón de Ayuda</strong>: En la esquina superior derecha, encontrarás el botón "Ayuda" <img src="../images/questionmark.jpg" alt="Ícono de ayuda" class="icon"> para acceder a esta guía.</li>
+</ul>
+
+<h3>Resumen y Filtros</h3>
+<ul>
+    <li><strong>Selector de fecha</strong>: <img src="../images/datarangeSelector-es.jpg" alt="Selector de fecha para filtrar períodos" class="inline"> te permite seleccionar una fecha específica o navegar hacia adelante y atrás entre fechas. También puedes elegir la vista por día, semana o mes.</li>
+    <li><strong>Cuadrícula de resumen del período</strong>: <img src="../images/riepilogo_main-es.jpg" alt="Cuadrícula de resumen del período" class="inline"> muestra el número de entregas realizadas, las ganancias totales (incluido el valor del efectivo recibido), el pago base, el efectivo recaudado, los extras, las propinas totales y en efectivo, el tiempo empleado y las ganancias promedio por hora.</li>
+</ul>
+
+<h3 id="order-list">Ingreso y Visualización de Pedidos</h3>
+<ul>
+    <li><strong>Botones para ingreso de pedidos</strong>: <img src="../images/inserisci_ordini-es.jpg" alt="Botones para ingresar un pedido" class="inline"> el botón de la izquierda ("NUEVO PEDIDO") permite el ingreso manual de un pedido (ver <a href="manual_order.htm">Ingreso Manual</a>), mientras que el de la derecha permite el ingreso mediante el escaneo de una captura de pantalla de la app del repartidor (ver <a href="insert_order.htm">Ingreso mediante OCR</a>).</li>
+    <li><strong>Pedido ingresado</strong>: <img src="../images/ordine-es.jpg" alt="Detalles de un pedido ingresado" class="inline"> muestra los detalles del pedido, destacando el número de entregas, las ganancias totales, el tiempo empleado y el salario por hora. El ícono <img src="../images/icona_mancia.jpg" alt="Ícono de una propina recibida" class="icon"> aparece si el pedido recibió una propina.</li>
+    <li><strong>Editar y eliminar pedidos</strong>: Puedes editar un pedido con un toque (ver <a href="manual_order.htm#edit">Editar Pedido</a>) o eliminarlo con un toque prolongado (ver <a href="delete_order.htm">Eliminar Pedido</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-es.jpg" alt="Pantalla principal de Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

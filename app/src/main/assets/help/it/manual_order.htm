@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Inserimento Manuale</h1>
+<p>La funzione di inserimento manuale ti permette di aggiungere un ordine direttamente dalla <a href="main.htm">schermata principale</a>, inserendo i dettagli come il numero di consegne, il totale guadagnato e il tempo impiegato.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Come inserire un ordine manualmente</h2>
+<ol>
+    <li>Dalla schermata principale, tocca il pulsante "NUOVO ORDINE".</li>
+    <li>Inserisci i dettagli dell'ordine:
+        <ul>
+            <li><strong>Data</strong>: La data in cui l'ordine è stato effettuato, già impostata in automatico alla data odierna.</li>
+            <li><strong>Paga Base</strong>: Il valore della riga Ordini consegnati nell'app Rider di Deliveroo.</li>
+            <li><strong>Riscossi Contanti</strong>: Il valore dell'omonima riga se presente.</li>
+            <li><strong>Paga Extra</strong>: Il valore della paga extra, se presente.</li>
+            <li><strong>Mancia</strong>: Il valore della mancia ricevuta in app, se presente.</li>
+            <li><strong>Mancia in Contanti</strong>: Il valore della mancia ricevunta in contanti.</li>
+            <li><strong>Numero Ordini</strong>: Il numero degli ordini consegnati nella stessa commessa.</li>
+            <li><strong>Tempo Impiegato</strong>: Il tempo impiegato per consegnare gli ordini, può essere espresso in minuti o intervallo di ore e minuti come da app Rider (hh:mm-hh:mm)</li>
+        </ul>
+    </li>
+    <li>Conferma l'inserimento per salvare l'ordine.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Come modificare un ordine</h2>
+<p>Per modificare un ordine esistente, segui questi passaggi:</p>
+<ol>
+    <li>Dalla <a href="main.htm">schermata principale</a>, individua l'ordine che desideri modificare.</li>
+    <li>Tocca l'ordine per aprire la schermata di modifica (la stessa schermata usata per l'inserimento manuale).</li>
+    <li>Aggiorna i dettagli, come il numero di consegne, la paga base, il tempo impiegato o le mance.</li>
+    <li>Conferma le modifiche per salvare l'ordine aggiornato.</li>
+</ol>
+
+<p>Se preferisci inserire un ordine tramite la scansione di uno screenshot, consulta la sezione <a href="insert_order.htm">Inserimento tramite OCR</a>. Per eliminare un ordine, vedi la sezione <a href="delete_order.htm">Elimina Ordine</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-it.jpg" alt="Schermata di inserimento manuale e modifica" class="screenshot">
+</div>
+</body>
+</html>

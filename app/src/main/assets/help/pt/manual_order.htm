@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Entrada Manual</h1>
+<p>A função de entrada manual permite que você adicione um pedido diretamente da <a href="main.htm">tela principal</a>, inserindo detalhes como o número de entregas, o total ganho e o tempo gasto.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Como Inserir um Pedido Manualmente</h2>
+<ol>
+    <li>A partir da tela principal, toque no botão "NOVO PEDIDO".</li>
+    <li>Insira os detalhes do pedido:
+        <ul>
+            <li><strong>Data</strong>: A data em que o pedido foi concluído, automaticamente definida como a data de hoje.</li>
+            <li><strong>Pagamento Base</strong>: O valor da linha "Pedidos Entregues" no aplicativo Rider da Deliveroo.</li>
+            <li><strong>Dinheiro Coletado</strong>: O valor da linha correspondente, se presente.</li>
+            <li><strong>Pagamento Extra</strong>: O valor do pagamento extra, se presente.</li>
+            <li><strong>Gorjeta</strong>: O valor da gorjeta recebida no aplicativo, se presente.</li>
+            <li><strong>Gorjeta em Dinheiro</strong>: O valor da gorjeta recebida em dinheiro.</li>
+            <li><strong>Número de Pedidos</strong>: O número de pedidos entregues no mesmo lote.</li>
+            <li><strong>Tempo Gasto</strong>: O tempo gasto para entregar os pedidos, que pode ser expresso em minutos ou como um intervalo de horas e minutos conforme o aplicativo Rider (hh:mm-hh:mm).</li>
+        </ul>
+    </li>
+    <li>Confirme a entrada para salvar o pedido.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Como Editar um Pedido</h2>
+<p>Para editar um pedido existente, siga estes passos:</p>
+<ol>
+    <li>A partir da <a href="main.htm">tela principal</a>, localize o pedido que deseja editar.</li>
+    <li>Toque no pedido para abrir a tela de edição (a mesma tela usada para entrada manual).</li>
+    <li>Atualize os detalhes, como o número de entregas, o pagamento base, o tempo gasto ou as gorjetas.</li>
+    <li>Confirme as alterações para salvar o pedido atualizado.</li>
+</ol>
+
+<p>Se preferir inserir um pedido escaneando uma captura de tela, consulte a seção <a href="insert_order.htm">Entrada por OCR</a>. Para excluir um pedido, veja a seção <a href="delete_order.htm">Excluir Pedido</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-pt.jpg" alt="Tela de inserção manual e edição" class="screenshot">
+</div>
+</body>
+</html>

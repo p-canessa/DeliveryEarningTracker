@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="16dp" />  <!-- Puoi aumentare questo valore per bordi più tondi -->
+    <solid android:color="@color/deliveroo_blue" />  <!-- Usa il colore del bottone precedente -->
+</shape>

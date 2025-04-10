@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo de Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduction -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker est un outil pour suivre et évaluer les revenus générés via les plateformes de livraison à domicile.</p>
+
+<!-- Fonctionnalités principales -->
+<h2>Fonctionnalités principales</h2>
+<ul>
+    <li><strong>Suivi des revenus</strong>, y compris les pourboires reçus directement des clients. Vous pouvez voir vos gains pour chaque commande et suivre les pourboires.</li>
+    <li><strong>Calcul du salaire horaire</strong> pour les commandes individuelles ainsi que pour les totaux quotidiens, hebdomadaires et mensuels. Par exemple, découvrez combien vous gagnez en moyenne par heure pendant une semaine chargée.</li>
+    <li><strong>Stockage des relevés de paiement</strong> pour consulter les détails des paiements reçus et corriger d'éventuelles erreurs de saisie. Importez vos relevés au format PDF et accédez aux détails à tout moment. Pour plus d'informations, consultez la section <a href="import_paystub.htm">Importation de Relevés</a>.</li>
+    <li><strong>Statistiques trimestrielles et annuelles</strong> utiles pour la gestion des impôts (paiement de la TVA et des revenus). Visualisez vos gains totaux par trimestre ou par année pour une meilleure planification fiscale. Pour plus de détails, consultez les sections <a href="quarter_report.htm">Résumés Mensuels</a> et <a href="year_report.htm">Résumés Annuels</a>.</li>
+</ul>
+
+<!-- Description de la MainActivity -->
+<h2>Écran Principal</h2>
+<p>L'écran principal de Delivery Earning Tracker vous permet d'accéder rapidement à toutes les fonctionnalités de l'application. Voici les principaux éléments de l'interface :</p>
+
+<h3>Menu et Navigation</h3>
+<ul>
+    <li><strong>Menu latéral</strong> : Touchez l'icône <img src="../images/hamburger.jpg" alt="Icône du menu latéral" class="icon"> en haut à gauche pour ouvrir le menu et naviguer entre les sections (par exemple, "Importation de Relevés", "Résumé Trimestriel"). Pour une description détaillée des options du menu, consultez la section <a href="menu.htm">Menu Latéral</a>.</li>
+    <li><strong>Bouton d'Aide</strong> : En haut à droite, vous trouverez le bouton "Aide" <img src="../images/questionmark.jpg" alt="Icône d'aide" class="icon"> pour accéder à ce guide.</li>
+</ul>
+
+<h3>Résumé et Filtres</h3>
+<ul>
+    <li><strong>Sélecteur de date</strong> : <img src="../images/datarangeSelector-fr.jpg" alt="Sélecteur de date pour filtrer les périodes" class="inline"> vous permet de sélectionner une date spécifique ou de naviguer en avant et en arrière entre les dates. Vous pouvez également choisir la vue par jour, semaine ou mois.</li>
+    <li><strong>Grille de résumé de la période</strong> : <img src="../images/riepilogo_main-fr.jpg" alt="Grille de résumé de la période" class="inline"> affiche le nombre de livraisons effectuées, les gains totaux (y compris la valeur des paiements en espèces reçus), le salaire de base, les espèces collectées, les éventuels extras, les pourboires totaux et en espèces, le temps passé et les gains horaires moyens.</li>
+</ul>
+
+<h3 id="order-list">Saisie et Affichage des Commandes</h3>
+<ul>
+    <li><strong>Boutons pour la saisie des commandes</strong> : <img src="../images/inserisci_ordini-fr.jpg" alt="Boutons pour saisir une commande" class="inline"> le bouton de gauche ("NOUVELLE COMMANDE") permet la saisie manuelle d'une commande (voir <a href="manual_order.htm">Saisie Manuelle</a>), tandis que celui de droite permet la saisie via le scan d'une capture d'écran de l'application livreur (voir <a href="insert_order.htm">Saisie par OCR</a>).</li>
+    <li><strong>Commande saisie</strong> : <img src="../images/ordine-fr.jpg" alt="Détails d'une commande saisie" class="inline"> affiche les détails de la commande, mettant en évidence le nombre de livraisons, les gains totaux, le temps passé et le salaire horaire. L'icône <img src="../images/icona_mancia.jpg" alt="Icône d'un pourboire reçu" class="icon"> est présente si la commande a reçu un pourboire.</li>
+    <li><strong>Modifier et supprimer des commandes</strong> : Vous pouvez modifier une commande en la touchant (voir <a href="manual_order.htm#edit">Modifier une Commande</a>) ou la supprimer avec un appui long (voir <a href="delete_order.htm">Supprimer une Commande</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-fr.jpg" alt="Écran principal de Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

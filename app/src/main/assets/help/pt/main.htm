@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuda - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logotipo do Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introdução -->
+<h1>Delivery Earning Tracker</h1>
+<p>O Delivery Earning Tracker é uma ferramenta para monitorar e avaliar os ganhos gerados por meio de plataformas de entrega a domicílio.</p>
+
+<!-- Funcionalidades principais -->
+<h2>Funcionalidades principais</h2>
+<ul>
+    <li><strong>Acompanhamento de ganhos</strong>, incluindo gorjetas recebidas diretamente dos clientes. Você pode visualizar seus ganhos para cada pedido e acompanhar as gorjetas.</li>
+    <li><strong>Cálculo do salário por hora</strong> tanto para pedidos individuais quanto para totais diários, semanais e mensais. Por exemplo, descubra quanto você ganha em média por hora durante uma semana movimentada.</li>
+    <li><strong>Armazenamento de comprovantes de pagamento</strong> para visualizar os detalhes dos pagamentos recebidos e reconciliar possíveis erros de entrada. Importe seus comprovantes em formato PDF e acesse os detalhes a qualquer momento. Para mais informações, consulte a seção <a href="import_paystub.htm">Importação de Comprovantes</a>.</li>
+    <li><strong>Estatísticas trimestrais e anuais</strong> úteis para a gestão de impostos (pagamento de IVA e renda). Visualize seus ganhos totais por trimestre ou ano para um melhor planejamento fiscal. Para mais detalhes, consulte as seções <a href="quarter_report.htm">Resumos Mensais</a> e <a href="year_report.htm">Resumos Anuais</a>.</li>
+</ul>
+
+<!-- Descrição da MainActivity -->
+<h2>Tela Principal</h2>
+<p>A tela principal do Delivery Earning Tracker permite que você acesse rapidamente todas as funcionalidades do aplicativo. A seguir, são descritos os principais elementos da interface:</p>
+
+<h3>Menu e Navegação</h3>
+<ul>
+    <li><strong>Menu lateral</strong>: Toque no ícone <img src="../images/hamburger.jpg" alt="Ícone do menu lateral" class="icon"> no canto superior esquerdo para abrir o menu e navegar entre as seções (por exemplo, "Importação de Comprovantes", "Resumo Trimestral"). Para uma descrição detalhada das opções do menu, consulte a seção <a href="menu.htm">Menu Lateral</a>.</li>
+    <li><strong>Botão de Ajuda</strong>: No canto superior direito, você encontrará o botão "Ajuda" <img src="../images/questionmark.jpg" alt="Ícone de ajuda" class="icon"> para acessar este guia.</li>
+</ul>
+
+<h3>Resumo e Filtros</h3>
+<ul>
+    <li><strong>Seletor de data</strong>: <img src="../images/datarangeSelector-pt.jpg" alt="Seletor de data para filtrar períodos" class="inline"> permite selecionar uma data específica ou navegar para frente e para trás entre as datas. Você também pode escolher a visualização por dia, semana ou mês.</li>
+    <li><strong>Grade de resumo do período</strong>: <img src="../images/riepilogo_main-pt.jpg" alt="Grade de resumo do período" class="inline"> exibe o número de entregas realizadas, os ganhos totais (incluindo o valor do dinheiro recebido), o pagamento base, o dinheiro coletado, quaisquer extras, as gorjetas totais e em dinheiro, o tempo gasto e os ganhos médios por hora.</li>
+</ul>
+
+<h3 id="order-list">Inserção e Visualização de Pedidos</h3>
+<ul>
+    <li><strong>Botões para inserção de pedidos</strong>: <img src="../images/inserisci_ordini-pt.jpg" alt="Botões para inserir um pedido" class="inline"> o botão à esquerda ("NOVO PEDIDO") permite a inserção manual de um pedido (veja <a href="manual_order.htm">Inserção Manual</a>), enquanto o botão à direita permite a inserção por meio da digitalização de uma captura de tela do aplicativo do entregador (veja <a href="insert_order.htm">Inserção por OCR</a>).</li>
+    <li><strong>Pedido inserido</strong>: <img src="../images/ordine-pt.jpg" alt="Detalhes de um pedido inserido" class="inline"> mostra os detalhes do pedido, destacando o número de entregas, os ganhos totais, o tempo gasto e o salário por hora. O ícone <img src="../images/icona_mancia.jpg" alt="Ícone de uma gorjeta recebida" class="icon"> aparece se o pedido recebeu uma gorjeta.</li>
+    <li><strong>Editar e excluir pedidos</strong>: Você pode editar um pedido com um toque (veja <a href="manual_order.htm#edit">Editar Pedido</a>) ou excluí-lo com um toque longo (veja <a href="delete_order.htm">Excluir Pedido</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-pt.jpg" alt="Tela principal do Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layoutDirection="locale">
+
+        <ImageButton
+            android:id="@+id/decrement_button"
+            android:layout_width="70dp"
+            android:layout_height="34dp"
+            android:background="@drawable/rounded_button"
+            android:src="@android:drawable/ic_media_previous"
+            android:contentDescription=""
+            app:tint="@color/text_color" />
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/text_color" />
+
+        <ImageButton
+            android:id="@+id/increment_button"
+            android:layout_width="70dp"
+            android:layout_height="34dp"
+            android:background="@drawable/rounded_button"
+            android:src="@android:drawable/ic_media_next"
+            android:contentDescription=""
+            app:tint="@color/text_color" />
+    </LinearLayout>
+    <Spinner
+        android:id="@+id/interval_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:gravity="center"
+        android:textSize="11sp"/>
+</LinearLayout>

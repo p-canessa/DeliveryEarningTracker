@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Ручне Введення</h1>
+<p>Функція ручного введення дозволяє додати замовлення безпосередньо з <a href="main.htm">головного екрана</a>, ввівши деталі, такі як кількість доставок, загальний заробіток і витрачений час.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Як Ввести Замовлення Вручну</h2>
+<ol>
+    <li>З головного екрана торкніться кнопки "НОВЕ ЗАМОВЛЕННЯ".</li>
+    <li>Введіть деталі замовлення:
+        <ul>
+            <li><strong>Дата</strong>: Дата виконання замовлення, автоматично встановлена на сьогоднішній день.</li>
+            <li><strong>Базова Оплата</strong>: Значення рядка "Доставлені Замовлення" у додатку Rider Deliveroo.</li>
+            <li><strong>Зібрано Готівкою</strong>: Значення відповідного рядка, якщо воно є.</li>
+            <li><strong>Додаткова Оплата</strong>: Значення додаткової оплати, якщо вона є.</li>
+            <li><strong>Чайові</strong>: Значення чайових, отриманих у додатку, якщо вони є.</li>
+            <li><strong>Чайові Готівкою</strong>: Значення чайових, отриманих готівкою.</li>
+            <li><strong>Кількість Замовлень</strong>: Кількість замовлень, доставлених у одній партії.</li>
+            <li><strong>Витрачений Час</strong>: Час, витрачений на доставку замовлень, який можна вказати в хвилинах або як інтервал годин і хвилин за додатком Rider (гг:хх-гг:хх).</li>
+        </ul>
+    </li>
+    <li>Підтвердьте введення, щоб зберегти замовлення.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Як Редагувати Замовлення</h2>
+<p>Щоб відредагувати існуюче замовлення, виконайте такі кроки:</p>
+<ol>
+    <li>З <a href="main.htm">головного екрана</a> знайдіть замовлення, яке хочете відредагувати.</li>
+    <li>Торкніться замовлення, щоб відкрити екран редагування (той самий екран, що використовується для ручного введення).</li>
+    <li>Оновіть деталі, такі як кількість доставок, базова оплата, витрачений час або чайові.</li>
+    <li>Підтвердьте зміни, щоб зберегти оновлене замовлення.</li>
+</ol>
+
+<p>Якщо ви віддаєте перевагу введенню замовлення через сканування знімка екрана, дивіться розділ <a href="insert_order.htm">Введення через OCR</a>. Щоб видалити замовлення, дивіться розділ <a href="delete_order.htm">Видалити Замовлення</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-uk.jpg" alt="Екран ручного введення та редагування" class="screenshot">
+</div>
+</body>
+</html>

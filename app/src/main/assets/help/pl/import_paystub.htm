@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Importazione Statino</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ol {
+      margin-left: 20px;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Import Wyciągu</h1>
+<p>Funkcja importu wyciągu umożliwia odczyt danych z wyciągu końca miesiąca wysłanego przez Deliveroo. Te dane mogą być wykorzystane do generowania podsumowań kwartalnych i rocznych oraz do uzgodnienia wprowadzonych zamówień.</p>
+
+<!-- Procedura -->
+<h2>Jak Zaimportować Wyciąg</h2>
+<ol>
+ <li>Wybierz funkcję "Importuj Wyciąg" z <a href="menu.htm">menu bocznego</a>.</li>
+ <li>Wybierz dokument o nazwie `invoice_*.pdf` z Twojego urządzenia za pomocą przycisku "IMPORTUJ WYCIĄG" (może to wymagać obejrzenia reklamy).</li>
+ <li>Aplikacja automatycznie wyodrębni dane z pliku PDF. Możesz zaimportować kilka wyciągów dla tego samego miesiąca, pod warunkiem, że mają różne numery.</li>
+ <li>Jeśli wyciąg nie znajduje się jeszcze w bazie danych, zostanie dodany i wyświetli się komunikat o powodzeniu. W przeciwnym razie pojawi się komunikat o błędzie.</li>
+ <li>W tym momencie wyciąg można wyświetlić w sekcji <a href="show_monthly_statement.htm">Pokaż Wyciąg Miesięczny</a>.</li>
+</ol>
+
+<div style="text-align: center;">
+ <img src="../images/ImportaStatino-pl.jpg" alt="Ekran importu odcinka wypłaty" class="screenshot">
+</div>
+</body>
+</html>

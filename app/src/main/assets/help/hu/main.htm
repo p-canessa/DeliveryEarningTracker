@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Súgó - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Delivery Earning Tracker logó" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Bevezetés -->
+<h1>Delivery Earning Tracker</h1>
+<p>A Delivery Earning Tracker egy eszköz a házhozszállítási platformokon keresztül generált bevételek nyomon követésére és értékelésére.</p>
+
+<!-- Fő funkciók -->
+<h2>Fő funkciók</h2>
+<ul>
+    <li><strong>Bevételek nyomon követése</strong>, beleértve az ügyfelektől közvetlenül kapott borravalókat is. Megtekintheted az egyes rendelések bevételeit és nyomon követheted a borravalókat.</li>
+    <li><strong>Órabér kiszámítása</strong> mind az egyes rendelésekre, mind a napi, heti és havi összesítésekre. Például megtudhatod, hogy egy mozgalmas héten átlagosan mennyit keresel óránként.</li>
+    <li><strong>Fizetési kimutatások tárolása</strong> a kapott kifizetések részleteinek megtekintéséhez és a beviteli hibák egyeztetéséhez. Importáld a kimutatásaidat PDF formátumban, és bármikor hozzáférhetsz a részletekhez. További információért lásd a <a href="import_paystub.htm">Kimutatás Importálása</a> részt.</li>
+    <li><strong>Negyedéves és éves statisztikák</strong>, amelyek hasznosak az adókezeléshez (ÁFA és jövedelem befizetések). Nézd meg a negyedéves vagy éves összes bevételeidet a jobb adótervezés érdekében. Részletekért lásd a <a href="quarter_report.htm">Havi Összefoglalók</a> és a <a href="year_report.htm">Éves Összefoglalók</a> részeket.</li>
+</ul>
+
+<!-- MainActivity leírása -->
+<h2>Főképernyő</h2>
+<p>A Delivery Earning Tracker főképernyője lehetővé teszi, hogy gyorsan hozzáférj az alkalmazás összes funkciójához. Az alábbiakban a felület fő elemei kerülnek bemutatásra:</p>
+
+<h3>Menü és Navigáció</h3>
+<ul>
+    <li><strong>Oldalsó menü</strong>: Érintsd meg a <img src="../images/hamburger.jpg" alt="Oldalsó menü ikon" class="icon"> ikont a bal felső sarokban a menü megnyitásához és a különböző részek közötti navigáláshoz (pl. "Kimutatás Importálása", "Negyedéves Összefoglaló"). A menüpontok részletes leírásáért lásd az <a href="menu.htm">Oldalsó Menü</a> részt.</li>
+    <li><strong>Súgó gomb</strong>: A jobb felső sarokban található a "Súgó" gomb <img src="../images/questionmark.jpg" alt="Súgó ikon" class="icon">, amellyel elérheted ezt az útmutatót.</li>
+</ul>
+
+<h3>Összefoglaló és Szűrők</h3>
+<ul>
+    <li><strong>Dátumválasztó</strong>: <img src="../images/datarangeSelector-hu.jpg" alt="Dátumválasztó az időszakok szűréséhez" class="inline"> lehetővé teszi egy adott dátum kiválasztását vagy az előre- és hátrafelé navigálást a dátumok között. A nézetet nap, hét vagy hónap szerint is választhatod.</li>
+    <li><strong>Időszaki összefoglaló rács</strong>: <img src="../images/riepilogo_main-hu.jpg" alt="Időszaki összefoglaló rács" class="inline"> megjeleníti a teljesített kiszállítások számát, az összes bevételt (beleértve a kapott készpénz értékét), az alapbért, a begyűjtött készpénzt, az esetleges extrákat, az összes és készpénzes borravalót, az eltöltött időt és az átlagos órabért.</li>
+</ul>
+
+<h3 id="order-list">Rendelések Bevitele és Megjelenítése</h3>
+<ul>
+    <li><strong>Rendelések bevitelére szolgáló gombok</strong>: <img src="../images/inserisci_ordini-hu.jpg" alt="Gombok egy rendelés beviteléhez" class="inline"> a bal oldali gomb ("ÚJ RENDELÉS") lehetővé teszi egy rendelés kézi bevitelét (lásd <a href="manual_order.htm">Kézi Bevitelt</a>), míg a jobb oldali gomb a futár alkalmazás képernyőfotójának beolvasásával történő bevitelt teszi lehetővé (lásd <a href="insert_order.htm">OCR Bevitelt</a>).</li>
+    <li><strong>Bevitt rendelés</strong>: <img src="../images/ordine-hu.jpg" alt="Egy bevitt rendelés részletei" class="inline"> megjeleníti a rendelés részleteit, kiemelve a kiszállítások számát, az összes bevételt, az eltöltött időt és az órabért. A <img src="../images/icona_mancia.jpg" alt="Kapott borravaló ikon" class="icon"> ikon jelenik meg, ha a rendelés borravalót kapott.</li>
+    <li><strong>Rendelések szerkesztése és törlése</strong>: Egy rendelést megérintve szerkesztheted (lásd <a href="manual_order.htm#edit">Rendelés Szerkesztése</a>), vagy hosszan nyomva törölheted (lásd <a href="delete_order.htm">Rendelés Törlése</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-hu.jpg" alt="Delivery Earning Tracker főképernyő" class="screenshot">
+</div>
+</body>
+</html>

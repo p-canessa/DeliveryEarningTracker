@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157881021941",
+    "project_id": "deliveryearningtracker",
+    "storage_bucket": "deliveryearningtracker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157881021941:android:a4778c7f18b055dcd2dcbc",
+        "android_client_info": {
+          "package_name": "com.piero.deliveryearningtracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKwd80LhMOq63Qh0MB6YhK9LAQZi2ztpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

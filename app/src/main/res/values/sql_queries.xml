@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Table_Ordini" translatable="false">
+        CREATE TABLE IF NOT EXISTS ordini (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            ProviderID INTEGER NOT NULL DEFAULT 1,
+            Data TEXT NOT NULL DEFAULT (date(\'now\')),
+            PagaBase REAL NOT NULL DEFAULT 0,
+            RiscossiContanti REAL NOT NULL DEFAULT 0,
+            PagaExtra REAL NOT NULL DEFAULT 0,
+            Mancia REAL NOT NULL DEFAULT 0,
+            ManciaContanti REAL NOT NULL DEFAULT 0,
+            NumeroOrdini INTEGER NOT NULL DEFAULT 1 CHECK(NumeroOrdini > 0),
+            TempoImpiegato INTEGER NOT NULL DEFAULT 1 CHECK(TempoImpiegato > 0),
+            PagaTotale REAL NOT NULL DEFAULT 0,
+            PagaOraria REAL NOT NULL DEFAULT 0,
+            FOREIGN KEY(ProviderID) REFERENCES Providers(ID)
+        )
+    </string>
+    <string name="Table_MontlySummaries" translatable="false">
+        CREATE TABLE IF NOT EXISTS "MonthlySummaries" (
+        "id"	INTEGER,
+        "document_number"	TEXT,
+        "month"	TEXT,
+        "month_number"	INTEGER,
+        "year"	INTEGER,
+        "tax_regime"	NUMERIC,
+        "ordini_lordo"	REAL,
+        "ordini_ritenuta_acconto"	TEXT,
+        "ordini_importo_ritenuta"	REAL,
+        "ordini_iva"	TEXT,
+        "ordini_importo_iva"	REAL,
+        "ordini_totale"	REAL,
+        "integrazioni_lordo"	REAL,
+        "integrazioni_ritenuta_acconto"	TEXT,
+        "integrazioni_importo_ritenuta"	REAL,
+        "integrazioni_iva"	TEXT,
+        "integrazioni_importo_iva"	REAL,
+        "integrazioni_totale"	REAL,
+        "mance_lordo"	REAL,
+        "mance_ritenuta_acconto"	TEXT,
+        "mance_importo_ritenuta"	REAL,
+        "mance_iva"	TEXT,
+        "mance_importo_iva"	REAL,
+        "mance_totale"	REAL,
+        "totale_lordo"	REAL,
+        "totale_ritenuta_acconto"	TEXT,
+        "totale_importo_ritenuta"	REAL,
+        "totale_iva"	TEXT,
+        "totale_importo_iva"	REAL,
+        "totale_totale"	REAL,
+        "pagamenti_contanti"	REAL,
+        "totale_dovuto"	REAL,
+        PRIMARY KEY("id" AUTOINCREMENT)
+        )
+    </string>
+    <string name="Table_DailyOrders" translatable="false">
+        CREATE TABLE IF NOT EXISTS DailyOrders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            monthly_summary_id INTEGER,
+            date TEXT,
+            number_of_orders INTEGER,
+            total_gross REAL,
+            FOREIGN KEY(monthly_summary_id) REFERENCES MonthlySummaries(id)
+        )
+    </string>
+    <string name="Table_Providders" translatable="false">
+        CREATE TABLE IF NOT EXISTS Providers (
+	        ID	INTEGER PRIMARY KEY AUTOINCREMENT,
+	        Name TEXT NOT NULL UNIQUE
+        )
+    </string>
+    <string name="Populate_Providers" translatable="false">
+        INSERT OR IGNORE INTO Providers (ID, Name) VALUES (1, \'Deliveroo\')
+    </string>
+    <string name="Temporary_ordini" translatable="false">
+        CREATE TABLE "ordini_new" (
+            "ID" INTEGER,
+            "ProviderID" INTEGER NOT NULL DEFAULT 1,
+            "Data" DATE NOT NULL DEFAULT (date(\'now\')) CHECK(("Data" IS date("Data", \'+0 days\'))),
+            "PagaBase" REAL NOT NULL DEFAULT 0,
+            "RiscossiContanti" REAL NOT NULL DEFAULT 0,
+            "PagaExtra" REAL NOT NULL DEFAULT 0,
+            "Mancia" REAL NOT NULL DEFAULT 0,
+            "ManciaContanti" REAL NOT NULL DEFAULT 0,
+            "NumeroOrdini" INTEGER NOT NULL DEFAULT 1 CHECK("NumeroOrdini" > 0),
+            "TempoImpiegato" INTEGER NOT NULL DEFAULT 1 CHECK("TempoImpiegato" > 0),
+            "PagaTotale" REAL NOT NULL DEFAULT 0,
+            "PagaOraria" REAL NOT NULL DEFAULT 0,
+            PRIMARY KEY("ID" AUTOINCREMENT),
+            CONSTRAINT "Ordinante" FOREIGN KEY("ProviderID") REFERENCES "Providers"("ID")
+            )
+    </string>
+    <string name="Copy_ordini_Temp" translatable="false">
+        INSERT INTO "ordini_new" (
+            "ID", "ProviderID", "Data", "PagaBase", "RiscossiContanti", "PagaExtra",
+            "Mancia", "ManciaContanti", "NumeroOrdini", "TempoImpiegato", "PagaTotale", "PagaOraria"
+            )
+        SELECT
+            "ID",
+            1 AS "ProviderID",
+            COALESCE("Data", date(\'now\')) AS "Data",
+            COALESCE("PagaBase", 0) AS "PagaBase",
+            0 AS "RiscossiContanti",
+            COALESCE("PagaExtra", 0) AS "PagaExtra",
+            COALESCE("Mancia", 0) AS "Mancia",
+            0 AS "ManciaContanti",
+            CASE WHEN "NumeroOrdini" IS NULL OR "NumeroOrdini" &lt;= 0 THEN 1 ELSE "NumeroOrdini" END AS "NumeroOrdini",
+            CASE WHEN "TempoImpiegato" IS NULL OR "TempoImpiegato" &lt;= 0 THEN 1 ELSE "TempoImpiegato" END AS "TempoImpiegato",
+            COALESCE("PagaTotale", 0) AS "PagaTotale",
+            COALESCE("PagaOraria", 0) AS "PagaOraria"
+        FROM "ordini"
+    </string>
+    <string name="Drop_orddini" translatable="false">DROP TABLE "ordini"</string>
+    <string name="Rename_ordini" translatable="false">ALTER TABLE "ordini_new" RENAME TO "ordini"</string>
+    <string name="Get_Orders_Since_Id" translatable="false">
+    SELECT
+        ID,
+        NumeroOrdini,
+        PagaOraria
+    FROM ordini
+    WHERE ID > ?
+    </string>
+    <string name="Table_InviteCode" translatable="false">CREATE TABLE IF NOT EXISTS InviteCode (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT UNIQUE NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)</string>
+    <string name="Table_Subscriptions" translatable="false">CREATE TABLE IF NOT EXISTS Subscriptions (id INTEGER PRIMARY KEY AUTOINCREMENT, start_date TIMESTAMP NOT NULL, end_date TIMESTAMP NOT NULL, active BOOLEAN DEFAULT 1)</string>
+
+</resources>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <!-- Toolbar fissata in alto -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <!-- Spinner fissato sotto la toolbar -->
+    <Spinner
+        android:id="@+id/spinner_anno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="16dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/spinner_anno"
+        android:layout_above="@id/ad_container">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Tabella per il riepilogo -->
+            <TableLayout
+                android:id="@+id/table_riepilogo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+                <!-- Intestazione -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_categoria"
+                        android:textStyle="bold"
+                        android:gravity="start" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_lordo"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_netto"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_iva"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+                </TableRow>
+
+                <!-- Riga Ordini -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_ordini"
+                        android:textStyle="bold"
+                        android:gravity="start" />
+                    <TextView
+                        android:id="@+id/tv_ordini_lordo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_ordini_netto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_ordini_iva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                </TableRow>
+
+                <!-- Riga Integrazioni -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_integrazioni"
+                        android:textStyle="bold"
+                        android:gravity="start" />
+                    <TextView
+                        android:id="@+id/tv_integrazioni_lordo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_integrazioni_netto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_integrazioni_iva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                </TableRow>
+
+                <!-- Riga Mance -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/act_anno_mance"
+                        android:textStyle="bold"
+                        android:gravity="start" />
+                    <TextView
+                        android:id="@+id/tv_mance_lordo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_mance_netto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_mance_iva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                </TableRow>
+
+                <!-- Riga di separazione -->
+                <TableRow>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/text_color"
+                        android:layout_span="4" />
+                </TableRow>
+
+                <!-- Riga Totale -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/totale"
+                        android:textStyle="bold"
+                        android:gravity="start" />
+                    <TextView
+                        android:id="@+id/tv_totale_lordo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_totale_netto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                    <TextView
+                        android:id="@+id/tv_totale_iva"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+                </TableRow>
+            </TableLayout>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:id="@+id/tabella_ordini_anno"
+                android:paddingTop="20dp">
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/consegne_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/act_anno_consegne" />
+
+                    <TextView
+                        android:id="@+id/mancanti_label"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/act_anno_bonus" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:id="@+id/consegne_totale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end" />
+
+                    <TextView
+                        android:id="@+id/next_bonus"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:gravity="end" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/ad_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" />
+</RelativeLayout>

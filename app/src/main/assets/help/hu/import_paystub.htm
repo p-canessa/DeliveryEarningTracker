@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Importazione Statino</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ol {
+      margin-left: 20px;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Fizetési Kimutatás Importálása</h1>
+<p>A fizetési kimutatás importálási funkció lehetővé teszi a Deliveroo által küldött havi záró kimutatás adatainak beolvasását. Ezek az adatok felhasználhatók negyedéves és éves összegzések generálására, valamint a megadott rendelések egyeztetésére.</p>
+
+<!-- Procedura -->
+<h2>Hogyan Importáljunk egy Kimutatást</h2>
+<ol>
+ <li>Válaszd a "Fizetési Kimutatás Importálása" funkciót az <a href="menu.htm">oldalsó menüből</a>.</li>
+ <li>Válassz ki egy `invoice_*.pdf` nevű dokumentumot a készülékedről a "KIMUTATÁS IMPORTÁLÁSA" gombbal (ez hirdetés megtekintését igényelheti).</li>
+ <li>Az alkalmazás automatikusan kinyeri az adatokat a PDF fájlból. Több kimutatást is importálhatsz ugyanarra a hónapra, feltéve, hogy különböző számozásúak.</li>
+ <li>Ha a kimutatás még nem szerepel az adatbázisban, az hozzáadásra kerül, és egy sikeres üzenet jelenik meg. Ellenkező esetben hibaüzenet jelenik meg.</li>
+ <li>Ezen a ponton a kimutatás megtekinthető a <a href="show_monthly_statement.htm">Havi Kimutatás Megjelenítése</a> szakaszban.</li>
+</ol>
+
+<div style="text-align: center;">
+ <img src="../images/ImportaStatino-hu.jpg" alt="Fizetési jegyzék importálási képernyő" class="screenshot">
+</div>
+</body>
+</html>

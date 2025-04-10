@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Primo gruppo: voci principali -->
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_csv_export"
+            android:icon="@drawable/ic_csv"
+            android:title="@string/csv_menu"
+            android:tooltipText="@string/csv_tooltip_menu"/>
+        <item android:title="@string/reports">
+            <menu>
+                <item
+                    android:id="@+id/nav_pdf_import"
+                    android:icon="@drawable/ic_pdf_import"
+                    android:title="@string/title_activity_pdfimport"
+                    android:tooltipText="@string/import_pdf_data_tooltip"/>
+                <item
+                    android:id="@+id/nav_show_statement"
+                    android:icon="@drawable/ic_show_statement"
+                    android:title="@string/show_monthly_paystub" />
+                <item
+                    android:id="@+id/nav_trimestre"
+                    android:icon="@drawable/ic_quarterly_summary"
+                    android:title="@string/quarterly_summary" />
+                <item
+                    android:id="@+id/nav_anno"
+                    android:icon="@drawable/ic_yearly_summary"
+                    android:title="@string/yearly_summary" />
+                <item
+                    android:id="@+id/nav_riconciliazione"
+                    android:icon="@drawable/ic_reconciliation"
+                    android:title="@string/paystub_reconciliation" />
+            </menu>
+        </item>
+    </group>
+    <!-- Secondo gruppo: Settings e Help con divider sopra -->
+    <group android:id="@+id/group_settings">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
+    </group>
+</menu>

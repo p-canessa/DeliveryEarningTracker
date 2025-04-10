@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riconciliazione</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Egyeztetés</h1>
+<p>Ez a képernyő lehetővé teszi, hogy összehasonlítsd a fizetési kimutatásból kinyert napi rendelési adatokat a kézzel vagy OCR-rel megadott adatokkal. Ezt a nézetet az <a href="menu.htm">oldalsó menüből</a> az "Egyeztetés" opció kiválasztásával érheted el.</p>
+
+<!-- Dettagli della schermata -->
+<h2>A Képernyő Részletei</h2>
+<p>A képernyő a következő fő elemeket tartalmazza:</p>
+<ul>
+ <li><strong>Hónapok Közötti Navigáció</strong>: Használd a két gombot <img src="../images/Indietro.jpg" alt="Vissza gomb" class="inline"> és <img src="../images/avanti.jpg" alt="Előre gomb" class="inline"> a hónapok közötti navigáláshoz és a megfelelő egyeztetési adatok megtekintéséhez.</li>
+ <li><strong>Összehasonlító Táblázat</strong>: A táblázat a napi rendelési adatokat (szám és összeg) mutatja, amelyeket a kimutatásból kinyertek, a kézzel vagy OCR-rel megadott adatok mellett.
+  <ul>
+   <li>Ha az értékek eltérnek, a táblázatban lévő szöveg piros színnel jelenik meg.</li>
+   <li>Az eltérő értékekkel rendelkező sorra kattintva elérheted az adott nap rendeléseinek listáját (lásd <a href="main.htm#order-list">Rendelések Megtekintése</a>).</li>
+  </ul>
+ </li>
+ <li><strong>Készpénzben Beszedett és Borravalók</strong>: A rendelések táblázata alatt két sor mutatja a "Készpénzben Beszedett" és a "Borravalók" összesítését:
+  <ul>
+   <li>Ha az értékek eltérnek a kimutatásban szereplőktől, a szöveg piros színnel jelenik meg.</li>
+   <li>Az eltérő sorra kattintva elérheted a készpénzben beszedett és/vagy 0-tól eltérő borravalóval rendelkező rendelések listáját.</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Hogyan Használjuk az Egyeztetést</h2>
+<ul>
+ <li>Győződj meg róla, hogy importáltál egy vagy több kimutatást a <a href="import_paystub.htm">Fizetési Kimutatás Importálása</a> funkcióval.</li>
+ <li>Adj meg rendeléseket kézzel vagy OCR-rel (lásd <a href="manual_order.htm">Kézi Bejegyzés</a> és <a href="insert_order.htm">OCR Bejegyzés</a>).</li>
+ <li>Válaszd ki a kívánt hónapot a navigációs gombokkal az egyeztetési adatok megtekintéséhez.</li>
+ <li>Ellenőrizd a táblázatot az esetleges eltérések (piros színnel) azonosításához, és kattints a sorokra a rendelések részleteinek megtekintéséhez és a hibák javításához.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Riconciliazione-hu.jpg" alt="Egyeztetési képernyő" class="screenshot">
+</div>
+</body>
+</html>

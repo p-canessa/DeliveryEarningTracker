@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:layoutDirection="locale">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/background_color"
+        android:layoutDirection="locale">
+
+        <!-- Campo Data -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/data"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/data_text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text=""
+                android:background="@android:drawable/edit_text"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Campo Paga Base -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale">
+            <TextView
+                android:id="@+id/paga_base_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paga_base"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/paga_base_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Campo Riscossi Contanti -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/riscossi_contanti_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/riscossi_contanti"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/riscossi_contanti_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Campo Paga Extra -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/paga_extra_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paga_extra"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/paga_extra_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Campo Mancia -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/mancia_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mancia"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/mancia_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/mancia_contanti_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mancia_contanti"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/mancia_contanti_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="numberDecimal"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <!-- Campo Numero Ordini -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/numero_ordini"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/numero_ordini_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="number"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Campo Tempo Impiegato -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tempo_impiegato"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/tempo_impiegato_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:inputType="text"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:hint="@string/hint_tempo_impiegato" />
+        </LinearLayout>
+
+        <!-- Campo Paga Totale (solo visualizzazione) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/paga_totale_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paga_totale"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/paga_totale_text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@android:drawable/edit_text"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="" />
+        </LinearLayout>
+        <!-- Spazio extra per la tastiera -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
+</ScrollView>

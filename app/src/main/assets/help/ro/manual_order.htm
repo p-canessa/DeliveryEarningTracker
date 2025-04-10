@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Introducere Manuală</h1>
+<p>Funcția de introducere manuală îți permite să adaugi o comandă direct din <a href="main.htm">ecranul principal</a>, introducând detalii precum numărul de livrări, totalul câștigat și timpul petrecut.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Cum să Introduci o Comandă Manual</h2>
+<ol>
+    <li>Din ecranul principal, atinge butonul "COMANDĂ NOUĂ".</li>
+    <li>Introdu detaliile comenzii:
+        <ul>
+            <li><strong>Data</strong>: Data la care a fost finalizată comanda, setată automat la data de astăzi.</li>
+            <li><strong>Plata de Bază</strong>: Valoarea liniei "Comenzi Livrate" din aplicația Rider Deliveroo.</li>
+            <li><strong>Încasări în Numerar</strong>: Valoarea liniei corespunzătoare, dacă este prezentă.</li>
+            <li><strong>Plată Suplimentară</strong>: Valoarea plății suplimentare, dacă este prezentă.</li>
+            <li><strong>Bacșiș</strong>: Valoarea bacșișului primit în aplicație, dacă este prezent.</li>
+            <li><strong>Bacșiș în Numerar</strong>: Valoarea bacșișului primit în numerar.</li>
+            <li><strong>Număr de Comenzi</strong>: Numărul de comenzi livrate în același lot.</li>
+            <li><strong>Timp Petrecut</strong>: Timpul petrecut pentru livrarea comenzilor, care poate fi exprimat în minute sau ca interval de ore și minute conform aplicației Rider (hh:mm-hh:mm).</li>
+        </ul>
+    </li>
+    <li>Confirmă introducerea pentru a salva comanda.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Cum să Modifici o Comandă</h2>
+<p>Pentru a modifica o comandă existentă, urmează acești pași:</p>
+<ol>
+    <li>Din <a href="main.htm">ecranul principal</a>, găsește comanda pe care dorești să o modifici.</li>
+    <li>Atinge comanda pentru a deschide ecranul de editare (același ecran folosit pentru introducerea manuală).</li>
+    <li>Actualizează detaliile, cum ar fi numărul de livrări, plata de bază, timpul petrecut sau bacșișurile.</li>
+    <li>Confirmă modificările pentru a salva comanda actualizată.</li>
+</ol>
+
+<p>Dacă preferi să introduci o comandă prin scanarea unei capturi de ecran, consultă secțiunea <a href="insert_order.htm">Introducere prin OCR</a>. Pentru a șterge o comandă, vezi secțiunea <a href="delete_order.htm">Șterge Comandă</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-ro.jpg" alt="Ecran de introducere manuală și editare" class="screenshot">
+</div>
+</body>
+</html>

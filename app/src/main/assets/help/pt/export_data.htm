@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Esportazione Dati</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Exportação de Dados</h1>
+<p>A tela de exportação de dados permite exportar os pedidos registrados para um arquivo CSV para análise adicional (por exemplo, com uma planilha). Você pode acessar esta visualização selecionando a opção "Exportar Dados" no <a href="menu.htm">menu lateral</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Detalhes da Tela</h2>
+<p>A tela inclui os seguintes elementos principais:</p>
+<ul>
+ <li><strong>Campos de Data</strong>: Dois campos para selecionar o período de exportação:
+  <ul>
+   <li><strong>Data de Início</strong>: A data de início do período, no formato `yyyy-MM-dd` (por exemplo, 2025-01-01).</li>
+   <li><strong>Data de Término</strong>: A data de término do período, no formato `yyyy-MM-dd` (por exemplo, 2025-12-31).</li>
+  </ul>
+ </li>
+ <li><strong>Botão EXPORTAR CSV</strong>: Um botão para iniciar a exportação dos pedidos para um arquivo CSV. Se os campos de data estiverem preenchidos, apenas os pedidos dentro do período especificado serão exportados. Se os campos estiverem vazios, todos os pedidos serão exportados.</li>
+</ul>
+
+<h2>Como Exportar Dados</h2>
+<ul>
+ <li>Certifique-se de ter inserido os pedidos que deseja exportar (veja <a href="manual_order.htm">Entrada Manual</a> e <a href="insert_order.htm">Entrada por OCR</a>).</li>
+ <li>Insira a "Data de Início" e a "Data de Término" nos respectivos campos para filtrar os pedidos a exportar. Deixe os campos vazios para exportar todos os pedidos.</li>
+ <li>Toque no botão "EXPORTAR CSV" para gerar o arquivo CSV.</li>
+ <li>O arquivo CSV será salvo no seu dispositivo e poderá ser aberto com um aplicativo de planilhas para análise adicional.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Esportazione-pt.jpg" alt="Tela de exportação de dados" class="screenshot">
+</div>
+</body>
+</html>

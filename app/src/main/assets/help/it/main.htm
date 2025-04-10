@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker è uno strumento per monitorare e valutare gli utili generati tramite le piattaforme per le consegne a domicilio.</p>
+
+<!-- Funzionalità principali -->
+<h2>Funzionalità principali</h2>
+<ul>
+    <li><strong>Monitoraggio degli utili</strong>, comprese le eventuali mance ricevute direttamente dai clienti. Puoi visualizzare i tuoi guadagni per ogni ordine e tenere traccia delle mance.</li>
+    <li><strong>Calcolo del compenso orario</strong> sia per i singoli ordini che per i totali giornalieri, settimanali e mensili. Ad esempio, scopri quanto guadagni in media all'ora durante una settimana intensa.</li>
+    <li><strong>Archiviazione degli statini di pagamento</strong> per poter visualizzare i dettagli dei pagamenti ricevuti e riconcilare eventuali errori di inserimento. Importa i tuoi statini in formato PDF e accedi ai dettagli in qualsiasi momento. Per maggiori informazioni, consulta la sezione <a href="import_paystub.htm">Importazione Statino</a>.</li>
+    <li><strong>Statistiche Trimestrali e Annuali</strong> utili per una gestione delle tasse (pagamento IVA e redditi). Visualizza i tuoi guadagni totali per trimestre o anno per una migliore pianificazione fiscale. Per dettagli, vedi le sezioni <a href="quarter_report.htm">Riepiloghi Mensili</a> e <a href="year_report.htm">Riepiloghi Annuali</a>.</li>
+</ul>
+
+<!-- Descrizione della MainActivity -->
+<h2>Schermata Principale</h2>
+<p>La schermata principale di Delivery Earning Tracker ti permette di accedere rapidamente a tutte le funzionalità dell'app. Di seguito sono descritti i principali elementi dell'interfaccia:</p>
+
+<h3>Menu e Navigazione</h3>
+<ul>
+    <li><strong>Menu laterale</strong>: Tocca l'icona <img src="../images/hamburger.jpg" alt="Icona del menu laterale" class="icon"> in alto a sinistra per aprire il menu e navigare tra le sezioni (es. "Importazione Statino", "Riepilogo Trimestrale"). Per una descrizione dettagliata delle voci del menu, consulta la sezione <a href="menu.htm">Menu Laterale</a>.</li>
+    <li><strong>Pulsante Help</strong>: In alto a destra, trovi il pulsante "Help" <img src="../images/questionmark.jpg" alt="Icona di aiuto" class="icon"> per accedere a questa guida.</li>
+</ul>
+
+<h3>Riepilogo e Filtri</h3>
+<ul>
+    <li><strong>Selettore data</strong>: <img src="../images/datarangeSelector-it.jpg" alt="Selettore data per filtrare i periodi" class="inline"> permette di selezionare una data specifica o navigare avanti e indietro tra le date. Puoi anche scegliere la vista per giorno, settimana o mese.</li>
+    <li><strong>Griglia riepilogo periodo</strong>: <img src="../images/riepilogo_main-it.jpg" alt="Griglia di riepilogo del periodo" class="inline"> mostra il numero di consegne effettuate, il totale guadagnato (con il valore dei contanti ricevuti), la paga base, i contanti incassati, gli eventuali extra, le mance totali e contanti, il tempo impiegato e il guadagno medio orario.</li>
+</ul>
+
+<h3 id="order-list">Inserimento e Visualizzazione Ordini</h3>
+<ul>
+    <li><strong>Pulsanti per inserimento ordini</strong>: <img src="../images/inserisci_ordini-it.jpg" alt="Pulsanti per l'inserimento di un ordine" class="inline"> il pulsante di sinistra ("NUOVO ORDINE") permette l'inserimento manuale di un ordine (vedi <a href="manual_order.htm  ">Inserimento Manuale</a>), mentre quello di destra consente l'inserimento tramite la scansione di uno screenshot dall'app rider (vedi <a href="insert_order.htm">Inserimento tramite OCR</a>).</li>
+    <li><strong>Ordine inserito</strong>: <img src="../images/ordine-it.jpg" alt="Dettagli di un ordine inserito" class="inline"> mostra i dettagli dell'ordine, con enfasi sul numero di consegne, il totale guadagnato, il tempo impiegato e la paga oraria. L'icona <img src="../images/icona_mancia.jpg" alt="Icona di una mancia ricevuta" class="icon"> è presente se l'ordine ha ricevuto una mancia.</li>
+    <li><strong>Modifica ed eliminazione ordini</strong>: Puoi modificare un ordine con un tocco (vedi <a href="manual_order.htm#edit">Modifica Ordine</a>) o eliminarlo con un tocco prolungato (vedi <a href="delete_order.htm">Elimina Ordine</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-it.jpg" alt="Schermata principale di Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

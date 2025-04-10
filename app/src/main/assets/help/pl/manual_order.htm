@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Wprowadzanie Ręczne</h1>
+<p>Funkcja wprowadzania ręcznego pozwala na dodanie zamówienia bezpośrednio z <a href="main.htm">ekranu głównego</a>, wprowadzając szczegóły takie jak liczba dostaw, łączny zarobek i czas spędzony.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Jak Wprowadzić Zamówienie Ręcznie</h2>
+<ol>
+    <li>Z ekranu głównego dotknij przycisku "NOWE ZAMÓWIENIE".</li>
+    <li>Wprowadź szczegóły zamówienia:
+        <ul>
+            <li><strong>Data</strong>: Data realizacji zamówienia, automatycznie ustawiona na dzisiejszą datę.</li>
+            <li><strong>Płaca Bazowa</strong>: Wartość linii "Zamówienia Dostarczone" w aplikacji Rider Deliveroo.</li>
+            <li><strong>Pobrane Gotówką</strong>: Wartość odpowiedniej linii, jeśli jest obecna.</li>
+            <li><strong>Dodatkowa Płaca</strong>: Wartość dodatkowej płacy, jeśli jest obecna.</li>
+            <li><strong>Napiwek</strong>: Wartość napiwku otrzymanego w aplikacji, jeśli jest obecny.</li>
+            <li><strong>Napiwek w Gotówce</strong>: Wartość napiwku otrzymanego w gotówce.</li>
+            <li><strong>Liczba Zamówień</strong>: Liczba zamówień dostarczonych w tej samej partii.</li>
+            <li><strong>Czas Zaangażowania</strong>: Czas poświęcony na dostarczenie zamówień, który może być wyrażony w minutach lub jako przedział godzin i minut zgodnie z aplikacją Rider (gg:mm-gg:mm).</li>
+        </ul>
+    </li>
+    <li>Potwierdź wprowadzenie, aby zapisać zamówienie.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Jak Edytować Zamówienie</h2>
+<p>Aby edytować istniejące zamówienie, wykonaj następujące kroki:</p>
+<ol>
+    <li>Z <a href="main.htm">ekranu głównego</a> znajdź zamówienie, które chcesz edytować.</li>
+    <li>Dotknij zamówienia, aby otworzyć ekran edycji (ten sam ekran używany do wprowadzania ręcznego).</li>
+    <li>Zaktualizuj szczegóły, takie jak liczba dostaw, płaca bazowa, czas spędzony lub napiwki.</li>
+    <li>Potwierdź zmiany, aby zapisać zaktualizowane zamówienie.</li>
+</ol>
+
+<p>Jeśli wolisz wprowadzić zamówienie przez skanowanie zrzutu ekranu, zobacz sekcję <a href="insert_order.htm">Wprowadzanie przez OCR</a>. Aby usunąć zamówienie, zobacz sekcję <a href="delete_order.htm">Usuń Zamówienie</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-pl.jpg" alt="Ekran ręcznego wprowadzania i edycji" class="screenshot">
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riconciliazione</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Reconciliação</h1>
+<p>Esta tela permite comparar os dados de pedidos diários extraídos de um contracheque com aqueles inseridos manualmente ou via OCR. Você pode acessar esta visualização selecionando a opção "Reconciliação" no <a href="menu.htm">menu lateral</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Detalhes da Tela</h2>
+<p>A tela inclui os seguintes elementos principais:</p>
+<ul>
+ <li><strong>Navegação entre Meses</strong>: Use os dois botões <img src="../images/Indietro.jpg" alt="Botão voltar" class="inline"> e <img src="../images/avanti.jpg" alt="Botão avançar" class="inline"> para navegar entre os meses e visualizar os dados de reconciliação correspondentes.</li>
+ <li><strong>Tabela de Comparação</strong>: A tabela exibe os dados de pedidos diários (número e valor) extraídos do contracheque ao lado daqueles inseridos manualmente ou via OCR.
+  <ul>
+   <li>Se os valores diferirem, o texto na tabela será exibido em vermelho.</li>
+   <li>Ao clicar em uma linha com valores diferentes, você acessa a lista de pedidos daquele dia (veja <a href="main.htm#order-list">Visualização de Pedidos</a>).</li>
+  </ul>
+ </li>
+ <li><strong>Dinheiro Coletado e Gorjetas</strong>: Abaixo da tabela de pedidos, duas linhas mostram os totais de "Dinheiro Coletado" e "Gorjetas":
+  <ul>
+   <li>Se os valores diferirem dos do contracheque, o texto será exibido em vermelho.</li>
+   <li>Ao clicar em uma linha diferente, você acessa a lista de pedidos com dinheiro coletado e/ou gorjetas diferentes de 0.</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Como Usar a Reconciliação</h2>
+<ul>
+ <li>Certifique-se de ter importado um ou mais contracheques usando a função <a href="import_paystub.htm">Importação de Contracheque</a>.</li>
+ <li>Insira os pedidos manualmente ou via OCR (veja <a href="manual_order.htm">Entrada Manual</a> e <a href="insert_order.htm">Entrada por OCR</a>).</li>
+ <li>Selecione o mês desejado usando os botões de navegação para visualizar os dados de reconciliação.</li>
+ <li>Verifique a tabela para identificar discrepâncias (em vermelho) e clique nas linhas para ver os detalhes dos pedidos e corrigir erros.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Riconciliazione-pt.jpg" alt="Tela de reconciliação" class="screenshot">
+</div>
+</body>
+</html>

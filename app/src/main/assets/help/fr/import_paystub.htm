@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Importazione Statino</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ol {
+      margin-left: 20px;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Importation de Relevé</h1>
+<p>La fonction d'importation de relevé vous permet de lire les données du relevé de fin de mois envoyé par Deliveroo. Ces données peuvent être utilisées pour générer des résumés trimestriels et annuels, ainsi que pour effectuer la réconciliation des commandes saisies.</p>
+
+<!-- Procedura -->
+<h2>Comment Importer un Relevé</h2>
+<ol>
+ <li>Sélectionnez la fonction "Importer un Relevé" dans le <a href="menu.htm">menu latéral</a>.</li>
+ <li>Sélectionnez un document nommé `invoice_*.pdf` depuis votre appareil via le bouton "IMPORTER RELEVÉ" (cela peut nécessiter de visionner une publicité).</li>
+ <li>L'application extraira automatiquement les données du fichier PDF. Vous pouvez importer plusieurs relevés pour le même mois, à condition qu'ils aient des numérotations différentes.</li>
+ <li>Si le relevé n'est pas déjà dans la base de données, il sera ajouté et un message de succès sera affiché. Sinon, un message d'erreur apparaîtra.</li>
+ <li>À ce stade, le relevé peut être consulté dans la section <a href="show_monthly_statement.htm">Afficher le Relevé Mensuel</a>.</li>
+</ol>
+
+<div style="text-align: center;">
+ <img src="../images/ImportaStatino-fr.jpg" alt="Pantalla de importación de nómina" class="screenshot">
+</div>
+</body>
+</html>

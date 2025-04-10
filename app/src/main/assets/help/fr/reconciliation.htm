@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riconciliazione</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Réconciliation</h1>
+<p>Cet écran vous permet de comparer les données des commandes quotidiennes extraites d’un relevé de paiement avec celles saisies manuellement ou via OCR. Vous pouvez accéder à cette vue en sélectionnant l’option "Réconciliation" dans le <a href="menu.htm">menu latéral</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Détails de l'Écran</h2>
+<p>L’écran comprend les éléments principaux suivants :</p>
+<ul>
+ <li><strong>Navigation entre les Mois</strong>: Utilisez les deux boutons <img src="../images/Indietro.jpg" alt="Bouton arrière" class="inline"> et <img src="../images/avanti.jpg" alt="Bouton avant" class="inline"> pour naviguer entre les mois et afficher les données de réconciliation correspondantes.</li>
+ <li><strong>Tableau de Comparaison</strong>: Le tableau affiche les données des commandes quotidiennes (nombre et montant) extraites du relevé, à côté de celles saisies manuellement ou via OCR.
+  <ul>
+   <li>Si les valeurs diffèrent, le texte dans le tableau est affiché en rouge.</li>
+   <li>En cliquant sur une ligne avec des valeurs différentes, vous accédez à la liste des commandes de ce jour (voir <a href="main.htm#order-list">Visualisation des Commandes</a>).</li>
+  </ul>
+ </li>
+ <li><strong>Espèces Collectées et Pourboires</strong>: Sous le tableau des commandes, deux lignes montrent les totaux des "Espèces Collectées" et des "Pourboires" :
+  <ul>
+   <li>Si les valeurs diffèrent de celles du relevé, le texte est affiché en rouge.</li>
+   <li>En cliquant sur une ligne différente, vous accédez à la liste des commandes avec des espèces collectées et/ou des pourboires différents de 0.</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Comment Utiliser la Réconciliation</h2>
+<ul>
+ <li>Assurez-vous d’avoir importé un ou plusieurs relevés via la fonction <a href="import_paystub.htm">Importation de Relevé</a>.</li>
+ <li>Saisissez les commandes manuellement ou via OCR (voir <a href="manual_order.htm">Saisie Manuelle</a> et <a href="insert_order.htm">Saisie par OCR</a>).</li>
+ <li>Sélectionnez le mois souhaité à l’aide des boutons de navigation pour afficher les données de réconciliation.</li>
+ <li>Vérifiez le tableau pour identifier les éventuelles divergences (en rouge) et cliquez sur les lignes pour voir les détails des commandes et corriger les erreurs.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Riconciliazione-fr.jpg" alt="Écran de réconciliation" class="screenshot">
+</div>
+</body>
+</html>

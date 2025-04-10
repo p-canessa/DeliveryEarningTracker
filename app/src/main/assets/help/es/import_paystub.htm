@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Importazione Statino</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ol {
+      margin-left: 20px;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Importación de Nómina</h1>
+<p>La función de importación de nómina te permite leer los datos de la nómina de fin de mes enviada por Deliveroo. Estos datos pueden utilizarse para generar resúmenes trimestrales y anuales, así como para realizar la reconciliación de los pedidos ingresados.</p>
+
+<!-- Procedura -->
+<h2>Cómo Importar una Nómina</h2>
+<ol>
+ <li>Selecciona la función "Importar Nómina" desde el <a href="menu.htm">menú lateral</a>.</li>
+ <li>Selecciona un documento con el nombre `invoice_*.pdf` desde tu dispositivo usando el botón "IMPORTAR NÓMINA" (esto podría requerir ver un anuncio).</li>
+ <li>La aplicación extraerá automáticamente los datos del archivo PDF. Puedes importar varias nóminas para el mismo mes, siempre que tengan numeraciones diferentes.</li>
+ <li>Si la nómina no está ya en la base de datos, se añadirá y se mostrará un mensaje de éxito. De lo contrario, se mostrará un mensaje de error.</li>
+ <li>En este punto, la nómina puede visualizarse en la sección <a href="show_monthly_statement.htm">Mostrar Nómina Mensual</a>.</li>
+</ol>
+
+<div style="text-align: center;">
+ <img src="../images/ImportaStatino-es.jpg" alt="Pantalla de importación de nómina" class="screenshot">
+</div>
+</body>
+</html>

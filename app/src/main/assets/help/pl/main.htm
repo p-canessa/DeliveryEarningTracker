@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomoc - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Wprowadzenie -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker to narzędzie do monitorowania i oceny zarobków generowanych za pośrednictwem platform dostaw do domu.</p>
+
+<!-- Główne funkcje -->
+<h2>Główne funkcje</h2>
+<ul>
+    <li><strong>Śledzenie zarobków</strong>, w tym napiwków otrzymanych bezpośrednio od klientów. Możesz zobaczyć swoje zarobki dla każdego zamówienia i śledzić napiwki.</li>
+    <li><strong>Obliczanie stawki godzinowej</strong> zarówno dla pojedynczych zamówień, jak i sum dziennych, tygodniowych oraz miesięcznych. Na przykład, dowiedz się, ile średnio zarabiasz na godzinę w trakcie intensywnego tygodnia.</li>
+    <li><strong>Przechowywanie wyciągów z płatności</strong> w celu przeglądania szczegółów otrzymanych płatności i uzgadniania ewentualnych błędów w danych. Importuj swoje wyciągi w formacie PDF i uzyskaj dostęp do szczegółów w dowolnym momencie. Więcej informacji znajdziesz w sekcji <a href="import_paystub.htm">Import Wyciągów</a>.</li>
+    <li><strong>Statystyki kwartalne i roczne</strong> przydatne do zarządzania podatkami (płatności VAT i dochodów). Przeglądaj swoje całkowite zarobki według kwartału lub roku, aby lepiej planować podatki. Szczegóły znajdziesz w sekcjach <a href="quarter_report.htm">Podsumowania Miesięczne</a> oraz <a href="year_report.htm">Podsumowania Roczne</a>.</li>
+</ul>
+
+<!-- Opis MainActivity -->
+<h2>Ekran Główny</h2>
+<p>Ekran główny Delivery Earning Tracker umożliwia szybki dostęp do wszystkich funkcji aplikacji. Poniżej opisano główne elementy interfejsu:</p>
+
+<h3>Menu i Nawigacja</h3>
+<ul>
+    <li><strong>Menu boczne</strong>: Dotknij ikony <img src="../images/hamburger.jpg" alt="Ikona menu bocznego" class="icon"> w lewym górnym rogu, aby otworzyć menu i poruszać się między sekcjami (np. "Import Wyciągów", "Podsumowanie Kwartalne"). Szczegółowy opis pozycji menu znajdziesz w sekcji <a href="menu.htm">Menu Boczne</a>.</li>
+    <li><strong>Przycisk Pomocy</strong>: W prawym górnym rogu znajduje się przycisk "Pomoc" <img src="../images/questionmark.jpg" alt="Ikona pomocy" class="icon">, który umożliwia dostęp do tego przewodnika.</li>
+</ul>
+
+<h3>Podsumowanie i Filtry</h3>
+<ul>
+    <li><strong>Wybór daty</strong>: <img src="../images/datarangeSelector-pl.jpg" alt="Wybór daty do filtrowania okresów" class="inline"> pozwala wybrać konkretną datę lub poruszać się w przód i w tył między datami. Możesz także wybrać widok według dnia, tygodnia lub miesiąca.</li>
+    <li><strong>Siatka podsumowania okresu</strong>: <img src="../images/riepilogo_main-pl.jpg" alt="Siatka podsumowania okresu" class="inline"> wyświetla liczbę wykonanych dostaw, całkowite zarobki (w tym wartość otrzymanej gotówki), wynagrodzenie podstawowe, zebrane gotówki, wszelkie dodatki, całkowite i gotówkowe napiwki, czas spędzony oraz średnie zarobki godzinowe.</li>
+</ul>
+
+<h3 id="order-list">Wprowadzanie i Wyświetlanie Zamówień</h3>
+<ul>
+    <li><strong>Przyciski do wprowadzania zamówień</strong>: <img src="../images/inserisci_ordini-pl.jpg" alt="Przyciski do wprowadzania zamówienia" class="inline"> lewy przycisk ("NOWE ZAMÓWIENIE") umożliwia ręczne wprowadzenie zamówienia (zobacz <a href="manual_order.htm">Wprowadzanie Ręczne</a>), natomiast prawy przycisk pozwala na wprowadzenie poprzez skanowanie zrzutu ekranu z aplikacji kurierskiej (zobacz <a href="insert_order.htm">Wprowadzanie przez OCR</a>).</li>
+    <li><strong>Wprowadzone zamówienie</strong>: <img src="../images/ordine-pl.jpg" alt="Szczegóły wprowadzonego zamówienia" class="inline"> pokazuje szczegóły zamówienia, z naciskiem na liczbę dostaw, całkowite zarobki, czas spędzony i stawkę godzinową. Ikona <img src="../images/icona_mancia.jpg" alt="Ikona otrzymanego napiwku" class="icon"> pojawia się, jeśli zamówienie otrzymało napiwek.</li>
+    <li><strong>Edycja i usuwanie zamówień</strong>: Możesz edytować zamówienie, dotykając go (zobacz <a href="manual_order.htm#edit">Edytuj Zamówienie</a>), lub usunąć je, przytrzymując (zobacz <a href="delete_order.htm">Usuń Zamówienie</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-pl.jpg" alt="Ekran główny Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

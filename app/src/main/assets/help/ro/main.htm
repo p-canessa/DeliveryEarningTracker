@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajutor - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introducere -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker este un instrument pentru monitorizarea și evaluarea câștigurilor generate prin platformele de livrare la domiciliu.</p>
+
+<!-- Funcționalități principale -->
+<h2>Funcționalități principale</h2>
+<ul>
+    <li><strong>Urmărirea câștigurilor</strong>, inclusiv bacșișurile primite direct de la clienți. Puteți vizualiza câștigurile pentru fiecare comandă și ține evidența bacșișurilor.</li>
+    <li><strong>Calculul salariului orar</strong> atât pentru comenzile individuale, cât și pentru totalurile zilnice, săptămânale și lunare. De exemplu, aflați cât câștigați în medie pe oră în timpul unei săptămâni aglomerate.</li>
+    <li><strong>Stocarea statelor de plată</strong> pentru a vizualiza detaliile plăților primite și pentru a reconcilia eventualele erori de introducere. Importați statele de plată în format PDF și accesați detaliile oricând. Pentru mai multe informații, consultați secțiunea <a href="import_paystub.htm">Importare Stat de Plată</a>.</li>
+    <li><strong>Statistici trimestriale și anuale</strong> utile pentru gestionarea taxelor (plata TVA și a veniturilor). Vizualizați câștigurile totale pe trimestru sau pe an pentru o mai bună planificare fiscală. Pentru detalii, consultați secțiunile <a href="quarter_report.htm">Rezumat Lunar</a> și <a href="year_report.htm">Rezumat Anual</a>.</li>
+</ul>
+
+<!-- Descrierea MainActivity -->
+<h2>Ecran Principal</h2>
+<p>Ecranul principal al Delivery Earning Tracker vă permite să accesați rapid toate funcționalitățile aplicației. Mai jos sunt descrise elementele principale ale interfeței:</p>
+
+<h3>Meniu și Navigare</h3>
+<ul>
+    <li><strong>Meniu lateral</strong>: Atingeți pictograma <img src="../images/hamburger.jpg" alt="Pictogramă meniu lateral" class="icon"> din colțul din stânga sus pentru a deschide meniul și a naviga între secțiuni (de exemplu, "Importare Stat de Plată", "Rezumat Trimestrial"). Pentru o descriere detaliată a elementelor meniului, consultați secțiunea <a href="menu.htm">Meniu Lateral</a>.</li>
+    <li><strong>Buton de Ajutor</strong>: În colțul din dreapta sus, veți găsi butonul "Ajutor" <img src="../images/questionmark.jpg" alt="Pictogramă de ajutor" class="icon"> pentru a accesa acest ghid.</li>
+</ul>
+
+<h3>Rezumat și Filtre</h3>
+<ul>
+    <li><strong>Selector de dată</strong>: <img src="../images/datarangeSelector-ro.jpg" alt="Selector de dată pentru filtrarea perioadelor" class="inline"> vă permite să selectați o dată specifică sau să navigați înainte și înapoi între date. De asemenea, puteți alege vizualizarea pe zi, săptămână sau lună.</li>
+    <li><strong>Grilă de rezumat al perioadei</strong>: <img src="../images/riepilogo_main-ro.jpg" alt="Grilă de rezumat al perioadei" class="inline"> afișează numărul de livrări efectuate, câștigurile totale (inclusiv valoarea numerarului primit), salariul de bază, numerarul colectat, eventualele extra, bacșișurile totale și în numerar, timpul petrecut și câștigurile medii pe oră.</li>
+</ul>
+
+<h3 id="order-list">Introducere și Vizualizare Comenzi</h3>
+<ul>
+    <li><strong>Butoane pentru introducerea comenzilor</strong>: <img src="../images/inserisci_ordini-ro.jpg" alt="Butoane pentru introducerea unei comenzi" class="inline"> butonul din stânga ("COMANDĂ NOUĂ") permite introducerea manuală a unei comenzi (vezi <a href="manual_order.htm">Introducere Manuală</a>), în timp ce butonul din dreapta permite introducerea prin scanarea unei capturi de ecran din aplicația curierului (vezi <a href="insert_order.htm">Introducere prin OCR</a>).</li>
+    <li><strong>Comandă introdusă</strong>: <img src="../images/ordine-ro.jpg" alt="Detalii ale unei comenzi introduse" class="inline"> afișează detaliile comenzii, punând accent pe numărul de livrări, câștigurile totale, timpul petrecut și salariul orar. Pictograma <img src="../images/icona_mancia.jpg" alt="Pictogramă pentru un bacșiș primit" class="icon"> apare dacă comanda a primit un bacșiș.</li>
+    <li><strong>Editare și ștergere comenzi</strong>: Puteți edita o comandă atingând-o (vezi <a href="manual_order.htm#edit">Editare Comandă</a>) sau o puteți șterge cu o atingere lungă (vezi <a href="delete_order.htm">Ștergere Comandă</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-ro.jpg" alt="Ecranul principal al Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

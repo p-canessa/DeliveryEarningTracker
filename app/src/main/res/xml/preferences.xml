@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
+    <!-- Simbolo Valuta -->
+    <ListPreference
+        android:key="currency_symbol"
+        android:title="@string/pref_currency_symbol"
+        android:summary="@string/pref_currency_symbol_description"
+        android:entries="@array/currency_entries"
+        android:entryValues="@array/currency_values"
+        android:defaultValue="€" />
+
+    <!-- Modalità Notte -->
+    <SwitchPreferenceCompat
+        android:key="night_mode"
+        android:title="@string/pref_night_mode"
+        android:summary="@string/pref_night_mode_description"
+        android:defaultValue="false" />
+
+    <!-- Backup Dati -->
+    <Preference
+        android:key="backup_data"
+        android:title="@string/pref_backup_data"
+        android:summary="@string/pref_backup_data_description" />
+
+    <!-- Suggerimenti opzionali -->
+
+    <Preference
+        android:key="restore_data"
+        android:title="@string/pref_restore_data"
+        android:summary="@string/pref_restore_data_description" />
+
+    <Preference
+        android:key="reset_settings"
+        android:title="@string/pref_reset_settings"
+        android:summary="@string/pref_reset_settings_description" />
+
+    <Preference
+        android:key="remove_ads"
+        android:title="@string/pref_remove_ads"
+        android:summary="@string/pref_remove_ads_description"
+        app:isPreferenceVisible="false"/>
+
+    <SwitchPreferenceCompat
+        android:key="share_anonymous_stats"
+        android:title="@string/pref_anonymous_stats"
+        android:summary="@string/pref_anonymous_stats_description"
+        android:defaultValue="false" />
+
+    <Preference
+        android:key="invite_friend"
+        android:title="@string/invite_friend_title"
+        android:summary="@string/invite_friend_status"
+        android:enabled="true"/>
+</PreferenceScreen>

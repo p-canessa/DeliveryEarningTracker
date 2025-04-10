@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riconciliazione</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Узгодження</h1>
+<p>Цей екран дозволяє порівняти щоденні дані замовлень, витягнуті з виписки про оплату, з тими, що введено вручну або через OCR. Ви можете отримати доступ до цього перегляду, вибравши опцію "Узгодження" у <a href="menu.htm">бічному меню</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Деталі Екрану</h2>
+<p>Екран включає наступні основні елементи:</p>
+<ul>
+ <li><strong>Навігація між Місяцями</strong>: Використовуйте дві кнопки <img src="../images/Indietro.jpg" alt="Кнопка назад" class="inline"> та <img src="../images/avanti.jpg" alt="Кнопка вперед" class="inline"> для переміщення між місяцями та перегляду відповідних даних узгодження.</li>
+ <li><strong>Таблиця Порівняння</strong>: Таблиця показує щоденні дані замовлень (кількість і сума), витягнуті з виписки, поруч із тими, що введено вручну або через OCR.
+  <ul>
+   <li>Якщо значення відрізняються, текст у таблиці відображається червоним кольором.</li>
+   <li>Натискання на рядок із різними значеннями відкриває список замовлень за цей день (див. <a href="main.htm#order-list">Перегляд Замовлень</a>).</li>
+  </ul>
+ </li>
+ <li><strong>Зібрано Готівкою та Чайові</strong>: Під таблицею замовлень є два рядки, що показують загальні суми "Зібрано Готівкою" та "Чайові":
+  <ul>
+   <li>Якщо значення відрізняються від тих, що у виписці, текст відображається червоним кольором.</li>
+   <li>Натискання на рядок із різними значеннями відкриває список замовлень із зібраною готівкою та/або чайовими, відмінними від 0.</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Як Користуватися Узгодженням</h2>
+<ul>
+ <li>Переконайтеся, що ви імпортували одну або більше виписок за допомогою функції <a href="import_paystub.htm">Імпорт Виписки</a>.</li>
+ <li>Введіть замовлення вручну або через OCR (див. <a href="manual_order.htm">Ручне Введення</a> та <a href="insert_order.htm">Введення через OCR</a>).</li>
+ <li>Виберіть бажаний місяць за допомогою кнопок навігації, щоб переглянути дані узгодження.</li>
+ <li>Перевірте таблицю, щоб виявити можливі розбіжності (червоним кольором) і натисніть на рядки, щоб переглянути деталі замовлень та виправити помилки.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Riconciliazione-uk.jpg" alt="Екран звірки" class="screenshot">
+</div>
+</body>
+</html>

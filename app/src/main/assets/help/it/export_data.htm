@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Esportazione Dati</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        img.inline {
+            max-width: 60px;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Esportazione Dati</h1>
+<p>La schermata di esportazione dati ti permette di esportare gli ordini registrati in un file CSV per ulteriori analisi (es. con un foglio di calcolo). Puoi accedere a questa vista selezionando l'opzione "Esporta Dati" dal <a href="menu.htm">menu laterale</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Dettagli della Schermata</h2>
+<p>La schermata include i seguenti elementi principali:</p>
+<ul>
+    <li><strong>Campi per le date</strong>: Due campi per selezionare il periodo di esportazione:
+        <ul>
+            <li><strong>Data Inizio</strong>: La data di inizio del periodo, nel formato `yyyy-MM-dd` (es. 2025-01-01).</li>
+            <li><strong>Data Fine</strong>: La data di fine del periodo, nel formato `yyyy-MM-dd` (es. 2025-12-31).</li>
+        </ul>
+    </li>
+    <li><strong>Pulsante ESPORTA CSV</strong>: Un pulsante per avviare l'esportazione degli ordini in un file CSV. Se i campi delle date sono compilati, verranno esportati solo gli ordini compresi nel periodo specificato. Se i campi sono vuoti, verranno esportati tutti gli ordini.</li>
+</ul>
+
+<h2>Come esportare i dati</h2>
+<ul>
+    <li>Assicurati di aver inserito gli ordini che desideri esportare (vedi <a href="manual_order.htm">Inserimento Manuale</a> e <a href="insert_order.htm">Inserimento tramite OCR</a>).</li>
+    <li>Inserisci la "Data Inizio" e la "Data Fine" nei rispettivi campi per filtrare gli ordini da esportare. Lascia i campi vuoti per esportare tutti gli ordini.</li>
+    <li>Tocca il pulsante "ESPORTA CSV" per generare il file CSV.</li>
+    <li>Il file CSV verrà salvato sul tuo dispositivo e potrà essere aperto con un'applicazione di fogli di calcolo per ulteriori analisi.</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/Esportazione-it.jpg" alt="Schermata di esportazione dati" class="screenshot">
+</div>
+</body>
+</html>

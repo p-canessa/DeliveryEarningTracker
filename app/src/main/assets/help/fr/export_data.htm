@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Esportazione Dati</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduction -->
+<h1>Exportation des Données</h1>
+<p>L'écran d'exportation des données vous permet d'exporter les commandes enregistrées dans un fichier CSV pour une analyse plus approfondie (par exemple, avec un tableur). Vous pouvez accéder à cette vue en sélectionnant l'option "Exporter les Données" dans le <a href="menu.htm">menu latéral</a>.</p>
+
+<!-- Détails de l'écran -->
+<h2>Détails de l'Écran</h2>
+<p>L'écran comprend les éléments principaux suivants :</p>
+<ul>
+ <li><strong>Champs de dates</strong> : Deux champs pour sélectionner la période d'exportation :
+  <ul>
+   <li><strong>Date de Début</strong> : La date de début de la période, au format `yyyy-MM-dd` (par exemple, 2025-01-01).</li>
+   <li><strong>Date de Fin</strong> : La date de fin de la période, au format `yyyy-MM-dd` (par exemple, 2025-12-31).</li>
+  </ul>
+ </li>
+ <li><strong>Bouton EXPORTER CSV</strong> : Un bouton pour lancer l'exportation des commandes dans un fichier CSV. Si les champs de dates sont remplis, seules les commandes de la période spécifiée seront exportées. Si les champs sont vides, toutes les commandes seront exportées.</li>
+</ul>
+
+<h2>Comment exporter les données</h2>
+<ul>
+ <li>Assurez-vous d'avoir saisi les commandes que vous souhaitez exporter (voir <a href="manual_order.htm">Saisie Manuelle</a> et <a href="insert_order.htm">Saisie par OCR</a>).</li>
+ <li>Entrez la "Date de Début" et la "Date de Fin" dans les champs respectifs pour filtrer les commandes à exporter. Laissez les champs vides pour exporter toutes les commandes.</li>
+ <li>Appuyez sur le bouton "EXPORTER CSV" pour générer le fichier CSV.</li>
+ <li>Le fichier CSV sera enregistré sur votre appareil et pourra être ouvert avec une application de tableur pour une analyse plus approfondie.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Esportazione-fr.jpg" alt="Écran d'exportation des données" class="screenshot">
+</div>
+</body>
+</html>

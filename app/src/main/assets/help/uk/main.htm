@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Допомога - Delivery Earning Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 16px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.inline {
+            max-width: 50%;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        img.icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            border: none;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Логотип Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Вступ -->
+<h1>Delivery Earning Tracker</h1>
+<p>Delivery Earning Tracker – це інструмент для моніторингу та оцінки доходів, отриманих через платформи доставки додому.</p>
+
+<!-- Основні функції -->
+<h2>Основні функції</h2>
+<ul>
+    <li><strong>Відстеження доходів</strong>, включаючи чайові, отримані безпосередньо від клієнтів. Ви можете переглядати свої доходи за кожне замовлення та відстежувати чайові.</li>
+    <li><strong>Розрахунок погодинної зарплати</strong> як для окремих замовлень, так і для денних, тижневих та місячних підсумків. Наприклад, дізнайтесь, скільки ви заробляєте в середньому за годину під час напруженого тижня.</li>
+    <li><strong>Зберігання платіжних відомостей</strong> для перегляду деталей отриманих платежів та узгодження можливих помилок введення. Імпортуйте свої відомості у форматі PDF та отримуйте доступ до деталей у будь-який час. Для отримання додаткової інформації дивіться розділ <a href="import_paystub.htm">Імпорт Відомостей</a>.</li>
+    <li><strong>Квартальна та річна статистика</strong>, корисна для управління податками (сплата ПДВ та доходів). Переглядайте свої загальні доходи за квартал або рік для кращого податкового планування. Для деталей дивіться розділи <a href="quarter_report.htm">Місячні Підсумки</a> та <a href="year_report.htm">Річні Підсумки</a>.</li>
+</ul>
+
+<!-- Опис MainActivity -->
+<h2>Головний Екран</h2>
+<p>Головний екран Delivery Earning Tracker дозволяє швидко отримати доступ до всіх функцій додатка. Нижче описані основні елементи інтерфейсу:</p>
+
+<h3>Меню та Навігація</h3>
+<ul>
+    <li><strong>Бічне меню</strong>: Натисніть на іконку <img src="../images/hamburger.jpg" alt="Іконка бічного меню" class="icon"> у верхньому лівому куті, щоб відкрити меню та переміщатися між розділами (наприклад, "Імпорт Відомостей", "Квартальний Підсумок"). Для детального опису пунктів меню дивіться розділ <a href="menu.htm">Бічне Меню</a>.</li>
+    <li><strong>Кнопка Допомоги</strong>: У верхньому правому куті ви знайдете кнопку "Допомога" <img src="../images/questionmark.jpg" alt="Іконка допомоги" class="icon"> для доступу до цього посібника.</li>
+</ul>
+
+<h3>Підсумок та Фільтри</h3>
+<ul>
+    <li><strong>Вибір дати</strong>: <img src="../images/datarangeSelector-uk.jpg" alt="Вибір дати для фільтрації періодів" class="inline"> дозволяє вибрати конкретну дату або переміщатися вперед і назад між датами. Ви також можете обрати перегляд за день, тиждень або місяць.</li>
+    <li><strong>Сітка підсумку періоду</strong>: <img src="../images/riepilogo_main-uk.jpg" alt="Сітка підсумку періоду" class="inline"> відображає кількість виконаних доставок, загальний дохід (включаючи суму отриманих готівкою), базову оплату, зібрану готівку, будь-які додаткові виплати, загальні та готівкові чайові, витрачений час і середній погодинний дохід.</li>
+</ul>
+
+<h3 id="order-list">Введення та Відображення Замовлень</h3>
+<ul>
+    <li><strong>Кнопки для введення замовлень</strong>: <img src="../images/inserisci_ordini-uk.jpg" alt="Кнопки для введення замовлення" class="inline"> ліва кнопка ("НОВЕ ЗАМОВЛЕННЯ") дозволяє вручну ввести замовлення (див. <a href="manual_order.htm">Введення Вручну</a>), а права кнопка дозволяє ввести замовлення шляхом сканування скріншота з додатка кур’єра (див. <a href="insert_order.htm">Введення через OCR</a>).</li>
+    <li><strong>Введене замовлення</strong>: <img src="../images/ordine-uk.jpg" alt="Деталі введеного замовлення" class="inline"> показує деталі замовлення, акцентуючи увагу на кількості доставок, загальному доході, витраченому часі та погодинній оплаті. Іконка <img src="../images/icona_mancia.jpg" alt="Іконка отриманих чайових" class="icon"> з’являється, якщо замовлення отримало чайові.</li>
+    <li><strong>Редагування та видалення замовлень</strong>: Ви можете редагувати замовлення, торкнувшись його (див. <a href="manual_order.htm#edit">Редагувати Замовлення</a>), або видалити його, утримуючи (див. <a href="delete_order.htm">Видалити Замовлення</a>).</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/MainActivity-uk.jpg" alt="Головний екран Delivery Earning Tracker" class="screenshot">
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Esportazione Dati</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Експорт Даних</h1>
+<p>Екран експорту даних дозволяє експортувати зареєстровані замовлення у файл CSV для подальшого аналізу (наприклад, у таблиці). Ви можете отримати доступ до цього перегляду, вибравши опцію "Експорт Даних" у <a href="menu.htm">бічному меню</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Деталі Екрану</h2>
+<p>Екран містить наступні основні елементи:</p>
+<ul>
+ <li><strong>Поля Дат</strong>: Два поля для вибору періоду експорту:
+  <ul>
+   <li><strong>Дата Початку</strong>: Дата початку періоду у форматі `yyyy-MM-dd` (наприклад, 2025-01-01).</li>
+   <li><strong>Дата Закінчення</strong>: Дата закінчення періоду у форматі `yyyy-MM-dd` (наприклад, 2025-12-31).</li>
+  </ul>
+ </li>
+ <li><strong>Кнопка ЕКСПОРТУВАТИ CSV</strong>: Кнопка для запуску експорту замовлень у файл CSV. Якщо поля дат заповнені, будуть експортовані лише замовлення за вказаний період. Якщо поля порожні, будуть експортовані всі замовлення.</li>
+</ul>
+
+<h2>Як Експортувати Дані</h2>
+<ul>
+ <li>Переконайтесь, що ви ввели замовлення, які бажаєте експортувати (див. <a href="manual_order.htm">Ручне Введення</a> та <a href="insert_order.htm">Введення через OCR</a>).</li>
+ <li>Введіть "Дату Початку" та "Дату Закінчення" у відповідні поля, щоб відфільтрувати замовлення для експорту. Залиште поля порожніми, щоб експортувати всі замовлення.</li>
+ <li>Торкніться кнопки "ЕКСПОРТУВАТИ CSV", щоб згенерувати файл CSV.</li>
+ <li>Файл CSV буде збережено на вашому пристрої і може бути відкритий у програмі для роботи з таблицями для подальшого аналізу.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Esportazione-uk.jpg" alt="Екран експорту даних" class="screenshot">
+</div>
+</body>
+</html>

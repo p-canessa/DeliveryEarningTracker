@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riconciliazione</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Uzgodnienie</h1>
+<p>Ten ekran pozwala porównać dane dzienne zamówień wyciągnięte z wyciągu płatności z tymi wprowadzonymi ręcznie lub za pomocą OCR. Możesz uzyskać dostęp do tego widoku, wybierając opcję "Uzgodnienie" z <a href="menu.htm">menu bocznego</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Szczegóły Ekranu</h2>
+<p>Ekran zawiera następujące główne elementy:</p>
+<ul>
+ <li><strong>Nawigacja między Miesiącami</strong>: Użyj dwóch przycisków <img src="../images/Indietro.jpg" alt="Przycisk wstecz" class="inline"> i <img src="../images/avanti.jpg" alt="Przycisk dalej" class="inline">, aby poruszać się między miesiącami i wyświetlać odpowiednie dane uzgodnienia.</li>
+ <li><strong>Tabela Porównawcza</strong>: Tabela pokazuje dane dzienne zamówień (liczba i kwota) wyciągnięte z wyciągu obok tych wprowadzonych ręcznie lub za pomocą OCR.
+  <ul>
+   <li>Jeśli wartości się różnią, tekst w tabeli jest wyświetlany na czerwono.</li>
+   <li>Kliknięcie na wiersz z różnymi wartościami przenosi do listy zamówień z tego dnia (zobacz <a href="main.htm#order-list">Wyświetlanie Zamówień</a>).</li>
+  </ul>
+ </li>
+ <li><strong>Pobrane Gotówką i Napiwki</strong>: Poniżej tabeli zamówień znajdują się dwa wiersze pokazujące sumy "Pobrane Gotówką" i "Napiwki":
+  <ul>
+   <li>Jeśli wartości różnią się od tych w wyciągu, tekst jest wyświetlany na czerwono.</li>
+   <li>Kliknięcie na różniący się wiersz przenosi do listy zamówień z pobranymi gotówką i/lub napiwkami innymi niż 0.</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Jak Korzystać z Uzgodnienia</h2>
+<ul>
+ <li>Upewnij się, że zaimportowałeś jeden lub więcej wyciągów za pomocą funkcji <a href="import_paystub.htm">Import Wyciągu</a>.</li>
+ <li>Wprowadź zamówienia ręcznie lub za pomocą OCR (zobacz <a href="manual_order.htm">Wprowadzanie Ręczne</a> i <a href="insert_order.htm">Wprowadzanie przez OCR</a>).</li>
+ <li>Wybierz żądany miesiąc za pomocą przycisków nawigacyjnych, aby wyświetlić dane uzgodnienia.</li>
+ <li>Sprawdź tabelę, aby zidentyfikować ewentualne rozbieżności (na czerwono) i kliknij w wiersze, aby zobaczyć szczegóły zamówień i poprawić błędy.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Riconciliazione-pl.jpg" alt="Ekran uzgodnienia" class="screenshot">
+</div>
+</body>
+</html>

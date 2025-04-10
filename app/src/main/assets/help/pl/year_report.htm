@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Riepilogo Annuale</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Podsumowanie Roczne</h1>
+<p>Ekran podsumowania rocznego pozwala na przeglądanie statystyk Twoich zarobków w ujęciu rocznym. Ten raport jest przydatny zarówno do rozliczeń podatkowych dla freelancerów, jak i do monitorowania maksymalnego progu 5000 € dla pracowników dorywczych. Możesz uzyskać dostęp do tego widoku, wybierając opcję "Podsumowanie Roczne" z <a href="menu.htm">menu bocznego</a>.</p>
+
+<!-- Periodo del rapporto -->
+<h2>Okres Raportu</h2>
+<p>Raport roczny jest obliczany "na zasadzie kasowej," obejmując okres od grudnia poprzedniego roku do listopada wybranego roku. Wynika to z faktu, że płatności są realizowane w następnym miesiącu (np. dla roku 2025 raport obejmuje dane od grudnia 2024 do listopada 2025).</p>
+
+<!-- Dettagli della schermata -->
+<h2>Szczegóły Ekranu</h2>
+<p>Ekran składa się z następujących głównych elementów:</p>
+<ul>
+ <li><strong>Menu Rozwijane</strong>: Na górze znajduje się menu rozwijane, które pozwala wybrać żądany rok (np. 2024, 2025 itp.).</li>
+ <li><strong>Tabela Danych</strong>: Tabela podsumowuje Twoje zarobki z następującymi kolumnami i wierszami:
+  <ul>
+   <li><strong>Kolumny</strong>: Kategoria, Brutto, Netto, VAT.</li>
+   <li><strong>Wiersze</strong>: Zamówienia, Dopłaty, Napiwki, Suma.</li>
+  </ul>
+ </li>
+ <li><strong>Informacje o Dostawach</strong>: Poniżej tabeli wskazano:
+  <ul>
+   <li>Liczba dostaw wykonanych w ciągu roku.</li>
+   <li>Liczba dostaw brakujących do osiągnięcia premii (włoscy riderzy otrzymują premię co 2000 dostaw).</li>
+  </ul>
+ </li>
+</ul>
+
+<h2>Jak Korzystać z Raportu Rocznego</h2>
+<ul>
+ <li>Upewnij się, że wprowadziłeś zamówienia i zaimportowałeś odpowiednie wyciągi (zobacz <a href="manual_order.htm">Wprowadzanie Ręczne</a>, <a href="insert_order.htm">Wprowadzanie przez OCR</a> i <a href="import_paystub.htm">Import Wyciągu</a>).</li>
+ <li>Wybierz żądany rok z menu rozwijanego, aby wyświetlić odpowiadające mu dane.</li>
+ <li>Przeanalizuj wartości w tabeli, aby zrozumieć swoje zarobki brutto, netto oraz powiązany VAT dla każdej kategorii (zamówienia, dopłaty, napiwki) i ogólnej sumy.</li>
+ <li>Sprawdź liczbę wykonanych dostaw i brakujących do premii, aby zaplanować pracę i osiągnąć cel 2000 dostaw.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/RiepilogoAnnuale-pl.jpg" alt="Ekran podsumowania rocznego" class="screenshot">
+</div>
+</body>
+</html>

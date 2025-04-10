@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Opzioni per la valuta -->
+    <string-array name="currency_entries">
+        <item>Euro (€)</item>
+        <item>Dollaro ($)</item>
+        <item>Sterlina (£)</item>
+    </string-array>
+    <string-array name="currency_values">
+        <item>€</item>
+        <item>$</item>
+        <item>£</item>
+    </string-array>
+    <!-- Opzioni per la lingua -->
+    <string-array name="language_entries">
+        <item>Italiano</item>
+        <item>Inglese</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>it</item>
+        <item>en</item>
+    </string-array>
+</resources>

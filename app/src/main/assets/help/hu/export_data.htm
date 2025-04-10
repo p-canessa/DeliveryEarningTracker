@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Esportazione Dati</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Bevezetés -->
+<h1>Adatok Exportálása</h1>
+<p>Az adatok exportálása képernyő lehetővé teszi, hogy a rögzített rendeléseket CSV fájlba exportáld további elemzés céljából (pl. táblázatkezelővel). Ezt a nézetet az <a href="menu.htm">oldalsó menü</a> "Adatok Exportálása" opciójának kiválasztásával érheted el.</p>
+
+<!-- Képernyő részletei -->
+<h2>A Képernyő Részletei</h2>
+<p>A képernyő a következő fő elemeket tartalmazza:</p>
+<ul>
+ <li><strong>Dátummezők</strong>: Két mező az exportálási időszak kiválasztásához:
+  <ul>
+   <li><strong>Kezdő Dátum</strong>: Az időszak kezdő dátuma, `yyyy-MM-dd` formátumban (pl. 2025-01-01).</li>
+   <li><strong>Végső Dátum</strong>: Az időszak végső dátuma, `yyyy-MM-dd` formátumban (pl. 2025-12-31).</li>
+  </ul>
+ </li>
+ <li><strong>CSV EXPORTÁLÁS Gomb</strong>: Egy gomb a rendelések CSV fájlba történő exportálásának elindításához. Ha a dátummezők ki vannak töltve, csak a megadott időszakban lévő rendelések kerülnek exportálásra. Ha a mezők üresek, az összes rendelés exportálódik.</li>
+</ul>
+
+<h2>Hogyan exportálhatod az adatokat</h2>
+<ul>
+ <li>Győződj meg róla, hogy rögzítetted azokat a rendeléseket, amelyeket exportálni szeretnél (lásd <a href="manual_order.htm">Kézi Bevitelt</a> és <a href="insert_order.htm">OCR-es Bevitel</a>).</li>
+ <li>Add meg a "Kezdő Dátumot" és a "Végső Dátumot" a megfelelő mezőkben az exportálandó rendelések szűréséhez. Hagyd üresen a mezőket az összes rendelés exportálásához.</li>
+ <li>Érintsd meg a "CSV EXPORTÁLÁS" gombot a CSV fájl generálásához.</li>
+ <li>A CSV fájl elmentésre kerül az eszközödre, és megnyitható egy táblázatkezelő alkalmazással további elemzéshez.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Esportazione-hu.jpg" alt="Adatok exportálása képernyő" class="screenshot">
+</div>
+</body>
+</html>

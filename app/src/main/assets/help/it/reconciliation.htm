@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Riconciliazione</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        img.inline {
+            max-width: 60px;
+            height: auto;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Riconciliazione</h1>
+<p>Questa schermata ti permette di confrontare i dati degli ordini giornalieri estratti da uno statino di pagamento con quelli inseriti manualmente o tramite OCR. Puoi accedere a questa vista selezionando l'opzione "Riconciliazione" dal <a href="menu.htm">menu laterale</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Dettagli della Schermata</h2>
+<p>La schermata include i seguenti elementi principali:</p>
+<ul>
+    <li><strong>Navigazione tra i mesi</strong>: Usa i due pulsanti <img src="../images/Indietro.jpg" alt="Pulsante indietro" class="inline"> e <img src="../images/avanti.jpg" alt="Pulsante avanti" class="inline"> per navigare tra i mesi e visualizzare i dati di riconciliazione corrispondenti.</li>
+    <li><strong>Tabella di confronto</strong>: La tabella mostra i dati degli ordini giornalieri (numero e importo) estratti dallo statino, affiancati a quelli degli ordini inseriti manualmente o tramite OCR.
+        <ul>
+            <li>Se i valori sono discordanti, il testo nella tabella è di colore rosso.</li>
+            <li>Cliccando su una riga con valori discordanti, si accede alla lista degli ordini di quel giorno (vedi <a href="main.htm#order-list">Visualizzazione Ordini</a>).</li>
+        </ul>
+    </li>
+    <li><strong>Riscossi in Contanti e Mance</strong>: Dopo la tabella degli ordini, sono presenti due righe che mostrano i totali dei "Riscossi in Contanti" e delle "Mance":
+        <ul>
+            <li>Se i valori sono discordanti rispetto a quelli dello statino, il testo è di colore rosso.</li>
+            <li>Cliccando su una riga discordante, si accede alla lista degli ordini con riscossi in contanti e/o mance diversi da 0.</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>Come utilizzare la riconciliazione</h2>
+<ul>
+    <li>Assicurati di aver importato uno o più statini tramite la funzione di <a href="import_paystub.htm">Importazione Statino</a>.</li>
+    <li>Inserisci gli ordini manualmente o tramite OCR (vedi <a href="manual_order.htm">Inserimento Manuale</a> e <a href="insert_order.htm">Inserimento tramite OCR</a>).</li>
+    <li>Seleziona il mese desiderato utilizzando i pulsanti di navigazione per visualizzare i dati di riconciliazione.</li>
+    <li>Controlla la tabella per identificare eventuali discrepanze (in rosso) e clicca sulle righe per visualizzare i dettagli degli ordini e correggere gli errori.</li>
+</ul>
+
+<div style="text-align: center;">
+    <img src="../images/Riconciliazione-it.jpg" alt="Schermata di riconciliazione" class="screenshot">
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Esportazione Dati</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ul {
+      margin-left: 20px;
+      list-style-type: disc;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+  img.inline {
+      max-width: 60px;
+      height: auto;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 4px;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Exportare Date</h1>
+<p>Ecranul de exportare a datelor îți permite să exporți comenzile înregistrate într-un fișier CSV pentru analize suplimentare (de exemplu, cu o foaie de calcul). Poți accesa această vizualizare selectând opțiunea "Exportă Date" din <a href="menu.htm">meniul lateral</a>.</p>
+
+<!-- Dettagli della schermata -->
+<h2>Detalii despre Ecran</h2>
+<p>Ecranul include următoarele elemente principale:</p>
+<ul>
+ <li><strong>Câmpuri de Datum</strong>: Două câmpuri pentru a selecta perioada de export:
+  <ul>
+   <li><strong>Data de Început</strong>: Data de început a perioadei, în formatul `yyyy-MM-dd` (de exemplu, 2025-01-01).</li>
+   <li><strong>Data de Sfârșit</strong>: Data de sfârșit a perioadei, în formatul `yyyy-MM-dd` (de exemplu, 2025-12-31).</li>
+  </ul>
+ </li>
+ <li><strong>Buton EXPORTĂ CSV</strong>: Un buton pentru a începe exportarea comenzilor într-un fișier CSV. Dacă câmpurile de datum sunt completate, vor fi exportate doar comenzile din perioada specificată. Dacă câmpurile sunt goale, toate comenzile vor fi exportate.</li>
+</ul>
+
+<h2>Cum să Exporți Datele</h2>
+<ul>
+ <li>Asigură-te că ai introdus comenzile pe care dorești să le exporți (vezi <a href="manual_order.htm">Introducere Manuală</a> și <a href="insert_order.htm">Introducere prin OCR</a>).</li>
+ <li>Introdu "Data de Început" și "Data de Sfârșit" în câmpurile respective pentru a filtra comenzile de exportat. Lasă câmpurile goale pentru a exporta toate comenzile.</li>
+ <li>Atinge butonul "EXPORTĂ CSV" pentru a genera fișierul CSV.</li>
+ <li>Fișierul CSV va fi salvat pe dispozitivul tău și poate fi deschis cu o aplicație de foi de calcul pentru analize suplimentare.</li>
+</ul>
+
+<div style="text-align: center;">
+ <img src="../images/Esportazione-ro.jpg" alt="Ecran de export date" class="screenshot">
+</div>
+</body>
+</html>

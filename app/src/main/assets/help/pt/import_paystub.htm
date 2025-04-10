@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Help - Importazione Statino</title>
+ <style>
+  body {
+      font-family: Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      font-size: 16px;
+  }
+  h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+  }
+  h2 {
+      color: #34495e;
+      margin-top: 24px;
+  }
+  p {
+      margin: 8px 0;
+  }
+  ol {
+      margin-left: 20px;
+  }
+  li {
+      margin-bottom: 8px;
+  }
+  a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+  }
+  a:hover {
+      text-decoration: underline;
+  }
+  img.screenshot {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 8px 0;
+  }
+ </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+ <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Importação de Contracheque</h1>
+<p>A função de importação de contracheque permite que você leia os dados do contracheque de fim de mês enviado pela Deliveroo. Esses dados podem ser usados para gerar resumos trimestrais e anuais, bem como para realizar a reconciliação dos pedidos inseridos.</p>
+
+<!-- Procedura -->
+<h2>Como Importar um Contracheque</h2>
+<ol>
+ <li>Selecione a função "Importar Contracheque" no <a href="menu.htm">menu lateral</a>.</li>
+ <li>Selecione um documento chamado `invoice_*.pdf` do seu dispositivo usando o botão "IMPORTAR CONTRACHEQUE" (pode ser necessário assistir a um anúncio).</li>
+ <li>O aplicativo extrairá automaticamente os dados do arquivo PDF. Você pode importar vários contracheques para o mesmo mês, desde que tenham numerações diferentes.</li>
+ <li>Se o contracheque ainda não estiver no banco de dados, ele será adicionado e uma mensagem de sucesso será exibida. Caso contrário, uma mensagem de erro será mostrada.</li>
+ <li>Neste ponto, o contracheque pode ser visualizado na seção <a href="show_monthly_statement.htm">Mostrar Contracheque Mensal</a>.</li>
+</ol>
+
+<div style="text-align: center;">
+ <img src="../images/ImportaStatino-pt.jpg" alt="Tela de importação de contracheque" class="screenshot">
+</div>
+</body>
+</html>

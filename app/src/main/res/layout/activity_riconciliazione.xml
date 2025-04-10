@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="4dp"
+android:fitsSystemWindows="true">
+<!-- Toolbar -->
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <!-- Navigazione mesi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+        <ImageButton
+            android:id="@+id/btn_prev_month"
+            android:layout_width="70dp"
+            android:layout_height="34dp"
+            android:background="@drawable/rounded_button"
+            android:src="@android:drawable/ic_media_previous"
+            android:contentDescription=""
+            app:tint="@color/text_color" />
+        <TextView
+            android:id="@+id/tv_current_month"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/btn_next_month"
+            android:layout_width="70dp"
+            android:layout_height="34dp"
+            android:background="@drawable/rounded_button"
+            android:src="@android:drawable/ic_media_next"
+            android:contentDescription=""
+            app:tint="@color/text_color" />
+    </LinearLayout>
+
+    <!-- Tabella -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/table_reconciliation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+                <!-- Le righe verranno aggiunte dinamicamente -->
+            </TableLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+</LinearLayout>

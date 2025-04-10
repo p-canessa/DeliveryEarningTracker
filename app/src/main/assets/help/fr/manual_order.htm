@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Inserimento Manuale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 16px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 24px;
+        }
+        p {
+            margin: 8px 0;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img.screenshot {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Logo -->
+<div style="text-align: center; margin-bottom: 16px;">
+    <img src="../images/DET.png" alt="Logo di Delivery Earning Tracker" style="max-width: 150px; height: auto;">
+</div>
+
+<!-- Introduzione -->
+<h1>Saisie Manuelle</h1>
+<p>La fonction de saisie manuelle vous permet d'ajouter une commande directement depuis l'<a href="main.htm">écran principal</a>, en saisissant des détails tels que le nombre de livraisons, le total gagné et le temps passé.</p>
+
+<!-- Procedura per l'inserimento -->
+<h2>Comment Insérer une Commande Manuellement</h2>
+<ol>
+    <li>Depuis l'écran principal, touchez le bouton "NOUVELLE COMMANDE".</li>
+    <li>Saisissez les détails de la commande :
+        <ul>
+            <li><strong>Date</strong>: La date à laquelle la commande a été effectuée, automatiquement définie à la date d’aujourd’hui.</li>
+            <li><strong>Paiement de Base</strong>: La valeur de la ligne "Commandes Livrées" dans l’application Rider de Deliveroo.</li>
+            <li><strong>Espèces Collectées</strong>: La valeur de la ligne correspondante, si présente.</li>
+            <li><strong>Paiement Supplémentaire</strong>: La valeur du paiement supplémentaire, si présent.</li>
+            <li><strong>Pourboire</strong>: La valeur du pourboire reçu via l’application, si présent.</li>
+            <li><strong>Pourboire en Espèces</strong>: La valeur du pourboire reçu en espèces.</li>
+            <li><strong>Nombre de Commandes</strong>: Le nombre de commandes livrées dans le même lot.</li>
+            <li><strong>Temps Passé</strong>: Le temps pris pour livrer les commandes, pouvant être exprimé en minutes ou sous forme d’intervalle en heures et minutes comme dans l’application Rider (hh:mm-hh:mm).</li>
+        </ul>
+    </li>
+    <li>Confirmez la saisie pour enregistrer la commande.</li>
+</ol>
+
+<!-- Procedura per la modifica -->
+<h2 id="edit">Comment Modifier une Commande</h2>
+<p>Pour modifier une commande existante, suivez ces étapes :</p>
+<ol>
+    <li>Depuis l'<a href="main.htm">écran principal</a>, repérez la commande que vous souhaitez modifier.</li>
+    <li>Touchez la commande pour ouvrir l’écran de modification (le même écran utilisé pour la saisie manuelle).</li>
+    <li>Mettez à jour les détails, tels que le nombre de livraisons, le paiement de base, le temps passé ou les pourboires.</li>
+    <li>Confirmez les modifications pour enregistrer la commande mise à jour.</li>
+</ol>
+
+<p>Si vous préférez insérer une commande en scannant une capture d’écran, consultez la section <a href="insert_order.htm">Saisie par OCR</a>. Pour supprimer une commande, voir la section <a href="delete_order.htm">Supprimer une Commande</a>.</p>
+
+<div style="text-align: center;">
+    <img src="../images/Dialog%20insert_edit%20order-fr.jpg" alt="Écran de saisie manuelle et de modification" class="screenshot">
+</div>
+</body>
+</html>

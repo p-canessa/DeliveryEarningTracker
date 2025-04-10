@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background_color">
+
+    <!-- Contenuto Principale -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="locale"
+        android:orientation="vertical"
+        android:paddingHorizontal="4dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
+
+        <!-- Toolbar per il menu -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <!-- DateRangeSelector -->
+        <com.piero.deliveryearningtracker.DateRangeSelector
+            android:id="@+id/date_range_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:padding="4dp" />
+
+        <!-- TableLayout con i totali -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:layoutDirection="locale"
+            android:padding="4dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ordini"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/totale"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/total_numero_ordini"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/total_paga_totale"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/base"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/extra"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mancia_grid"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/total_paga_base"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/total_paga_extra"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/total_mancia"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tempo"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/oraria"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/total_tempo_impiegato"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/total_paga_oraria"
+                    android:layout_width="0dp"
+                    android:layout_height="22dp"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text=""
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/text_color" />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
+
+
+        <Button
+            android:id="@+id/add_order_button"
+            style="@style/CustomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="3"
+            android:gravity="center"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="8dp"
+            android:text="@string/add_new_order" />
+
+
+        <Button
+            android:id="@+id/add_order_button_OCR"
+            style="@style/CustomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="3"
+            android:gravity="center"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="8dp"
+            android:text="@string/add_new_order_ocr" />
+    </LinearLayout>
+
+        <!-- RecyclerView per gli ordini -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orders_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layoutDirection="locale" />
+
+        <LinearLayout
+            android:id="@+id/ad_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:orientation="vertical" />
+    </LinearLayout>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/nav_header"
+        android:background="@color/background_color"
+        android:layout_marginTop="42dp"
+        android:fitsSystemWindows="false"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
