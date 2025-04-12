@@ -40,7 +40,7 @@
         android:key="remove_ads"
         android:title="@string/pref_remove_ads"
         android:summary="@string/pref_remove_ads_description"
-        app:isPreferenceVisible="false"/>
+        app:isPreferenceVisible="true"/>
 
     <SwitchPreferenceCompat
         android:key="share_anonymous_stats"
