@@ -33,7 +33,6 @@ import java.util.UUID
 import androidx.core.content.edit
 import androidx.core.net.toUri
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var dateRangeSelector: DateRangeSelector
@@ -52,19 +51,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
     private var preferenceListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
     private var adView: AdView? = null
-    private var isAdsEnabled = DisableAds.VALUE // Controlla se gli annunci sono attivi
+    private var isAdsEnabled = true // Valore iniziale, aggiornato subito
     private lateinit var referrerClient: InstallReferrerClient
 
-
-    override fun onResume() {
-        super.onResume()
-        updateTotals()
-        updateOrderList()
-    }
-
-    override fun onDestroy() {
-        AdManager.destroyBannerAd(adView) // Pulizia
-        super.onDestroy()
+    // Listener per aggiornamenti dello stato degli annunci
+    private val subscriptionListener: (Boolean) -> Unit = { isSubscribed ->
+        Log.d("MainActivity", "Stato abbonamento aggiornato: isSubscribed=$isSubscribed")
+        val newAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
+        if (isAdsEnabled != newAdsEnabled) {
+            isAdsEnabled = newAdsEnabled
+            updateAds()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,35 +76,49 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        // Inizializza DatabaseHelper da MyApplication
+        dbHelper = (application as MyApplication).dbHelper
+
         preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == "currency_symbol") { // Verifica che la chiave sia quella del simbolo della valuta
+            if (key == "currency_symbol") {
                 CurrencyFormatter.initialize(this)
                 updateTotals()
                 updateOrderList()
             }
         }
-
-        // Attiva il listener
         sharedPref.registerOnSharedPreferenceChangeListener(preferenceListener)
 
-        //getCurrencyFormat()
         setContentView(R.layout.activity_main)
         checkInstallReferrer()
 
         MobileAds.initialize(this) {
             Log.d("AdMob", "Inizializzazione completata")
         }
+
+        // Controlla lo stato degli annunci
+        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
+        Log.d("MainActivity", "Stato iniziale ads_enabled: $isAdsEnabled")
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        if (isAdsEnabled) {
+            AdManager.loadOcrAd(this)
+            AdManager.loadStatinoAd(this)
+        }
+
+        // Registra il listener di BillingManager
+        val billingManager = (application as MyApplication).billingManager
+        billingManager.addSubscriptionListener(subscriptionListener)
+
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val isStatsEnabled = sharedPrefs.getBoolean("share_anonymous_stats", false)
         if (isStatsEnabled) {
             sendAnonymousStats(this)
             scheduleStatsUpload(this)
         }
+
         addOrderButton = findViewById(R.id.add_order_button)
         addOrderButtonOCR = findViewById(R.id.add_order_button_OCR)
-        // Aspetta che il layout sia disegnato
         addOrderButton.post {
-            // Forza la misurazione dei bottoni
             addOrderButton.measure(
                 View.MeasureSpec.makeMeasureSpec(addOrderButton.width, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
@@ -121,7 +132,6 @@ class MainActivity : AppCompatActivity() {
             val height2 = addOrderButtonOCR.measuredHeight
             val maxHeight = maxOf(height1, height2)
 
-            // Imposta la stessa altezza per entrambi i bottoni
             val params1 = addOrderButton.layoutParams
             params1.height = maxHeight
             addOrderButton.layoutParams = params1
@@ -130,16 +140,9 @@ class MainActivity : AppCompatActivity() {
             params2.height = maxHeight
             addOrderButtonOCR.layoutParams = params2
 
-            // Richiedi un aggiornamento del layout
             addOrderButton.requestLayout()
             addOrderButtonOCR.requestLayout()
         }
-
-        dbHelper = DatabaseHelper(this)
-        dbHelper.initializeDatabase()
-        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
-        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
 
         // Inizializza la Toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
@@ -160,11 +163,11 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_csv_export -> {
-                    startActivity(Intent( this, ExportActivity::class.java))
+                    startActivity(Intent(this, ExportActivity::class.java))
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
-                R.id.nav_pdf_import ->{
+                R.id.nav_pdf_import -> {
                     startActivity(Intent(this, PDFImport::class.java))
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
@@ -217,8 +220,6 @@ class MainActivity : AppCompatActivity() {
         totalPagaOraria.text = getString(R.string.total_paga_oraria)
         recyclerView = findViewById(R.id.orders_recycler_view)
 
-        //addOrderButton.text = getString(R.string.add_order)
-
         orderAdapter = OrderAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = orderAdapter
@@ -263,6 +264,23 @@ class MainActivity : AppCompatActivity() {
         updateOrderList()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateTotals()
+        updateOrderList()
+    }
+
+    override fun onDestroy() {
+        Log.d("MainActivity", "onDestroy chiamato")
+        AdManager.destroyBannerAd(adView)
+        adView = null
+        val billingManager = (application as MyApplication).billingManager
+        billingManager.removeSubscriptionListener(subscriptionListener)
+        sharedPref.unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        referrerClient.endConnection()
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -277,6 +295,20 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateAds() {
+        Log.d("MainActivity", "Aggiornamento annunci: isAdsEnabled=$isAdsEnabled")
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        if (isAdsEnabled) {
+            adView = AdManager.setupBannerAd(this, adContainer, true)
+            AdManager.loadOcrAd(this)
+            AdManager.loadStatinoAd(this)
+        } else {
+            AdManager.destroyBannerAd(adView)
+            adView = null
+            adContainer.removeAllViews()
         }
     }
 
@@ -296,7 +328,8 @@ class MainActivity : AppCompatActivity() {
     private fun convertMinutesToHoursMinutes(minutes: Int): String {
         val hours = minutes / 60
         val remainingMinutes = minutes % 60
-        return if (minutes > 60) getString(R.string.time_format_hours_minutes, hours, remainingMinutes) else getString(R.string.time_format_minutes, minutes)
+        return if (minutes > 60) getString(R.string.time_format_hours_minutes, hours, remainingMinutes)
+        else getString(R.string.time_format_minutes, minutes)
     }
 
     @SuppressLint("SetTextI18n")
@@ -338,9 +371,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDefaultSummaryId(): Int {
-        val dbHelper = DatabaseHelper(this)
-        val id = dbHelper.getLatestSummaryId()
-        return id
+        return dbHelper.getLatestSummaryId()
     }
 
     private fun checkInstallReferrer() {
@@ -349,20 +380,17 @@ class MainActivity : AppCompatActivity() {
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
                 when (responseCode) {
                     InstallReferrerClient.InstallReferrerResponse.OK -> {
-                        // Connessione stabilita, recupera il referrer
                         val referrerDetails = referrerClient.installReferrer
-                        val referrer = referrerDetails.installReferrer // Corretto: usa installReferrer
+                        val referrer = referrerDetails.installReferrer
                         val codiceAmico = "?$referrer".toUri().getQueryParameter("codiceAmico")
                         if (!codiceAmico.isNullOrEmpty()) {
                             registerInvite(codiceAmico)
                         }
                     }
                     InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
-                        // API non supportata sul dispositivo
                         Log.w("MainActivity", "@string/install_referrer_feature_not_supported")
                     }
                     InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE -> {
-                        // Servizio non disponibile
                         Log.w("MainActivity", "@string/install_referrer_service_unavailable")
                     }
                 }
@@ -370,7 +398,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onInstallReferrerServiceDisconnected() {
-                // Connessione persa, può essere ignorato per ora
+                // Ignorato
             }
         })
     }
@@ -392,10 +420,8 @@ class MainActivity : AppCompatActivity() {
                 Log.w("MainActivity", getString(R.string.invite_friend_registration_error, e.message))
             }
     }
-
 }
 
-// Spostiamo getDeviceId in una classe separata per riutilizzo
 object InviteManager {
     fun getDeviceId(context: Context): String {
         val prefs = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
