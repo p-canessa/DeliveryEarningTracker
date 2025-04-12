@@ -9,18 +9,39 @@ import com.android.billingclient.api.*
 class BillingManager(private val context: Context, private val onSubscriptionChanged: (Boolean) -> Unit) {
     private val billingClient = BillingClient.newBuilder(context)
         .setListener { billingResult, purchases ->
+            Log.d("BillingManager", "PurchasesUpdated: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, purchases=${purchases?.size ?: 0}")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
-                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        acknowledgePurchase(purchase)
-                        onSubscriptionChanged(true)
+                    Log.d("BillingManager", "Acquisto rilevato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, products=${purchase.products}, isAcknowledged=${purchase.isAcknowledged}")
+                    when (purchase.purchaseState) {
+                        Purchase.PurchaseState.PURCHASED -> {
+                            if (!purchase.isAcknowledged) {
+                                acknowledgePurchase(purchase)
+                            }
+                            onSubscriptionChanged(true)
+                        }
+                        Purchase.PurchaseState.PENDING -> {
+                            Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
+                            Toast.makeText(context, "Acquisto in sospeso, attendi", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            Log.d("BillingManager", "Acquisto non valido: state=${purchase.purchaseState}")
+                        }
                     }
+                }
+            } else {
+                Log.e("BillingManager", "Errore PurchasesUpdated: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}")
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                    Log.d("BillingManager", "Abbonamento già attivo, verifica stato")
+                    checkSubscription()
+                } else {
+                    Toast.makeText(context, "Errore acquisto: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
                 }
             }
         }
         .enablePendingPurchases(
             PendingPurchasesParams.newBuilder()
-                .enableOneTimeProducts() // Abilita supporto per prodotti one-time
+                .enableOneTimeProducts()
                 .build()
         )
         .build()
@@ -91,7 +112,8 @@ class BillingManager(private val context: Context, private val onSubscriptionCha
                     return@queryProductDetailsAsync
                 }
 
-                // Usa l'offerToken del piano base
+                // Log dei dettagli dell'offerta
+                Log.d("BillingManager", "Dettagli offerta: basePlanId=${targetOffer.basePlanId}, offerId=${targetOffer.offerId}, offerToken=${targetOffer.offerToken}")
                 val offerToken = targetOffer.offerToken
                 Log.d("BillingManager", "Offer token per 'remove-ads-monthly': $offerToken")
 
@@ -107,12 +129,21 @@ class BillingManager(private val context: Context, private val onSubscriptionCha
                 Log.d("BillingManager", "Avvio flusso di acquisto")
                 val billingResult = billingClient.launchBillingFlow(activity, flowParams)
                 Log.d("BillingManager", "Risultato launchBillingFlow: ${billingResult.responseCode}, Messaggio: ${billingResult.debugMessage}")
-                if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // Flusso avviato, verifica abbonamento
+                    checkSubscription()
+                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                    Log.d("BillingManager", "Abbonamento già attivo, verifica stato")
+                    Toast.makeText(context, "Abbonamento già attivo", Toast.LENGTH_SHORT).show()
+                    checkSubscription()
+                } else {
+                    Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
                     Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
                 }
             } else {
                 Log.e("BillingManager", "Errore query prodotto: ${billingResult.debugMessage}, Prodotti: ${productDetailsList.size}")
                 Toast.makeText(context, "Prodotto non trovato", Toast.LENGTH_SHORT).show()
+                checkSubscription()
             }
         }
     }
@@ -122,9 +153,28 @@ class BillingManager(private val context: Context, private val onSubscriptionCha
             .setProductType(BillingClient.ProductType.SUBS)
             .build()
 
-        billingClient.queryPurchasesAsync(queryPurchasesParams) { _, purchases ->
-            val isSubscribed = purchases.any { it.purchaseState == Purchase.PurchaseState.PURCHASED }
-            onSubscriptionChanged(isSubscribed)
+        billingClient.queryPurchasesAsync(queryPurchasesParams) { billingResult, purchases ->
+            Log.d("BillingManager", "Query acquisti: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, acquisti trovati=${purchases.size}")
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                var isSubscribed = false
+                for (purchase in purchases) {
+                    Log.d("BillingManager", "Acquisto trovato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, isAcknowledged=${purchase.isAcknowledged}, products=${purchase.products}")
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        isSubscribed = true
+                        if (!purchase.isAcknowledged) {
+                            acknowledgePurchase(purchase)
+                        }
+                    } else if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+                        Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
+                        Toast.makeText(context, "Acquisto in sospeso, attendi", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                Log.d("BillingManager", "Stato abbonamento: $isSubscribed")
+                onSubscriptionChanged(isSubscribed)
+            } else {
+                Log.e("BillingManager", "Errore query acquisti: ${billingResult.debugMessage}")
+                Toast.makeText(context, "Errore verifica abbonamento", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
