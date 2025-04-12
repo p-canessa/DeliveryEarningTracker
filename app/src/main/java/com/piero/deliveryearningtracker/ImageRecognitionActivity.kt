@@ -59,11 +59,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
         loadOcrUsesLeft()
         dbHelper = DatabaseHelper(this)
         isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
-
-
-        // Carica l'annuncio all'avvio
-        if (isAdsEnabled) {
-            AdManager.loadOcrAd(this)}
+        AdManager.updateAds(this, null, null, dbHelper, false)
 
         // Configura la toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)

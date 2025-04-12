@@ -21,11 +21,18 @@ class TrimestreActivity : AppCompatActivity() {
     private lateinit var spinnerTrimestre: Spinner
     private var trimestri: MutableList<String> = mutableListOf()
     private var adView: AdView? = null
-    private var isAdsEnabled = DisableAds.VALUE
+    private var dbHelper: DatabaseHelper = DatabaseHelper(this)
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView)
+        adView = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +42,7 @@ class TrimestreActivity : AppCompatActivity() {
         MobileAds.initialize(this) {}
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         // Configura la toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)

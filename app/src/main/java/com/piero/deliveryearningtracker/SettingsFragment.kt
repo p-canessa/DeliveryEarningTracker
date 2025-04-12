@@ -206,6 +206,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onDestroyView() {
         Log.d("SettingsFragment", "onDestroyView chiamato")
         AdManager.destroyBannerAd(adView)
+        adView = null
         super.onDestroyView()
     }
 

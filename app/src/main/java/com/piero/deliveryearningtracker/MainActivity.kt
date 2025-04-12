@@ -60,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         val newAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
         if (isAdsEnabled != newAdsEnabled) {
             isAdsEnabled = newAdsEnabled
-            updateAds()
+            val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+            adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
         }
     }
 
@@ -96,14 +97,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Controlla lo stato degli annunci
-        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
-        Log.d("MainActivity", "Stato iniziale ads_enabled: $isAdsEnabled")
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
-        if (isAdsEnabled) {
-            AdManager.loadOcrAd(this)
-            AdManager.loadStatinoAd(this)
-        }
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         // Registra il listener di BillingManager
         val billingManager = (application as MyApplication).billingManager
@@ -266,6 +261,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
         updateTotals()
         updateOrderList()
     }
@@ -295,20 +292,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun updateAds() {
-        Log.d("MainActivity", "Aggiornamento annunci: isAdsEnabled=$isAdsEnabled")
-        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        if (isAdsEnabled) {
-            adView = AdManager.setupBannerAd(this, adContainer, true)
-            AdManager.loadOcrAd(this)
-            AdManager.loadStatinoAd(this)
-        } else {
-            AdManager.destroyBannerAd(adView)
-            adView = null
-            adContainer.removeAllViews()
         }
     }
 

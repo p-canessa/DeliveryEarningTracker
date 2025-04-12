@@ -14,8 +14,6 @@ import androidx.appcompat.widget.Toolbar
 
 class InviteFriendActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
-    private var isAdsEnabled = DisableAds.VALUE
-
     private lateinit var statusText: TextView
     private lateinit var inviteCodeText: TextView
     private lateinit var inviteButton: Button
@@ -24,7 +22,14 @@ class InviteFriendActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView) // Pulizia
+        adView = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +59,7 @@ class InviteFriendActivity : AppCompatActivity() {
         dbHelper.initializeDatabase()
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         if (!InviteConfig.IS_INVITE_FRIEND_ENABLED) {
             inviteButton.isEnabled = false

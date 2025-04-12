@@ -22,11 +22,18 @@ class AnnoActivity : AppCompatActivity() {
     private lateinit var spinnerAnno: Spinner
     private var anni: MutableList<Int> = mutableListOf()
     private var adView: AdView? = null
-    private var isAdsEnabled = DisableAds.VALUE
+    private val dbHelper: DatabaseHelper = DatabaseHelper(this)
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView) // Pulizia
+        adView = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +44,7 @@ class AnnoActivity : AppCompatActivity() {
 
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         // Configura la toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)

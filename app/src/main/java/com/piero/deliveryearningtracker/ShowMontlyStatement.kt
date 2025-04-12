@@ -28,9 +28,15 @@ class ShowMontlyStatement : AppCompatActivity() {
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView)
+        adView = null
         super.onDestroy()
     }
 
+    override fun onResume() {
+        super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+    }
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +46,9 @@ class ShowMontlyStatement : AppCompatActivity() {
 
 
         dbHelper = DatabaseHelper(this) // Inizializziamo dbHelper qui per usarlo subito
-        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
+
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         val toolbar: Toolbar = findViewById(R.id.vs_toolbar)
         setSupportActionBar(toolbar)

@@ -41,6 +41,7 @@ object AdManager {
         adView.layoutParams = layoutParams
 
         // Aggiungi l'AdView al contenitore
+        container.removeAllViews()
         container.addView(adView)
 
         // Carica l'annuncio
@@ -51,6 +52,7 @@ object AdManager {
     }
 
     fun loadOcrAd(context: Context) {
+        Log.d("AdManager", "Caricamento OCR ad")
         RewardedAd.load(context, OCR_AD_UNIT_ID, AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) {
                 ocrRewardedAd = ad
@@ -67,6 +69,7 @@ object AdManager {
     }
 
     fun loadStatinoAd(context: Context) {
+        Log.d("AdManager", "Caricamento Statino ad")
         RewardedAd.load(context, STATINO_AD_UNIT_ID, AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) {
                 statinoRewardedAd = ad
@@ -134,8 +137,66 @@ object AdManager {
     fun isStatinoAdLoaded(): Boolean {
         return statinoRewardedAd != null && isStatinoAdLoaded
     }
+    
     fun destroyBannerAd(adView: AdView?) {
-        adView?.destroy()
+        adView?.let { view ->
+            try {
+                // Rimuovi dal layout se ancora collegato
+                (view.parent as? ViewGroup)?.removeView(view)
+                // Distruggi il banner
+                view.destroy()
+                Log.d("AdManager", "Banner distrutto con successo: $view")
+            } catch (e: Exception) {
+                Log.e("AdManager", "Errore durante la distruzione del banner: ${e.message}")
+            }
+        } ?: Log.d("AdManager", "Nessun banner da distruggere: adView è null")
     }
 
+    fun updateAds(
+        context: Context,
+        adContainer: ViewGroup?,
+        adView: AdView?,
+        dbHelper: DatabaseHelper,
+        showBanner: Boolean = true
+    ): AdView? {
+        val isAdsEnabled = DisableAds.loadAdsEnabledState(context, dbHelper)
+        Log.d("AdManager", "updateAds: isAdsEnabled=$isAdsEnabled, showBanner=$showBanner")
+
+        var currentAdView = adView
+        if (isAdsEnabled && showBanner && adContainer != null) {
+            // Rimuovi eventuali banner esistenti
+            if (currentAdView != null) {
+                destroyBannerAd(currentAdView)
+                currentAdView = null
+            }
+            // Crea un nuovo banner
+            currentAdView = setupBannerAd(context, adContainer, true)
+            if (currentAdView != null) {
+                Log.d("AdManager", "Banner creato con successo")
+            } else {
+                Log.w("AdManager", "Impossibile creare il banner")
+            }
+            // Carica altri annunci
+            loadOcrAd(context)
+            loadStatinoAd(context)
+        } else {
+            // Distruggi banner esistente
+            destroyBannerAd(currentAdView)
+            // Pulisci il container
+            adContainer?.removeAllViews()
+            // Disattiva altri annunci (se necessario)
+            clearAds()
+            Log.d("AdManager", "Annunci rimossi")
+        }
+        return currentAdView
+    }
+
+    fun clearAds() {
+        // Interrompi caricamento annunci aggiuntivi
+        ocrRewardedAd?.fullScreenContentCallback = null
+        ocrRewardedAd = null
+        statinoRewardedAd?.fullScreenContentCallback = null
+        statinoRewardedAd = null
+        Log.d("AdManager", "Annunci aggiuntivi disattivati")
+    }
 }

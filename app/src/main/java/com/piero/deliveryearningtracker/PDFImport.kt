@@ -119,7 +119,14 @@ class PDFImport : AppCompatActivity() {
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView) // Pulizia
+        adView = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val adContainer = findViewById<LinearLayout>(R.id.ad_container)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,11 +143,8 @@ class PDFImport : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
-        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
-        Log.d("PDFImport", "isAdsEnabled caricato: $isAdsEnabled")
-
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.setupBannerAd(this, adContainer, isAdsEnabled)
+        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
 
         loadStatinoEnabled()
         Log.d("PDFImport", "isStatinoEnabled caricato: $isStatinoEnabled")
