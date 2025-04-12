@@ -126,7 +126,7 @@ class BillingManager private constructor(
                 }
 
                 val targetOffer = subscriptionOfferDetails.find { offer ->
-                    offer.basePlanId == productId
+                    offer.basePlanId == "remove-ads-monthly"
                 }
                 if (targetOffer == null) {
                     Log.e("BillingManager", "Offerta per piano base '$productId' non trovata")
