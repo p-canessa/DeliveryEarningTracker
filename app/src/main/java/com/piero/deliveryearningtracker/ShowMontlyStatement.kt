@@ -24,7 +24,6 @@ class ShowMontlyStatement : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private var currentSummaryId: Int = 0
     private var adView: AdView? = null
-    private var isAdsEnabled = DisableAds.VALUE
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView)
@@ -34,9 +33,16 @@ class ShowMontlyStatement : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
     }
+
+    override fun onPause() {
+        AdManager.pauseBannerAd(adView)
+        super.onPause()
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

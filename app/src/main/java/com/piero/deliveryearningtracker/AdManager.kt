@@ -167,7 +167,7 @@ object AdManager {
             // Rimuovi eventuali banner esistenti
             if (currentAdView != null) {
                 destroyBannerAd(currentAdView)
-                currentAdView = null
+                null.also { currentAdView = it }
             }
             // Crea un nuovo banner
             currentAdView = setupBannerAd(context, adContainer, true)
@@ -191,12 +191,22 @@ object AdManager {
         return currentAdView
     }
 
-    fun clearAds() {
+    private fun clearAds() {
         // Interrompi caricamento annunci aggiuntivi
         ocrRewardedAd?.fullScreenContentCallback = null
         ocrRewardedAd = null
         statinoRewardedAd?.fullScreenContentCallback = null
         statinoRewardedAd = null
         Log.d("AdManager", "Annunci aggiuntivi disattivati")
+    }
+
+    fun pauseBannerAd(adView: AdView?) {
+        adView?.pause()
+        Log.d("AdManager", "Banner in pausa")
+    }
+
+    fun resumeBannerAd(adView: AdView?) {
+        adView?.resume()
+        Log.d("AdManager", "Banner ripreso")
     }
 }

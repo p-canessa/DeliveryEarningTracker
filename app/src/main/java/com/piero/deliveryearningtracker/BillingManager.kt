@@ -1,5 +1,6 @@
 package com.piero.deliveryearningtracker
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -15,6 +16,7 @@ class BillingManager private constructor(
     private var billingClient: BillingClient? = null
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: BillingManager? = null
 
@@ -86,12 +88,20 @@ class BillingManager private constructor(
     }
 
     fun addSubscriptionListener(listener: (Boolean) -> Unit) {
-        listeners.add(listener)
-        checkSubscription()
+        synchronized(listeners) {
+            if (!listeners.contains(listener)) {
+                listeners.add(listener)
+                Log.d("BillingManager", "Listener aggiunto: $listener")
+                checkSubscription()
+            }
+        }
     }
 
     fun removeSubscriptionListener(listener: (Boolean) -> Unit) {
-        listeners.remove(listener)
+        synchronized(listeners) {
+            listeners.remove(listener)
+            Log.d("BillingManager", "Listener rimosso: $listener")
+        }
     }
 
     fun launchBillingFlow(activity: Activity, productId: String = "remove_ads_monthly") {
@@ -150,13 +160,17 @@ class BillingManager private constructor(
                 Log.d("BillingManager", "Avvio flusso di acquisto")
                 billingClient?.launchBillingFlow(activity, flowParams)?.let { billingResult ->
                     Log.d("BillingManager", "Risultato launchBillingFlow: ${billingResult.responseCode}, Messaggio: ${billingResult.debugMessage}")
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        checkSubscription()
-                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                        dbHelper.insertSubscription(30)
-                    } else {
-                        Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
-                        Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
+                    when (billingResult.responseCode) {
+                        BillingClient.BillingResponseCode.OK -> {
+                            checkSubscription()
+                        }
+                        BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                            dbHelper.insertSubscription(30)
+                        }
+                        else -> {
+                            Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
+                            Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             } else {
@@ -167,7 +181,7 @@ class BillingManager private constructor(
         }
     }
 
-    private fun checkSubscription() {
+    fun checkSubscription() {
         val queryPurchasesParams = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.SUBS)
             .build()
@@ -232,13 +246,13 @@ class BillingManager private constructor(
         listeners.forEach { it(isSubscribed) }
     }
 
-    fun isSubscribed(): Boolean {
+    /*fun isSubscribed(): Boolean {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         return !sharedPref.getBoolean("ads_enabled", true)
-    }
+    }*/
 
-    fun cleanup() {
+    /*fun cleanup() {
         billingClient?.endConnection()
         instance = null
-    }
+    }*/
 }

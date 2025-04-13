@@ -32,8 +32,14 @@ class AnnoActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+    }
+
+    override fun onPause() {
+        AdManager.pauseBannerAd(adView)
+        super.onPause()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

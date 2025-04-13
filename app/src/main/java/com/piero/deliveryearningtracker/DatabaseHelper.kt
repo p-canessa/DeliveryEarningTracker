@@ -208,6 +208,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPref.edit { putBoolean("ads_enabled", false) }
+        Log.d("DatabaseHelper", "Abbonamento inserito: days=$days")
     }
 
     private fun isSubscriptionActive(): Boolean {

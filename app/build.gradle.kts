@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.Packaging
 
 plugins {
     id("com.google.gms.google-services")
@@ -23,7 +22,7 @@ android {
         applicationId = "com.piero.deliveryearningtracker"
         minSdk = 29
         targetSdk = 35
-        versionCode = 5
+        versionCode = 6
         versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
