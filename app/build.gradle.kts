@@ -22,7 +22,7 @@ android {
         applicationId = "com.piero.deliveryearningtracker"
         minSdk = 29
         targetSdk = 35
-        versionCode = 6
+        versionCode = 7
         versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

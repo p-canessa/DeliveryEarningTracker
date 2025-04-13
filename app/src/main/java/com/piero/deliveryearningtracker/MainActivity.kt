@@ -61,9 +61,9 @@ class MainActivity : AppCompatActivity() {
         adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
         Log.d("MainActivity", "Subscription updated: isSubscribed=$isSubscribed")
         if (isSubscribed) {
-            Toast.makeText(this, "Annunci rimossi!", Toast.LENGTH_SHORT).show()
+            Log.d("MainActivity", "Annunci disattivati")
         } else {
-            Toast.makeText(this, "Annunci attivati", Toast.LENGTH_SHORT).show()
+            Log.d("MainActivity", "Annunci abilitati")
         }
     }
 
@@ -98,16 +98,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("AdMob", "Inizializzazione completata")
         }
 
-        // Registra il listener
+        // Registra il listener (solo tramite getInstance)
         BillingManager.getInstance(this, dbHelper).addSubscriptionListener(subscriptionListener)
 
         // Controlla lo stato degli annunci
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
-
-        // Registra il listener di BillingManager
-        val billingManager = (application as MyApplication).billingManager
-        billingManager.addSubscriptionListener(subscriptionListener)
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val isStatsEnabled = sharedPrefs.getBoolean("share_anonymous_stats", false)
@@ -266,6 +262,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("MainActivity", "onResume chiamato")
         AdManager.resumeBannerAd(adView)
         // Forza una verifica dello stato
         BillingManager.getInstance(this, dbHelper).checkSubscription()

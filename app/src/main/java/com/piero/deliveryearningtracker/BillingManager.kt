@@ -1,6 +1,5 @@
 package com.piero.deliveryearningtracker
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -16,7 +15,6 @@ class BillingManager private constructor(
     private var billingClient: BillingClient? = null
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: BillingManager? = null
 
@@ -42,8 +40,10 @@ class BillingManager private constructor(
                             Purchase.PurchaseState.PURCHASED -> {
                                 if (!purchase.isAcknowledged) {
                                     acknowledgePurchase(purchase)
+                                } else {
+                                    dbHelper.insertSubscription(30)
+                                    updateSubscriptionState()
                                 }
-                                dbHelper.insertSubscription(30)
                             }
                             Purchase.PurchaseState.PENDING -> {
                                 Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
@@ -76,12 +76,13 @@ class BillingManager private constructor(
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     checkSubscription()
                 } else {
+                    Log.e("BillingManager", "Errore connessione billing: ${billingResult.debugMessage}")
                     Toast.makeText(context, "Errore connessione billing: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onBillingServiceDisconnected() {
-                Log.d("BillingManager", "BillingClient disconnesso, tentativo di riconnessione")
+                Log.w("BillingManager", "BillingClient disconnesso, tentativo di riconnessione")
                 billingClient?.startConnection(this)
             }
         })
@@ -160,17 +161,14 @@ class BillingManager private constructor(
                 Log.d("BillingManager", "Avvio flusso di acquisto")
                 billingClient?.launchBillingFlow(activity, flowParams)?.let { billingResult ->
                     Log.d("BillingManager", "Risultato launchBillingFlow: ${billingResult.responseCode}, Messaggio: ${billingResult.debugMessage}")
-                    when (billingResult.responseCode) {
-                        BillingClient.BillingResponseCode.OK -> {
-                            checkSubscription()
-                        }
-                        BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                            dbHelper.insertSubscription(30)
-                        }
-                        else -> {
-                            Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
-                            Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
-                        }
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        checkSubscription()
+                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                        dbHelper.insertSubscription(30)
+                        updateSubscriptionState()
+                    } else {
+                        Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
+                        Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
@@ -182,6 +180,11 @@ class BillingManager private constructor(
     }
 
     fun checkSubscription() {
+        if (billingClient == null || !billingClient!!.isReady) {
+            Log.w("BillingManager", "BillingClient non pronto, inizializzazione richiesta")
+            initialize()
+            return
+        }
         val queryPurchasesParams = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.SUBS)
             .build()
@@ -226,6 +229,7 @@ class BillingManager private constructor(
                     Log.d("BillingManager", "Acquisto riconosciuto con successo")
                     Toast.makeText(context, "Acquisto riconosciuto con successo", Toast.LENGTH_SHORT).show()
                     dbHelper.insertSubscription(30)
+                    updateSubscriptionState() // Notifica i listener
                 } else {
                     Log.e("BillingManager", "Errore riconoscimento acquisto: ${billingResult.debugMessage}")
                     Toast.makeText(context, "Errore riconoscimento acquisto", Toast.LENGTH_SHORT).show()
@@ -234,6 +238,7 @@ class BillingManager private constructor(
         } else {
             Log.d("BillingManager", "Acquisto già riconosciuto: token=${purchase.purchaseToken}")
             dbHelper.insertSubscription(30)
+            updateSubscriptionState() // Notifica i listener
         }
     }
 
@@ -243,16 +248,21 @@ class BillingManager private constructor(
         val isAdsEnabled = sharedPref.getBoolean("ads_enabled", true)
         val isSubscribed = !isAdsEnabled
         Log.d("BillingManager", "Stato finale: isSubscribed=$isSubscribed, ads_enabled=$isAdsEnabled")
-        listeners.forEach { it(isSubscribed) }
+        synchronized(listeners) {
+            listeners.forEach {
+                Log.d("BillingManager", "Notifica listener: $it, isSubscribed=$isSubscribed")
+                it(isSubscribed)
+            }
+        }
     }
 
-    /*fun isSubscribed(): Boolean {
+    fun isSubscribed(): Boolean {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         return !sharedPref.getBoolean("ads_enabled", true)
-    }*/
+    }
 
-    /*fun cleanup() {
+    fun cleanup() {
         billingClient?.endConnection()
         instance = null
-    }*/
+    }
 }
