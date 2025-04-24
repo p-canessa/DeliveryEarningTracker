@@ -169,4 +169,53 @@
     <string name="ocr_too_large">Obraz jest za duży (maksimum 5 MB).</string>
     <string name="ocr_load_failed">Nie udało się załadować obrazu.</string>
     <string name="ocr_processing_failed">Błąd podczas przetwarzania OCR.</string>
+    <string name="free_trial_details">Bezpłatny okres próbny przez %1$s, potem %2$s/rok</string>
+    <string name="monthly_payments_details">12 miesięcznych płatności</string>
+    <string name="default_recurrence">Odnowienie nieokreślone</string>
+
+    <plurals name="days">
+        <item quantity="one">1 dzień</item>
+        <item quantity="few">%d dni</item> <!-- 2-4, 22-24, ecc. -->
+        <item quantity="many">%d dni</item> <!-- 0, 5-21, 25+ -->
+        <item quantity="other">%d dni</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 tydzień</item>
+        <item quantity="few">%d tygodnie</item>
+        <item quantity="many">%d tygodni</item>
+        <item quantity="other">%d tygodni</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 miesiąc</item>
+        <item quantity="few">%d miesiące</item>
+        <item quantity="many">%d miesięcy</item>
+        <item quantity="other">%d miesięcy</item>
+    </plurals>
+
+    <string name="one_month">1 miesiąc</string>
+    <string name="one_week">1 tydzień</string>
+    <string name="one_day">1 dzień</string>
+    <string name="subscription_annual_installments">Roczny w Rarach</string>
+    <string name="subscription_annual_standard">Roczny Standardowy</string>
+    <string name="subscription_monthly">Miesięczny</string>
+    <string name="subscription_default">Subskrypcja</string>
+
+    <string name="base_plan_annual_installments">Plan Roczny w Rarach</string>
+    <string name="base_plan_annual_standard">Plan Roczny</string>
+    <string name="base_plan_monthly">Plan Miesięczny</string>
+    <string name="base_plan_default">Plan</string>
+    <string name="recurrence_12_monthly_payments">12 miesięcznych płatności</string>
+    <string name="recurrence_free_trial_annual">Bezpłatny okres próbny + roczny</string>
+    <string name="recurrence_annual">Roczny</string>
+    <string name="recurrence_default">Odnowienie nieokreślone</string>
+    <string name="subscribe_button_text">Subskrybuj</string>
+    <string name="offer_free_trial_template">Bezpłatny okres próbny przez %1$s, potem %2$s/rok</string>
+    <string name="offer_standard_template">%1$s/rok</string>
+    <string name="recurrence_monthly">Odnowienie miesięczne</string>
+    <string name="offer_12_monthly_payments_template">%s/miesiąc przez 12 miesięcy</string>
+    <string name="offer_monthly_template">%s/miesiąc</string>
+    <string name="description_unavailable">Niedostępne</string>
+    <string name="recurrence_unknown">Nieznane</string>
 </resources>

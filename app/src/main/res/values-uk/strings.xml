@@ -168,4 +168,53 @@
     <string name="ocr_too_large">Зображення занадто велике (максимум 5 МБ).</string>
     <string name="ocr_load_failed">Не вдалося завантажити зображення.</string>
     <string name="ocr_processing_failed">Помилка під час обробки OCR.</string>
+    <string name="free_trial_details">Безкоштовний пробний період на %1$s, потім %2$s/рік</string>
+    <string name="monthly_payments_details">12 щомісячних платежів</string>
+    <string name="default_recurrence">Поновлення не вказано</string>
+
+    <plurals name="days">
+        <item quantity="one">1 день</item>
+        <item quantity="few">%d дні</item> <!-- 2-4, 22-24, ecc. -->
+        <item quantity="many">%d днів</item> <!-- 0, 5-21, 25+ -->
+        <item quantity="other">%d днів</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 тиждень</item>
+        <item quantity="few">%d тижні</item>
+        <item quantity="many">%d тижнів</item>
+        <item quantity="other">%d тижнів</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 місяць</item>
+        <item quantity="few">%d місяці</item>
+        <item quantity="many">%d місяців</item>
+        <item quantity="other">%d місяців</item>
+    </plurals>
+
+    <string name="one_month">1 місяць</string>
+    <string name="one_week">1 тиждень</string>
+    <string name="one_day">1 день</string>
+    <string name="subscription_annual_installments">Річний з Розстрочкою</string>
+    <string name="subscription_annual_standard">Річний Стандартний</string>
+    <string name="subscription_monthly">Місячний</string>
+    <string name="subscription_default">Підписка</string>
+
+    <string name="base_plan_annual_installments">План Річний з Розстрочкою</string>
+    <string name="base_plan_annual_standard">План Річний</string>
+    <string name="base_plan_monthly">План Місячний</string>
+    <string name="base_plan_default">План</string>
+    <string name="recurrence_12_monthly_payments">12 щомісячних платежів</string>
+    <string name="recurrence_free_trial_annual">Безкоштовний пробний період + річний</string>
+    <string name="recurrence_annual">Річний</string>
+    <string name="recurrence_default">Поновлення не вказано</string>
+    <string name="subscribe_button_text">Підписатися</string>
+    <string name="offer_free_trial_template">Безкоштовний пробний період на %1$s, потім %2$s/рік</string>
+    <string name="offer_standard_template">%1$s/рік</string>
+    <string name="recurrence_monthly">Щомісячне оновлення</string>
+    <string name="offer_12_monthly_payments_template">%s/місяць протягом 12 місяців</string>
+    <string name="offer_monthly_template">%s/місяць</string>
+    <string name="description_unavailable">Indisponibil</string>
+    <string name="recurrence_unknown">Necunoscut</string>
 </resources>

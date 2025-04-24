@@ -22,7 +22,7 @@ android {
         applicationId = "com.piero.deliveryearningtracker"
         minSdk = 29
         targetSdk = 35
-        versionCode = 7
+        versionCode = 9
         versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -92,6 +92,7 @@ dependencies {
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.pdfbox.android)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

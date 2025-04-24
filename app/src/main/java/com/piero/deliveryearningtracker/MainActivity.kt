@@ -16,7 +16,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
@@ -56,10 +55,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var referrerClient: InstallReferrerClient
 
     // Listener per aggiornamenti dello stato degli annunci
-    private val subscriptionListener: (Boolean) -> Unit = { isSubscribed ->
+    private val subscriptionListener: (Boolean, String?) -> Unit = { isSubscribed, message ->
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
-        Log.d("MainActivity", "Subscription updated: isSubscribed=$isSubscribed")
+        adView = AdManager.updateAds(this, adContainer, adView)
+        Log.d("MainActivity", "Subscription updated: isSubscribed=$isSubscribed, message=$message")
         if (isSubscribed) {
             Log.d("MainActivity", "Annunci disattivati")
         } else {
@@ -99,11 +98,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Registra il listener (solo tramite getInstance)
-        BillingManager.getInstance(this, dbHelper).addSubscriptionListener(subscriptionListener)
+        BillingManager.getInstance(this).addSubscriptionListener(subscriptionListener)
 
         // Controlla lo stato degli annunci
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val isStatsEnabled = sharedPrefs.getBoolean("share_anonymous_stats", false)
@@ -265,9 +264,9 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "onResume chiamato")
         AdManager.resumeBannerAd(adView)
         // Forza una verifica dello stato
-        BillingManager.getInstance(this, dbHelper).checkSubscription()
+        BillingManager.getInstance(this).checkSubscription()
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
         updateTotals()
         updateOrderList()
     }
@@ -275,7 +274,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         Log.d("MainActivity", "onDestroy chiamato")
         // Rimuovi il listener
-        BillingManager.getInstance(this, dbHelper).removeSubscriptionListener(subscriptionListener)
+        BillingManager.getInstance(this).removeSubscriptionListener(subscriptionListener)
         AdManager.destroyBannerAd(adView)
         adView = null
 

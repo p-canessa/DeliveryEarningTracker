@@ -167,4 +167,50 @@
     <string name="ocr_too_large">Imaginea este prea mare (maxim 5 MB).</string>
     <string name="ocr_load_failed">Nu s-a putut încărca imaginea.</string>
     <string name="ocr_processing_failed">Eroare în timpul procesării OCR.</string>
+    <string name="free_trial_details">Perioadă de încercare gratuită pentru %1$s, apoi %2$s/an</string>
+    <string name="monthly_payments_details">12 plăți lunare</string>
+    <string name="default_recurrence">Reînnoire nespecificată</string>
+
+    <plurals name="days">
+        <item quantity="one">1 zi</item>
+        <item quantity="few">0 zile</item> <!-- 0 e 2-19 -->
+        <item quantity="other">%d zile</item> <!-- 20+ -->
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 săptămână</item>
+        <item quantity="few">0 săptămâni</item>
+        <item quantity="other">%d săptămâni</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 lună</item>
+        <item quantity="few">0 luni</item>
+        <item quantity="other">%d luni</item>
+    </plurals>
+
+    <string name="one_month">1 lună</string>
+    <string name="one_week">1 săptămână</string>
+    <string name="one_day">1 zi</string>
+    <string name="subscription_annual_installments">Anual în Rate</string>
+    <string name="subscription_annual_standard">Anual Standard</string>
+    <string name="subscription_monthly">Lunar</string>
+    <string name="subscription_default">Abonament</string>
+
+    <string name="base_plan_annual_installments">Plan Anual în Rate</string>
+    <string name="base_plan_annual_standard">Plan Anual</string>
+    <string name="base_plan_monthly">Plan Lunar</string>
+    <string name="base_plan_default">Plan</string>
+    <string name="recurrence_12_monthly_payments">12 plăți lunare</string>
+    <string name="recurrence_free_trial_annual">Perioadă de încercare gratuită + anual</string>
+    <string name="recurrence_annual">Anual</string>
+    <string name="recurrence_default">Reînnoire nespecificată</string>
+    <string name="subscribe_button_text">Abonează-te</string>
+    <string name="offer_free_trial_template">Încercare gratuită pentru %1$s, apoi %2$s/an</string>
+    <string name="offer_standard_template">%1$s/an</string>
+    <string name="recurrence_monthly">Reînnoire lunară</string>
+    <string name="offer_12_monthly_payments_template">%s/lună timp de 12 luni</string>
+    <string name="offer_monthly_template">%s/lună</string>
+    <string name="description_unavailable">Indisponibil</string>
+    <string name="recurrence_unknown">Necunoscut</string>
 </resources>

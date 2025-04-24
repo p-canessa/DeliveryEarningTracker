@@ -34,7 +34,7 @@ class AnnoActivity : AppCompatActivity() {
         super.onResume()
         AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
     }
 
     override fun onPause() {
@@ -50,7 +50,7 @@ class AnnoActivity : AppCompatActivity() {
 
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
 
         // Configura la toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)

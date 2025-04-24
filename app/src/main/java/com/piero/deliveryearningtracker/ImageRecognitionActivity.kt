@@ -58,8 +58,8 @@ class ImageRecognitionActivity : AppCompatActivity() {
         }
         loadOcrUsesLeft()
         dbHelper = DatabaseHelper(this)
-        isAdsEnabled = DisableAds.loadAdsEnabledState(this, dbHelper)
-        AdManager.updateAds(this, null, null, dbHelper, false)
+        isAdsEnabled = DisableAds.loadAdsEnabledState(this)
+        AdManager.updateAds(this, null, null, false)
 
         // Configura la toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)

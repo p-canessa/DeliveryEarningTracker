@@ -167,4 +167,50 @@
     <string name="ocr_too_large">L\'image est trop grande (maximum 5 Mo).</string>
     <string name="ocr_load_failed">Impossible de charger l\'image.</string>
     <string name="ocr_processing_failed">Erreur lors du traitement OCR.</string>
+    <string name="free_trial_details">Essai gratuit pendant %1$s, puis %2$s/an</string>
+    <string name="monthly_payments_details">12 paiements mensuels</string>
+    <string name="default_recurrence">Renouvellement non spécifié</string>
+
+    <plurals name="days">
+        <item quantity="zero">0 jour</item>
+        <item quantity="one">1 jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="zero">0 semaine</item>
+        <item quantity="one">1 semaine</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="zero">0 mois</item>
+        <item quantity="one">1 mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+
+    <string name="one_month">1 mois</string>
+    <string name="one_week">1 semaine</string>
+    <string name="one_day">1 jour</string>
+    <string name="subscription_annual_installments">Annuel en Versements</string>
+    <string name="subscription_annual_standard">Annuel Standard</string>
+    <string name="subscription_monthly">Mensuel</string>
+    <string name="subscription_default">Abonnement</string>
+
+    <string name="base_plan_annual_installments">Plan Annuel en Versements</string>
+    <string name="base_plan_annual_standard">Plan Annuel</string>
+    <string name="base_plan_monthly">Plan Mensuel</string>
+    <string name="base_plan_default">Plan</string>
+    <string name="recurrence_12_monthly_payments">12 paiements mensuels</string>
+    <string name="recurrence_free_trial_annual">Essai gratuit + annuel</string>
+    <string name="recurrence_annual">Annuel</string>
+    <string name="recurrence_default">Renouvellement non spécifié</string>
+    <string name="subscribe_button_text">S’abonner</string>
+    <string name="offer_free_trial_template">Essai gratuit pendant %1$s, puis %2$s/an</string>
+    <string name="offer_standard_template">%1$s/an</string>
+    <string name="recurrence_monthly">Renouvellement mensuel</string>
+    <string name="offer_12_monthly_payments_template">%s/mois pendant 12 mois</string>
+    <string name="offer_monthly_template">%s/mois</string>
+    <string name="description_unavailable">Non disponible</string>
+    <string name="recurrence_unknown">Inconnu</string>
 </resources>

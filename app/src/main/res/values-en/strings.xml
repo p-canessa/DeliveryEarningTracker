@@ -168,4 +168,57 @@
     <string name="ocr_too_large">The image is too large (max 5 MB).</string>
     <string name="ocr_load_failed">Unable to load the image.</string>
     <string name="ocr_processing_failed">Error during OCR processing.</string>
+    <!-- Frase per la prova gratuita -->
+    <string name="free_trial_details">Free trial for %1$s, then %2$s/year</string>
+    <string name="monthly_payments_details">12 monthly payments</string>
+    <string name="default_recurrence">Renewal not specified</string>
+
+    <!-- Plurals per giorni -->
+    <plurals name="days">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <!-- Plurals per settimane -->
+    <plurals name="weeks">
+        <item quantity="one">1 week</item>
+        <item quantity="other">%d weeks</item>
+    </plurals>
+
+    <!-- Plurals per mesi -->
+    <plurals name="months">
+        <item quantity="one">1 month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+
+    <!-- Durate specifiche -->
+    <string name="one_month">1 month</string>
+    <string name="one_week">1 week</string>
+    <string name="one_day">1 day</string>
+    <!-- Nomi delle sottoscrizioni (SubscriptionHeader) -->
+    <string name="subscription_annual_installments">Annual Installments</string>
+    <string name="subscription_annual_standard">Standard Annual</string>
+    <string name="subscription_monthly">Monthly</string>
+    <string name="subscription_default">Subscription</string>
+
+    <!-- Nomi dei piani base (BasePlan) -->
+    <string name="base_plan_annual_installments">Annual Installments Plan</string>
+    <string name="base_plan_annual_standard">Annual Plan</string>
+    <string name="base_plan_monthly">Monthly Plan</string>
+    <string name="base_plan_default">Plan</string>
+
+    <!-- Traduzioni per recurrence -->
+    <string name="recurrence_12_monthly_payments">12 monthly payments</string>
+    <string name="recurrence_free_trial_annual">Free trial + annual</string>
+    <string name="recurrence_annual">Annual</string>
+    <string name="recurrence_default">Renewal not specified</string>
+    <string name="subscribe_button_text">Subscribe</string>
+    <string name="offer_free_trial_template">Free trial for %1$s, then %2$s/year</string>
+    <string name="offer_standard_template">%1$s/year</string>
+    <string name="description_unavailable">Not available</string>
+    <string name="recurrence_unknown">Unknown</string>
+    <string name="recurrence_monthly">Monthly renewal</string>
+    <string name="offer_12_monthly_payments_template">%s/month for 12 months</string>
+    <string name="offer_monthly_template">%s/month</string>
+
 </resources>

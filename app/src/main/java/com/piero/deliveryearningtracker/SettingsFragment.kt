@@ -28,11 +28,10 @@ import java.util.Locale
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private var adView: AdView? = null
-    private val subscriptionListener: (Boolean) -> Unit = { isSubscribed ->
-        Log.d("SettingsFragment", "Stato abbonamento aggiornato: isSubscribed=$isSubscribed")
+    private val subscriptionListener: (Boolean, String?) -> Unit = { isSubscribed, message ->
+        Log.d("SettingsFragment", "Stato abbonamento aggiornato: isSubscribed=$isSubscribed, message=$message")
         if (isAdded) {
-            val dbHelper = (requireActivity().application as MyApplication).dbHelper
-            val isAdsEnabled = DisableAds.loadAdsEnabledState(requireContext(), dbHelper)
+            val isAdsEnabled = DisableAds.loadAdsEnabledState(requireContext())
             Log.d("SettingsFragment", "Aggiornamento annunci: isAdsEnabled=$isAdsEnabled")
             updateAdsVisibility(isAdsEnabled)
         } else {
@@ -73,20 +72,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d("SettingsFragment", "onAttach chiamato")
-        val billingManager = (requireActivity().application as MyApplication).billingManager
-        billingManager.addSubscriptionListener(subscriptionListener)
-    }
+        override fun onAttach(context: Context) {
+            super.onAttach(context)
+            Log.d("SettingsFragment", "onAttach chiamato")
+
+
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("SettingsFragment", "onViewCreated chiamato")
-        val dbHelper = (requireActivity().application as MyApplication).dbHelper
-        val isAdsEnabled = DisableAds.loadAdsEnabledState(requireContext(), dbHelper)
+        val isAdsEnabled = DisableAds.loadAdsEnabledState(requireContext())
         Log.d("SettingsFragment", "Valore iniziale ads_enabled: $isAdsEnabled")
         updateAdsVisibility(isAdsEnabled)
+        BillingManager.getInstance(requireContext()).addSubscriptionListener(subscriptionListener)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -112,8 +111,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
             "remove_ads" -> {
-                val billingManager = (requireActivity().application as MyApplication).billingManager
-                billingManager.launchBillingFlow(requireActivity())
+                Log.d("SettingsFragment", "Clic su remove_ads, avvio SubscriptionFragment")
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, SubscriptionFragment())
+                    .addToBackStack(null) // Aggiunge il frammento allo stack per la navigazione indietro
+                    .commit()
                 true
             }
             "share_anonymous_stats" -> {
@@ -212,8 +214,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onDetach() {
         Log.d("SettingsFragment", "onDetach chiamato")
-        val billingManager = (requireActivity().application as MyApplication).billingManager
-        billingManager.removeSubscriptionListener(subscriptionListener)
+        BillingManager.getInstance(requireContext()).removeSubscriptionListener(subscriptionListener)
         super.onDetach()
     }
 }

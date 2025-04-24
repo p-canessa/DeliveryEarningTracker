@@ -3,4 +3,6 @@
 <resources>
     <color name="background_color">#121212</color>
     <color name="text_color">#FFFFFF</color>
+    <color name="card_background_color">#282828</color>
+    <color name="colorAccentDarkTheme">#00CCBC</color>
 </resources>

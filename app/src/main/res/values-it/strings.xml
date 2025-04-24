@@ -167,4 +167,50 @@
     <string name="ocr_too_large">L\'immagine è troppo grande (max 5 MB).</string>
     <string name="ocr_load_failed">Impossibile caricare l\'immagine.</string>
     <string name="ocr_processing_failed">Errore durante l\'elaborazione OCR.</string>
+    <string name="free_trial_details">Prova gratuita per %1$s, poi %2$s/anno</string>
+    <string name="monthly_payments_details">12 pagamenti mensili</string>
+    <string name="default_recurrence">Rinnovo non specificato</string>
+
+    <plurals name="days">
+        <item quantity="one">1 giorno</item>
+        <item quantity="many">%d giorni</item>
+        <item quantity="other">%d giorni</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 settimana</item>
+        <item quantity="many">%d settimane</item>
+        <item quantity="other">%d settimane</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 mese</item>
+        <item quantity="many">%d mesi</item>
+        <item quantity="other">%d mesi</item>
+    </plurals>
+
+    <string name="one_month">1 mese</string>
+    <string name="one_week">1 settimana</string>
+    <string name="one_day">1 giorno</string>
+    <string name="subscription_annual_installments">Annuale Rateizzato</string>
+    <string name="subscription_annual_standard">Annuale Standard</string>
+    <string name="subscription_monthly">Mensile</string>
+    <string name="subscription_default">Sottoscrizione</string>
+
+    <string name="base_plan_annual_installments">Piano Annuale Rateizzato</string>
+    <string name="base_plan_annual_standard">Piano Annuale</string>
+    <string name="base_plan_monthly">Piano Mensile</string>
+    <string name="base_plan_default">Piano</string>
+    <string name="recurrence_12_monthly_payments">12 mensilità</string>
+    <string name="recurrence_free_trial_annual">Prova gratuita + annuale</string>
+    <string name="recurrence_annual">Annuale</string>
+    <string name="recurrence_default">Rinnovo non specificato</string>
+    <string name="subscribe_button_text">Sottoscrivi</string>
+    <string name="offer_free_trial_template">Prova gratuita per %1$s, poi %2$s/anno</string>
+    <string name="offer_standard_template">%1$s/anno</string>
+    <string name="description_unavailable">Non disponibile</string>
+    <string name="recurrence_unknown">Sconosciuto</string>
+    <string name="recurrence_monthly">Rinnovo mensile</string>
+    <string name="offer_12_monthly_payments_template">%s/mese per 12 mesi</string>
+    <string name="offer_monthly_template">%s/mese</string>
 </resources>

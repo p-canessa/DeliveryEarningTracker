@@ -127,7 +127,7 @@ class PDFImport : AppCompatActivity() {
         super.onResume()
         AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
     }
 
     override fun onPause() {
@@ -150,7 +150,7 @@ class PDFImport : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
 
         loadStatinoEnabled()
         Log.d("PDFImport", "isStatinoEnabled caricato: $isStatinoEnabled")

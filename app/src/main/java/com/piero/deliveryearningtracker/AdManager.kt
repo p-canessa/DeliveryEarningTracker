@@ -5,6 +5,8 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.AdRequest
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.ViewGroup
 import com.google.android.gms.ads.AdError
@@ -21,6 +23,7 @@ object AdManager {
     private const val STATINO_AD_UNIT_ID = BuildConfig.AD_UNIT_ID_PREMIO2
     private var isOcrAdLoaded = false
     private var isStatinoAdLoaded = false
+    private var lastAdsEnabled: Boolean? = null
 
     // Funzione per creare e aggiungere un banner AdView a un contenitore
     fun setupBannerAd(context: Context, container: ViewGroup, isAdsEnabled: Boolean): AdView? {
@@ -156,37 +159,46 @@ object AdManager {
         context: Context,
         adContainer: ViewGroup?,
         adView: AdView?,
-        dbHelper: DatabaseHelper,
         showBanner: Boolean = true
     ): AdView? {
-        val isAdsEnabled = DisableAds.loadAdsEnabledState(context, dbHelper)
+        val isAdsEnabled = DisableAds.loadAdsEnabledState(context)
         Log.d("AdManager", "updateAds: isAdsEnabled=$isAdsEnabled, showBanner=$showBanner")
 
+        // Evita azioni se lo stato non è cambiato
+        if (lastAdsEnabled == isAdsEnabled && adView != null && adContainer != null && showBanner) {
+            Log.d("AdManager", "Stato annunci invariato, nessun aggiornamento necessario")
+            return adView
+        }
+
+        lastAdsEnabled = isAdsEnabled
         var currentAdView = adView
+
         if (isAdsEnabled && showBanner && adContainer != null) {
-            // Rimuovi eventuali banner esistenti
-            if (currentAdView != null) {
-                destroyBannerAd(currentAdView)
-                null.also { currentAdView = it }
+            // Crea un nuovo banner solo se non esiste già
+            if (currentAdView == null) {
+                currentAdView = setupBannerAd(context, adContainer, true)
+                if (currentAdView != null) {
+                    Log.d("AdManager", "Banner creato con successo")
+                } else {
+                    Log.w("AdManager", "Impossibile creare il banner")
+                }
             }
-            // Crea un nuovo banner
-            currentAdView = setupBannerAd(context, adContainer, true)
-            if (currentAdView != null) {
-                Log.d("AdManager", "Banner creato con successo")
-            } else {
-                Log.w("AdManager", "Impossibile creare il banner")
-            }
-            // Carica altri annunci
-            loadOcrAd(context)
-            loadStatinoAd(context)
+            // Carica altri annunci (solo se non già caricati)
+            if (!isOcrAdLoaded) loadOcrAd(context)
+            if (!isStatinoAdLoaded) loadStatinoAd(context)
         } else {
-            // Distruggi banner esistente
-            destroyBannerAd(currentAdView)
+            // Esegui la distruzione sul thread principale
+            currentAdView?.let { view ->
+                Handler(Looper.getMainLooper()).post {
+                    destroyBannerAd(view)
+                }
+            }
             // Pulisci il container
             adContainer?.removeAllViews()
-            // Disattiva altri annunci (se necessario)
+            // Disattiva altri annunci
             clearAds()
             Log.d("AdManager", "Annunci rimossi")
+            currentAdView = null
         }
         return currentAdView
     }

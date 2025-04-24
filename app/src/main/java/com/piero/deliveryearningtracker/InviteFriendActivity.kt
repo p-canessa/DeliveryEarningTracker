@@ -30,7 +30,7 @@ class InviteFriendActivity : AppCompatActivity() {
         super.onResume()
         AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
     }
 
     override fun onPause() {
@@ -65,7 +65,7 @@ class InviteFriendActivity : AppCompatActivity() {
         dbHelper.initializeDatabase()
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
 
         if (!InviteConfig.IS_INVITE_FRIEND_ENABLED) {
             inviteButton.isEnabled = false
@@ -115,7 +115,7 @@ class InviteFriendActivity : AppCompatActivity() {
     }
 
     private fun grantReward() {
-        dbHelper.insertSubscription(InviteConfig.REWARD_DAYS)
+
         Toast.makeText(this, getString(R.string.invite_friend_reward_granted, InviteConfig.REWARD_DAYS), Toast.LENGTH_LONG).show()
     }
 

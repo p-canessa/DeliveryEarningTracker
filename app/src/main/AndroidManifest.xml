@@ -85,6 +85,7 @@
             android:label="@string/invite_friend_title"
             android:exported="false"
             android:screenOrientation="sensorPortrait" />
+
     </application>
 
 </manifest>

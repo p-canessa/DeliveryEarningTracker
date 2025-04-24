@@ -35,7 +35,7 @@ class ShowMontlyStatement : AppCompatActivity() {
         super.onResume()
         AdManager.resumeBannerAd(adView)
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
     }
 
     override fun onPause() {
@@ -54,7 +54,7 @@ class ShowMontlyStatement : AppCompatActivity() {
         dbHelper = DatabaseHelper(this) // Inizializziamo dbHelper qui per usarlo subito
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
-        adView = AdManager.updateAds(this, adContainer, adView, dbHelper)
+        adView = AdManager.updateAds(this, adContainer, adView)
 
         val toolbar: Toolbar = findViewById(R.id.vs_toolbar)
         setSupportActionBar(toolbar)

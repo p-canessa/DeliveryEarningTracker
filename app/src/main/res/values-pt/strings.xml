@@ -168,4 +168,47 @@
     <string name="ocr_too_large">A imagem é muito grande (máximo 5 MB).</string>
     <string name="ocr_load_failed">Não foi possível carregar a imagem.</string>
     <string name="ocr_processing_failed">Erro durante o processamento OCR.</string>
+    <string name="free_trial_details">Teste gratuito por %1$s, depois %2$s/ano</string>
+    <string name="monthly_payments_details">12 pagamentos mensais</string>
+    <string name="default_recurrence">Renovação não especificada</string>
+
+    <plurals name="days">
+        <item quantity="one">1 dia</item>
+        <item quantity="other">%d dias</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 semana</item>
+        <item quantity="other">%d semanas</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 mês</item>
+        <item quantity="other">%d meses</item>
+    </plurals>
+
+    <string name="one_month">1 mês</string>
+    <string name="one_week">1 semana</string>
+    <string name="one_day">1 dia</string>
+    <string name="subscription_annual_installments">Anual Parcelado</string>
+    <string name="subscription_annual_standard">Anual Padrão</string>
+    <string name="subscription_monthly">Mensal</string>
+    <string name="subscription_default">Assinatura</string>
+
+    <string name="base_plan_annual_installments">Plano Anual Parcelado</string>
+    <string name="base_plan_annual_standard">Plano Anual</string>
+    <string name="base_plan_monthly">Plano Mensal</string>
+    <string name="base_plan_default">Plano</string>
+    <string name="recurrence_12_monthly_payments">12 pagamentos mensais</string>
+    <string name="recurrence_free_trial_annual">Teste gratuito + anual</string>
+    <string name="recurrence_annual">Anual</string>
+    <string name="recurrence_default">Renovação não especificada</string>
+    <string name="subscribe_button_text">Assinar</string>
+    <string name="offer_free_trial_template">Teste gratuito por %1$s, depois %2$s/ano</string>
+    <string name="offer_standard_template">%1$s/ano</string>
+    <string name="recurrence_monthly">Renovação mensal</string>
+    <string name="offer_12_monthly_payments_template">%s/mês durante 12 meses</string>
+    <string name="offer_monthly_template">%s/mês</string>
+    <string name="description_unavailable">Não disponível</string>
+    <string name="recurrence_unknown">Desconhecido</string>
 </resources>

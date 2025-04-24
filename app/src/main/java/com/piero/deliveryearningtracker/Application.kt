@@ -6,8 +6,7 @@ import android.util.Log
 class MyApplication : Application() {
     lateinit var dbHelper: DatabaseHelper
         private set
-    lateinit var billingManager: BillingManager
-        private set
+
 
 
     override fun onCreate() {
@@ -17,6 +16,12 @@ class MyApplication : Application() {
         CurrencyFormatter.initialize(this)
         dbHelper = DatabaseHelper(this)
         dbHelper.initializeDatabase()
-        billingManager = BillingManager.getInstance(this, dbHelper)
+//        billingManager = BillingManager.getInstance(this)
+        BillingManager.getInstance(this).initialize()
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        BillingManager.getInstance(this).cleanup()
     }
 }

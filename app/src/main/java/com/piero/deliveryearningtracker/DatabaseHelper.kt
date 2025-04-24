@@ -46,7 +46,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
 
     companion object {
         private const val DATABASE_NAME = "ordini.db"
-        private const val DATABASE_VERSION = 4
+        private const val DATABASE_VERSION = 5
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -77,8 +77,10 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         if (oldVersion < 4) {
             val createInviteCodeTable = context.getString(R.string.Table_InviteCode)
             db.execSQL(createInviteCodeTable)
-            val createSubscriptionsTable = context.getString(R.string.Table_Subscriptions)
-            db.execSQL(createSubscriptionsTable)
+        }
+        if (oldVersion < 5) {
+            val createProviderQuery = "Drop table if exists Subscriptions"
+            db.execSQL(createProviderQuery)
         }
     }
 
@@ -130,9 +132,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
 
         val createInviteCodeTable = context.getString(R.string.Table_InviteCode)
         db.execSQL(createInviteCodeTable)
-
-        val createSubscriptionsTable = context.getString(R.string.Table_Subscriptions)
-        db.execSQL(createSubscriptionsTable)
     }
 
     private fun ensureTablesExist(db: SQLiteDatabase) {
@@ -142,7 +141,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             "MonthlySummaries" to context.getString(R.string.Table_MontlySummaries),
             "DailyOrders" to context.getString(R.string.Table_DailyOrders),
             "InviteCode" to context.getString(R.string.Table_InviteCode),
-            "Subscriptions" to context.getString(R.string.Table_Subscriptions)
         )
 
         for ((tableName, createQuery) in tables) {
@@ -190,47 +188,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             newCode
         }.also { cursor.close() }
     }
-
-    fun insertSubscription(days: Int) {
-        val db = writableDatabase
-        val calendar = Calendar.getInstance()
-        val startDate = calendar.timeInMillis
-        calendar.add(Calendar.DAY_OF_YEAR, days)
-        val endDate = calendar.timeInMillis
-
-        val values = ContentValues().apply {
-            put("start_date", startDate)
-            put("end_date", endDate)
-            put("active", 1)
-        }
-        db.insert("Subscriptions", null, values)
-        db.close()
-
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPref.edit { putBoolean("ads_enabled", false) }
-        Log.d("DatabaseHelper", "Abbonamento inserito: days=$days")
-    }
-
-    private fun isSubscriptionActive(): Boolean {
-        val db = readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT end_date FROM Subscriptions WHERE active = 1 AND end_date > ?",
-            arrayOf(System.currentTimeMillis().toString())
-        )
-        val isActive = cursor.moveToFirst()
-        cursor.close()
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        val isAdsEnabled = sharedPref.getBoolean("ads_enabled", true)
-        return isActive || !isAdsEnabled
-    }
-
-    fun updateAdsEnabledState() {
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        if (isSubscriptionActive()) {
-            sharedPref.edit { putBoolean("ads_enabled", false) }
-        }
-    }
-
 
     // Sovrascrivi getReadableDatabase per gestire errori
     override fun getReadableDatabase(): SQLiteDatabase {
@@ -871,8 +828,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         cursor.close()
         return data
     }
-
-
 
     data class DailyReconciliation(
         val date: String,

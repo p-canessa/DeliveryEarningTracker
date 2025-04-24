@@ -167,4 +167,47 @@
     <string name="ocr_too_large">A kép túl nagy (maximum 5 MB).</string>
     <string name="ocr_load_failed">Nem sikerült betölteni a képet.</string>
     <string name="ocr_processing_failed">Hiba az OCR feldolgozása során.</string>
+    <string name="free_trial_details">Ingyenes próbaverzió %1$s ideig, majd %2$s/év</string>
+    <string name="monthly_payments_details">12 havi fizetés</string>
+    <string name="default_recurrence">Megújítás nincs megadva</string>
+
+    <plurals name="days">
+        <item quantity="one">1 nap</item>
+        <item quantity="other">%d nap</item>
+    </plurals>
+
+    <plurals name="weeks">
+        <item quantity="one">1 hét</item>
+        <item quantity="other">%d hét</item>
+    </plurals>
+
+    <plurals name="months">
+        <item quantity="one">1 hónap</item>
+        <item quantity="other">%d hónap</item>
+    </plurals>
+
+    <string name="one_month">1 hónap</string>
+    <string name="one_week">1 hét</string>
+    <string name="one_day">1 nap</string>
+    <string name="subscription_annual_installments">Éves Részletekben</string>
+    <string name="subscription_annual_standard">Éves Standard</string>
+    <string name="subscription_monthly">Havi</string>
+    <string name="subscription_default">Előfizetés</string>
+
+    <string name="base_plan_annual_installments">Éves Részletfizetési Terv</string>
+    <string name="base_plan_annual_standard">Éves Terv</string>
+    <string name="base_plan_monthly">Havi Terv</string>
+    <string name="base_plan_default">Terv</string>
+    <string name="recurrence_12_monthly_payments">12 havi fizetés</string>
+    <string name="recurrence_free_trial_annual">Ingyenes próba + éves</string>
+    <string name="recurrence_annual">Éves</string>
+    <string name="recurrence_default">Megújítás nincs megadva</string>
+    <string name="subscribe_button_text">Feliratkozás</string>
+    <string name="offer_free_trial_template">Ingyenes próbaverzió %1$s ideig, majd %2$s/év</string>
+    <string name="offer_standard_template">%1$s/év</string>
+    <string name="recurrence_monthly">Havi megújítás</string>
+    <string name="offer_12_monthly_payments_template">%s/hónap 12 hónapig</string>
+    <string name="offer_monthly_template">%s/hónap</string>
+    <string name="description_unavailable">Nem elérhető</string>
+    <string name="recurrence_unknown">Ismeretlen</string>
 </resources>

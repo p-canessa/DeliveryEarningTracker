@@ -1,220 +1,471 @@
 package com.piero.deliveryearningtracker
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.preference.PreferenceManager
-import com.android.billingclient.api.*
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.queryPurchasesAsync
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
+import java.util.Locale
+
+private const val MAX_RECONNECT_ATTEMPTS = 5
 
 class BillingManager private constructor(
-    private val context: Context,
-    private val dbHelper: DatabaseHelper
+    private val context: Context
 ) {
-    private val listeners = mutableSetOf<(Boolean) -> Unit>()
+    private val listeners = mutableSetOf<(Boolean, String?) -> Unit>()
     private var billingClient: BillingClient? = null
+    private var reconnectAttempts = 0
+    private var isConnecting = false
+    private var lastSubscribedState: Boolean? = null
+    private val userLocale: String = Locale.getDefault().language // es. "it", "uk"
+    private val fallbackLocale: String = "it" // Fallback all'italiano
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
-        private var instance: BillingManager? = null
+        private var INSTANCE: BillingManager? = null
 
-        fun getInstance(context: Context, dbHelper: DatabaseHelper): BillingManager {
-            return instance ?: synchronized(this) {
-                instance ?: BillingManager(context.applicationContext, dbHelper).also {
-                    instance = it
-                    it.initialize()
-                }
+        fun getInstance(context: Context): BillingManager {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: BillingManager(context.applicationContext).also { INSTANCE = it }
             }
         }
     }
 
-    private fun initialize() {
+    init {
+        initialize()
+    }
+
+    fun initialize() {
         Log.d("BillingManager", "Inizializzazione BillingManager")
         billingClient = BillingClient.newBuilder(context)
             .setListener { billingResult, purchases ->
-                Log.d("BillingManager", "PurchasesUpdated: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, purchases=${purchases?.size ?: 0}")
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
-                    for (purchase in purchases) {
-                        Log.d("BillingManager", "Acquisto rilevato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, products=${purchase.products}, isAcknowledged=${purchase.isAcknowledged}")
-                        when (purchase.purchaseState) {
-                            Purchase.PurchaseState.PURCHASED -> {
-                                if (!purchase.isAcknowledged) {
-                                    acknowledgePurchase(purchase)
-                                } else {
-                                    dbHelper.insertSubscription(30)
-                                    updateSubscriptionState()
-                                }
-                            }
-                            Purchase.PurchaseState.PENDING -> {
-                                Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
-                                Toast.makeText(context, "Acquisto in sospeso, attendi", Toast.LENGTH_SHORT).show()
-                            }
-                            else -> {
-                                Log.d("BillingManager", "Acquisto non valido: state=${purchase.purchaseState}")
-                            }
-                        }
-                    }
-                } else {
-                    Log.e("BillingManager", "Errore PurchasesUpdated: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}")
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                        checkSubscription()
-                    } else {
-                        Toast.makeText(context, "Errore acquisto: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
-                    }
-                }
+                handlePurchasesUpdated(billingResult, purchases)
             }
             .enablePendingPurchases(
                 PendingPurchasesParams.newBuilder()
                     .enableOneTimeProducts()
+                    .enablePrepaidPlans()
                     .build()
             )
             .build()
 
         billingClient?.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
-                Log.d("BillingManager", "Connessione BillingClient: ${billingResult.responseCode}, ${billingResult.debugMessage}")
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    Log.d("BillingManager", "Connessione BillingClient: ${billingResult.responseCode}")
+                    reconnectAttempts = 0
+                    isConnecting = false
                     checkSubscription()
                 } else {
-                    Log.e("BillingManager", "Errore connessione billing: ${billingResult.debugMessage}")
-                    Toast.makeText(context, "Errore connessione billing: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
+                    Log.e("BillingManager", "Errore connessione: ${billingResult.debugMessage}")
+                    retryConnection()
                 }
             }
 
             override fun onBillingServiceDisconnected() {
-                Log.w("BillingManager", "BillingClient disconnesso, tentativo di riconnessione")
-                billingClient?.startConnection(this)
+                Log.w("BillingManager", "BillingClient disconnesso")
+                retryConnection()
             }
         })
     }
 
-    fun addSubscriptionListener(listener: (Boolean) -> Unit) {
+    private fun retryConnection() {
+        if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS && !isConnecting) {
+            isConnecting = true
+            reconnectAttempts++
+            Log.d("BillingManager", "Tentativo di riconnessione ($reconnectAttempts)")
+            Handler(Looper.getMainLooper()).postDelayed({
+                billingClient?.startConnection(object : BillingClientStateListener {
+                    override fun onBillingSetupFinished(billingResult: BillingResult) {
+                        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                            Log.d("BillingManager", "Riconnessione riuscita")
+                            reconnectAttempts = 0
+                            isConnecting = false
+                            checkSubscription()
+                        } else {
+                            Log.e("BillingManager", "Errore riconnessione: ${billingResult.debugMessage}")
+                            retryConnection()
+                        }
+                    }
+
+                    override fun onBillingServiceDisconnected() {
+                        Log.w("BillingManager", "BillingClient disconnesso durante riconnessione")
+                        retryConnection()
+                    }
+                })
+            }, 2000L * reconnectAttempts)
+        } else {
+            Log.e("BillingManager", "Numero massimo di tentativi di riconnessione raggiunto")
+            isConnecting = false
+        }
+    }
+
+    fun addSubscriptionListener(listener: (Boolean, String?) -> Unit) {
         synchronized(listeners) {
             if (!listeners.contains(listener)) {
                 listeners.add(listener)
                 Log.d("BillingManager", "Listener aggiunto: $listener")
-                checkSubscription()
+                if (billingClient?.isReady == true) {
+                    checkSubscription()
+                }
             }
         }
     }
 
-    fun removeSubscriptionListener(listener: (Boolean) -> Unit) {
+    fun removeSubscriptionListener(listener: (Boolean, String?) -> Unit) {
         synchronized(listeners) {
             listeners.remove(listener)
             Log.d("BillingManager", "Listener rimosso: $listener")
         }
     }
 
-    fun launchBillingFlow(activity: Activity, productId: String = "remove_ads_monthly") {
-        Log.d("BillingManager", "Avvio launchBillingFlow con activity: ${activity.javaClass.simpleName}, productId: $productId")
-        if (activity.isFinishing || activity.isDestroyed) {
-            Log.e("BillingManager", "Activity non valida per il flusso di acquisto")
-            Toast.makeText(context, "Errore: Activity non valida", Toast.LENGTH_LONG).show()
-            return
+    private suspend fun isNewSubscriber(): Boolean = withContext(Dispatchers.IO) {
+        if (billingClient == null) {
+            Log.w("BillingManager", "BillingClient è null, assumo nuovo abbonato")
+            return@withContext true
         }
+        try {
+            val params = QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build()
+            val result = billingClient?.queryPurchasesAsync(params)
+            val purchases = result?.purchasesList ?: return@withContext true
+            purchases.none { purchase ->
+                purchase.products.contains("annuale_standard") && purchase.purchaseState == Purchase.PurchaseState.PURCHASED
+            }
+        } catch (e: Exception) {
+            Log.e("BillingManager", "Errore in queryPurchasesAsync: $e")
+            return@withContext true
+        }
+    }
 
-        val queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
-            .setProductList(listOf(
-                QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(productId)
-                    .setProductType(BillingClient.ProductType.SUBS)
-                    .build()
-            ))
-            .build()
-
-        billingClient?.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, productDetailsList ->
-            Log.d("BillingManager", "Risultato query: ${billingResult.responseCode}, Messaggio: ${billingResult.debugMessage}, Prodotti trovati: ${productDetailsList.size}")
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
-                val productDetails = productDetailsList[0]
-                Log.d("BillingManager", "Prodotto trovato: ${productDetails.productId}, Nome: ${productDetails.name}, Descrizione: ${productDetails.description}")
-
-                val subscriptionOfferDetails = productDetails.subscriptionOfferDetails
-                Log.d("BillingManager", "Offerte disponibili: ${subscriptionOfferDetails?.size ?: 0}")
-                if (subscriptionOfferDetails.isNullOrEmpty()) {
-                    Log.e("BillingManager", "Nessuna offerta trovata per il prodotto")
-                    Toast.makeText(context, "Errore: Nessuna offerta disponibile", Toast.LENGTH_LONG).show()
-                    return@queryProductDetailsAsync
+    private fun formatBillingPeriod(context: Context, billingPeriod: String, productId: String): String {
+        return when {
+            billingPeriod == "P1M" && productId == "annuale_rate" -> context.getString(R.string.recurrence_12_monthly_payments)
+            billingPeriod == "P1M" && productId == "remove_ads_monthly" -> context.getString(R.string.recurrence_monthly)
+            billingPeriod == "P1Y" -> context.getString(R.string.recurrence_annual)
+            else -> {
+                val regex = Regex("""P(?:(\d+)W)?(?:(\d+)D)?""")
+                val match = regex.matchEntire(billingPeriod) ?: return billingPeriod
+                val weeks = match.groups[1]?.value?.toIntOrNull() ?: 0
+                val days = match.groups[2]?.value?.toIntOrNull() ?: 0
+                val totalDays = weeks * 7 + days
+                Log.d("BillingManager", "Formattazione billingPeriod: $billingPeriod -> totalDays=$totalDays")
+                when (totalDays) {
+                    1 -> context.getString(R.string.one_day)
+                    7 -> context.getString(R.string.one_week)
+                    14 -> context.resources.getQuantityString(R.plurals.weeks, 2, 2)
+                    21 -> context.resources.getQuantityString(R.plurals.weeks, 3, 3)
+                    15 -> context.resources.getQuantityString(R.plurals.days, 15, 15)
+                    30, 31 -> context.getString(R.string.one_month)
+                    60 -> context.resources.getQuantityString(R.plurals.months, 2, 2)
+                    90 -> context.resources.getQuantityString(R.plurals.months, 3, 3)
+                    120 -> context.resources.getQuantityString(R.plurals.months, 4, 4)
+                    180 -> context.resources.getQuantityString(R.plurals.months, 6, 6)
+                    365 -> context.resources.getQuantityString(R.plurals.months, 12, 12)
+                    else -> context.resources.getQuantityString(R.plurals.days, totalDays, totalDays)
                 }
-
-                val targetOffer = subscriptionOfferDetails.find { offer ->
-                    offer.basePlanId == "remove-ads-monthly"
-                }
-                if (targetOffer == null) {
-                    Log.e("BillingManager", "Offerta per piano base '$productId' non trovata")
-                    Toast.makeText(context, "Errore: Piano base non trovato", Toast.LENGTH_LONG).show()
-                    return@queryProductDetailsAsync
-                }
-
-                Log.d("BillingManager", "Dettagli offerta: basePlanId=${targetOffer.basePlanId}, offerId=${targetOffer.offerId}, offerToken=${targetOffer.offerToken}")
-                val offerToken = targetOffer.offerToken
-                Log.d("BillingManager", "Offer token per '$productId': $offerToken")
-
-                val flowParams = BillingFlowParams.newBuilder()
-                    .setProductDetailsParamsList(listOf(
-                        BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(productDetails)
-                            .setOfferToken(offerToken)
-                            .build()
-                    ))
-                    .build()
-
-                Log.d("BillingManager", "Avvio flusso di acquisto")
-                billingClient?.launchBillingFlow(activity, flowParams)?.let { billingResult ->
-                    Log.d("BillingManager", "Risultato launchBillingFlow: ${billingResult.responseCode}, Messaggio: ${billingResult.debugMessage}")
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        checkSubscription()
-                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                        dbHelper.insertSubscription(30)
-                        updateSubscriptionState()
-                    } else {
-                        Log.e("BillingManager", "Errore avvio flusso: ${billingResult.debugMessage}")
-                        Toast.makeText(context, "Errore avvio flusso: ${billingResult.debugMessage}", Toast.LENGTH_LONG).show()
-                    }
-                }
-            } else {
-                Log.e("BillingManager", "Errore query prodotto: ${billingResult.debugMessage}, Prodotti: ${productDetailsList.size}")
-                Toast.makeText(context, "Prodotto non trovato", Toast.LENGTH_SHORT).show()
-                checkSubscription()
             }
         }
     }
 
-    fun checkSubscription() {
+    suspend fun querySubscriptions(callback: (List<SubscriptionModel>?, String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        val isNewSubscriber = isNewSubscriber()
+        db.collection("subscriptions")
+            .get()
+            .addOnSuccessListener { result ->
+                val productIds = result.documents.mapNotNull { it.getString("productID") }.distinct()
+                Log.d("BillingManager", "Product IDs recuperati da Firestore: $productIds")
+
+                if (productIds.isEmpty()) {
+                    Log.w("BillingManager", "Nessun product ID trovato")
+                    callback(null, "Nessun product ID trovato")
+                    return@addOnSuccessListener
+                }
+
+                val productList = productIds.map { productId ->
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(productId)
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build()
+                }
+
+                val params = QueryProductDetailsParams.newBuilder()
+                    .setProductList(productList)
+                    .build()
+
+                billingClient?.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+                    if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
+                        Log.e("BillingManager", "Errore Play Billing: ${billingResult.debugMessage}")
+                        callback(null, "Errore Play Billing: ${billingResult.debugMessage}")
+                        return@queryProductDetailsAsync
+                    }
+
+                    val subscriptions = productDetailsList.mapNotNull { productDetails ->
+                        val productId = productDetails.productId
+                        val document = result.documents.firstOrNull { it.getString("productID") == productId }
+
+                        // Estrai i campi JSON e tradotti da Firestore
+                        val nameJson = document?.get("name")
+                        val nameTranslated = getTranslatedField(nameJson, "name", productDetails)
+                        val recurrenceJson = document?.get("recurrence")
+                        val recurrenceTranslated = getTranslatedField(recurrenceJson, "recurrence", productDetails)
+                        val descriptionJson = document?.get("description")
+                        val descriptionTranslated = getTranslatedField(descriptionJson, "description", productDetails)
+
+                        // Recupera basePlans da Firestore
+                        val basePlansFromFirestore = document?.get("basePlans") as? List<Map<String, Any>> ?: emptyList()
+                        val basePlanMap = mutableMapOf<String, MutableList<OfferModel>>()
+
+                        // Processa le offerte da Google Play Billing
+                        productDetails.subscriptionOfferDetails?.forEach { offerDetails ->
+                            val basePlanId = offerDetails.basePlanId
+                            val offerId = offerDetails.offerToken
+
+                            // Determina se l'offerta ha una prova gratuita
+                            val hasFreeTrial = offerDetails.pricingPhases.pricingPhaseList.any { phase ->
+                                phase.priceAmountMicros == 0L && phase.billingPeriod.isNotEmpty()
+                            }
+                            val isFreeTrialOffer = hasFreeTrial || offerDetails.offerTags.contains("free_trial")
+
+                            // Filtra le offerte per annuale_standard
+                            if (productId == "annuale_standard" && basePlanId == "annuale-standard") {
+                                if (isNewSubscriber && !isFreeTrialOffer) return@forEach
+                                if (!isNewSubscriber && isFreeTrialOffer) return@forEach
+                            }
+
+                            // Recupera dati da Firestore per l'offerta, se presenti
+                            val firestoreOffers = basePlansFromFirestore.find { it["basePlanId"] == basePlanId }
+                                ?.get("offers") as? List<Map<String, Any>>
+                            val offerData = firestoreOffers?.find { it["offerId"] == offerId }
+
+                            // Determina il template di descrizione
+                            val descriptionTemplate = offerData?.get("descriptionTemplate")?.let {
+                                getTranslatedField(it, "descriptionTemplate", productDetails)
+                            } ?: if (isFreeTrialOffer) context.getString(R.string.offer_free_trial_template)
+                            else context.getString(R.string.offer_standard_template)
+
+                            // Calcola la durata della prova gratuita
+                            val freeTrialDuration = if (isFreeTrialOffer) {
+                                val freeTrialPhase = offerDetails.pricingPhases.pricingPhaseList.find { phase ->
+                                    phase.priceAmountMicros == 0L && phase.billingPeriod.isNotEmpty()
+                                }
+                                freeTrialPhase?.billingPeriod?.let { formatBillingPeriod(context, it, productId) } ?: ""
+                            } else {
+                                ""
+                            }
+
+                            // Recupera il prezzo formattato
+                            val price = offerDetails.pricingPhases.pricingPhaseList.last().formattedPrice
+                            val billingPeriod = offerDetails.pricingPhases.pricingPhaseList.last().billingPeriod
+                            val formattedBillingPeriod = formatBillingPeriod(context, billingPeriod, productId)
+
+                            // Formatta la descrizione
+                            val description = if (isFreeTrialOffer) {
+                                descriptionTemplate.format(freeTrialDuration, price)
+                            } else {
+                                when (productId) {
+                                    "annuale_rate" -> context.getString(R.string.offer_12_monthly_payments_template, price)
+                                    "remove_ads_monthly" -> context.getString(R.string.offer_monthly_template, price)
+                                    else -> descriptionTemplate.format(price)
+                                }
+                            }
+
+                            val offer = OfferModel(
+                                offerId = offerId,
+                                offerTags = offerDetails.offerTags,
+                                description = description,
+                                price = price,
+                                pricingPhases = offerDetails.pricingPhases.pricingPhaseList.map { phase ->
+                                    PricingPhase(
+                                        priceAmountMicros = phase.priceAmountMicros,
+                                        priceCurrencyCode = phase.priceCurrencyCode,
+                                        formattedPrice = phase.formattedPrice,
+                                        billingPeriod = phase.billingPeriod,
+                                        recurrenceMode = phase.recurrenceMode,
+                                        billingCycleCount = phase.billingCycleCount
+                                    )
+                                },
+                                recurrence = when (productId) {
+                                    "annuale_rate" -> context.getString(R.string.recurrence_12_monthly_payments)
+                                    "remove_ads_monthly" -> context.getString(R.string.recurrence_monthly)
+                                    "annuale_standard" -> if (isFreeTrialOffer) context.getString(R.string.recurrence_free_trial_annual)
+                                    else context.getString(R.string.recurrence_annual)
+                                    else -> formattedBillingPeriod
+                                }
+                            )
+                            basePlanMap.getOrPut(basePlanId) { mutableListOf() }.add(offer)
+                        }
+
+                        // Crea i BasePlanModel
+                        val basePlans = basePlanMap.map { (basePlanId, offers) ->
+                            val selectedOffers = if (basePlanId == "annuale-standard") {
+                                offers.take(1) // Prendi solo la prima offerta valida
+                            } else {
+                                offers
+                            }
+                            val firestoreBasePlan = basePlansFromFirestore.find { it["basePlanId"] == basePlanId }
+                            val title = firestoreBasePlan?.get("title") as? String ?: when (basePlanId) {
+                                "annuale-rateizato" -> context.getString(R.string.base_plan_annual_installments)
+                                "annuale-standard" -> context.getString(R.string.base_plan_annual_standard)
+                                "remove-ads-monthly" -> context.getString(R.string.base_plan_monthly)
+                                else -> context.getString(R.string.base_plan_default)
+                            }
+                            BasePlanModel(
+                                basePlanId = basePlanId,
+                                title = title,
+                                isAutoRenewing = true,
+                                offers = selectedOffers,
+                                price = selectedOffers.firstOrNull()?.price ?: ""
+                            )
+                        }
+
+                        // Restituisci SubscriptionModel solo se ci sono base plans
+                        if (basePlans.isNotEmpty()) {
+                            SubscriptionModel(
+                                productId = productId,
+                                nameJson = nameJson,
+                                nameTranslated = nameTranslated,
+                                descriptionJson = descriptionJson,
+                                descriptionTranslated = descriptionTranslated,
+                                recurrenceJson = recurrenceJson,
+                                recurrenceTranslated = recurrenceTranslated,
+                                basePlans = basePlans,
+                                productDetails = productDetails
+                            )
+                        } else {
+                            Log.w("BillingManager", "Nessun base plan valido per productId: $productId")
+                            null
+                        }
+                    }
+                    Log.d("BillingManager", "Chiamata callback con ${subscriptions.size} sottoscrizioni")
+                    callback(subscriptions, null)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("BillingManager", "Errore recupero product IDs: ${e.message}")
+                callback(null, e.message)
+            }
+    }
+
+    fun getTranslatedField(field: Any?, fieldName: String, productDetails: ProductDetails?): String {
+        Log.d("BillingManager", "Tentativo di estrarre campo $fieldName, valore: $field")
+        when (field) {
+            is String -> {
+                try {
+                    val jsonObject = JSONObject(field)
+                    val map = jsonObject.toMap()
+                    val translated = map[userLocale] as? String
+                    if (translated != null) {
+                        Log.d("BillingManager", "Campo $fieldName trovato come stringa JSON tradotta: $translated")
+                        return translated
+                    }
+                    val fallback = map[fallbackLocale] as? String
+                    if (fallback != null) {
+                        Log.d("BillingManager", "Campo $fieldName trovato come stringa JSON di fallback: $fallback")
+                        return fallback
+                    }
+                    val anyValue = map.values.firstOrNull { it is String } as? String
+                    if (anyValue != null) {
+                        Log.d("BillingManager", "Campo $fieldName trovato come primo valore disponibile in JSON: $anyValue")
+                        return anyValue
+                    }
+                    Log.w("BillingManager", "Campo $fieldName non contiene traduzioni valide in JSON, usato come stringa: $field")
+                    return field
+                } catch (e: JSONException) {
+                    Log.d("BillingManager", "Campo $fieldName non è un JSON valido: $field, errore: ${e.message}")
+                    return field
+                }
+            }
+            is Map<*, *> -> {
+                val translated = field[userLocale] as? String
+                if (translated != null) {
+                    Log.d("BillingManager", "Campo $fieldName trovato come mappa tradotta: $translated")
+                    return translated
+                }
+                val fallback = field[fallbackLocale] as? String
+                if (fallback != null) {
+                    Log.d("BillingManager", "Campo $fieldName trovato come mappa di fallback: $fallback")
+                    return fallback
+                }
+                val anyValue = field.values.firstOrNull { it is String } as? String
+                if (anyValue != null) {
+                    Log.d("BillingManager", "Campo $fieldName trovato come primo valore disponibile in mappa: $anyValue")
+                    return anyValue
+                }
+                Log.w("BillingManager", "Campo $fieldName non contiene traduzioni valide in mappa")
+            }
+        }
+        Log.w("BillingManager", "Campo $fieldName non valido o non trovato, uso fallback")
+        return when (fieldName) {
+            "name" -> productDetails?.name ?: "Sconosciuto"
+            "description" -> context.getString(R.string.description_unavailable)
+            "descriptionTemplate" -> context.getString(R.string.offer_standard_template)
+            "recurrence" -> context.getString(R.string.recurrence_unknown)
+            else -> ""
+        }
+    }
+
+    fun launchBillingFlow(activity: Activity, productDetails: ProductDetails, offerId: String?) {
         if (billingClient == null || !billingClient!!.isReady) {
-            Log.w("BillingManager", "BillingClient non pronto, inizializzazione richiesta")
-            initialize()
+            Log.w("BillingManager", "BillingClient non pronto")
             return
         }
-        val queryPurchasesParams = QueryPurchasesParams.newBuilder()
-            .setProductType(BillingClient.ProductType.SUBS)
+        val offerToken = offerId?.let { id ->
+            productDetails.subscriptionOfferDetails?.find { it.offerId == id }?.offerToken
+        } ?: productDetails.subscriptionOfferDetails?.first()?.offerToken
+        if (offerToken == null) {
+            Log.e("BillingManager", "Nessun offerToken trovato")
+            return
+        }
+        val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
+            .setProductDetails(productDetails)
+            .setOfferToken(offerToken)
             .build()
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(listOf(productDetailsParams))
+            .build()
+        billingClient?.launchBillingFlow(activity, billingFlowParams)?.let { billingResult ->
+            Log.d("BillingManager", "Risultato avvio BillingFlow: ${billingResult.responseCode}, ${billingResult.debugMessage}")
+        }
+    }
 
-        billingClient?.queryPurchasesAsync(queryPurchasesParams) { billingResult, purchases ->
-            Log.d("BillingManager", "Query acquisti: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, acquisti trovati=${purchases.size}")
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                var isSubscribed = false
-                for (purchase in purchases) {
-                    Log.d("BillingManager", "Acquisto trovato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, isAcknowledged=${purchase.isAcknowledged}, products=${purchase.products}")
-                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        isSubscribed = true
-                        if (!purchase.isAcknowledged) {
-                            acknowledgePurchase(purchase)
-                        }
-                    } else if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
-                        Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
-                        Toast.makeText(context, "Acquisto in sospeso, attendi", Toast.LENGTH_SHORT).show()
-                    }
+    private fun handlePurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
+        Log.d("BillingManager", "PurchasesUpdated: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, purchases=${purchases?.size ?: 0}")
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+                Log.d("BillingManager", "Acquisto rilevato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, products=${purchase.products}, isAcknowledged=${purchase.isAcknowledged}")
+                if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged) {
+                    acknowledgePurchase(purchase)
                 }
-                Log.d("BillingManager", "Stato abbonamento Play Store: $isSubscribed")
-                if (isSubscribed) {
-                    dbHelper.insertSubscription(30)
-                }
-                updateSubscriptionState()
-            } else {
-                Log.e("BillingManager", "Errore query acquisti: ${billingResult.debugMessage}")
-                Toast.makeText(context, "Errore verifica abbonamento", Toast.LENGTH_SHORT).show()
-                updateSubscriptionState()
             }
+            checkSubscription()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.d("BillingManager", "Acquisto annullato dall'utente")
+            notifyListeners(lastSubscribedState ?: false, "Acquisto annullato")
+        } else {
+            Log.e("BillingManager", "Errore acquisto: ${billingResult.debugMessage}")
+            notifyListeners(lastSubscribedState ?: false, "Errore acquisto")
         }
     }
 
@@ -227,42 +478,93 @@ class BillingManager private constructor(
             billingClient?.acknowledgePurchase(acknowledgeParams) { billingResult ->
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     Log.d("BillingManager", "Acquisto riconosciuto con successo")
-                    Toast.makeText(context, "Acquisto riconosciuto con successo", Toast.LENGTH_SHORT).show()
-                    dbHelper.insertSubscription(30)
-                    updateSubscriptionState() // Notifica i listener
+                    checkSubscription()
+                    notifyListeners(lastSubscribedState ?: false, "Acquisto riconosciuto")
                 } else {
                     Log.e("BillingManager", "Errore riconoscimento acquisto: ${billingResult.debugMessage}")
-                    Toast.makeText(context, "Errore riconoscimento acquisto", Toast.LENGTH_SHORT).show()
+                    notifyListeners(lastSubscribedState ?: false, "Errore riconoscimento acquisto")
                 }
             }
         } else {
-            Log.d("BillingManager", "Acquisto già riconosciuto: token=${purchase.purchaseToken}")
-            dbHelper.insertSubscription(30)
-            updateSubscriptionState() // Notifica i listener
+            Log.d("BillingManager", "Acquisto già riconosciuto")
+            checkSubscription()
         }
     }
 
-    private fun updateSubscriptionState() {
-        dbHelper.updateAdsEnabledState()
-        val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        val isAdsEnabled = sharedPref.getBoolean("ads_enabled", true)
-        val isSubscribed = !isAdsEnabled
-        Log.d("BillingManager", "Stato finale: isSubscribed=$isSubscribed, ads_enabled=$isAdsEnabled")
-        synchronized(listeners) {
-            listeners.forEach {
-                Log.d("BillingManager", "Notifica listener: $it, isSubscribed=$isSubscribed")
-                it(isSubscribed)
+    fun checkSubscription() {
+        if (billingClient == null || !billingClient!!.isReady) {
+            Log.w("BillingManager", "BillingClient non pronto, attesa connessione")
+            return
+        }
+        val queryPurchasesParams = QueryPurchasesParams.newBuilder()
+            .setProductType(BillingClient.ProductType.SUBS)
+            .build()
+        billingClient?.queryPurchasesAsync(queryPurchasesParams) { billingResult, purchases ->
+            Log.d("BillingManager", "Query acquisti: responseCode=${billingResult.responseCode}, message=${billingResult.debugMessage}, acquisti trovati=${purchases.size}")
+            var isSubscribed = false
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                for (purchase in purchases) {
+                    Log.d("BillingManager", "Acquisto trovato: token=${purchase.purchaseToken}, state=${purchase.purchaseState}, isAcknowledged=${purchase.isAcknowledged}, products=${purchase.products}")
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        isSubscribed = true
+                        if (!purchase.isAcknowledged) {
+                            acknowledgePurchase(purchase)
+                        }
+                    } else if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
+                        Log.d("BillingManager", "Acquisto in sospeso: ${purchase.purchaseToken}")
+                        notifyListeners(isSubscribed, "Acquisto in sospeso")
+                    }
+                }
+            } else {
+                Log.e("BillingManager", "Errore query acquisti: ${billingResult.debugMessage}")
+                notifyListeners(false, "Errore verifica abbonamento")
+            }
+            Log.d("BillingManager", "Stato abbonamento Play Store: $isSubscribed")
+            if (isSubscribed != lastSubscribedState) {
+                lastSubscribedState = isSubscribed
+                updateAdsEnabledState(isSubscribed)
+                notifyListeners(isSubscribed, null)
             }
         }
     }
 
-    fun isSubscribed(): Boolean {
+    private fun updateAdsEnabledState(isSubscribed: Boolean) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        return !sharedPref.getBoolean("ads_enabled", true)
+        val isAdsEnabled = !isSubscribed
+        with(sharedPref.edit()) {
+            putBoolean("ads_enabled", isAdsEnabled)
+            apply()
+        }
+        Log.d("BillingManager", "Aggiornato ads_enabled in SharedPreferences: $isAdsEnabled")
+    }
+
+    private fun notifyListeners(isSubscribed: Boolean, message: String? = null) {
+        val isAdsEnabled = !isSubscribed
+        Log.d("BillingManager", "Stato finale: isSubscribed=$isSubscribed, ads_enabled=$isAdsEnabled, message=$message")
+        synchronized(listeners) {
+            listeners.forEach {
+                Log.d("BillingManager", "Notifica listener: $it, isSubscribed=$isSubscribed")
+                Handler(Looper.getMainLooper()).post {
+                    it(isSubscribed, message)
+                }
+            }
+        }
     }
 
     fun cleanup() {
         billingClient?.endConnection()
-        instance = null
+        billingClient = null
+        INSTANCE = null
+        Log.d("BillingManager", "Pulizia BillingManager completata")
+    }
+
+        private fun JSONObject.toMap(): Map<String, Any> {
+        val map = mutableMapOf<String, Any>()
+        val keys = keys()
+        while (keys.hasNext()) {
+            val key = keys.next()
+            map[key] = get(key)
+        }
+        return map
     }
 }
