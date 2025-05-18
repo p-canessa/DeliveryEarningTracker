@@ -151,11 +151,10 @@ enum class OcrResultCode {
                 val timePattern = Pattern.compile("(\\d{2}[:;]\\d{2})[-–](\\d{2}[:;]\\d{2})")
 
                 val detectedLabels = mutableListOf<String>() // Etichette rilevate nel testo
-                val values = mutableListOf<Double>() // Valori estratti (escluso il totale)
+                val values = mutableListOf<Double>() // Valori estratti
                 val times = mutableListOf<Pair<Int, Int>>()
                 var ordersCount = 0
-                var parsingValues = false // Flag per passare alla fase dei valori
-                val tipValues = mutableListOf<Double>() // Lista per accumulare i valori delle mance
+                var parsingValues = false // Flag per indicare che stiamo leggendo i valori
 
                 val processedLines = text.split("\n").filter { it.isNotBlank() }
                 Log.d("OCRHelper", "Lingua: $language")
@@ -187,66 +186,60 @@ enum class OcrResultCode {
                         continue
                     }
 
+                    val currencyMatcher = currencyPattern.matcher(line)
+                    if (currencyMatcher.find()) {
+                        parsingValues = true // Inizia a raccogliere i valori
+                        val valueStr = currencyMatcher.group(1)?.replace("[,.]".toRegex(), ".") ?: "0.0"
+                        val value = valueStr.toDoubleOrNull() ?: 0.0
+                        values.add(value)
+                        Log.d("OCRHelper", "Valore estratto: $value")
+                        continue
+                    }
+
                     if (!parsingValues) {
-                        val currencyMatcher = currencyPattern.matcher(line)
-                        if (currencyMatcher.find()) {
-                            parsingValues = true
-                            val valueStr = currencyMatcher.group(1)?.replace("[,.]".toRegex(), ".") ?: "0.0"
-                            val value = valueStr.toDoubleOrNull() ?: 0.0
-                            values.add(value)
-                            Log.d("OCRHelper", "Inizio valori, estratto: $value")
-                        } else {
-                            val matchedLabel = labelsList.find { line.contains(it, ignoreCase = true) }
-                            if (matchedLabel != null) {
-                                detectedLabels.add(matchedLabel)
-                                Log.d("OCRHelper", "Etichetta rilevata: $matchedLabel")
-                            }
+                        val matchedLabel = labelsList.find { line.contains(it, ignoreCase = true) }
+                        if (matchedLabel != null) {
+                            detectedLabels.add(matchedLabel)
+                            Log.d("OCRHelper", "Etichetta rilevata: $matchedLabel")
                         }
-                    } else {
-                        val currencyMatcher = currencyPattern.matcher(line)
-                        if (currencyMatcher.find() && !riscossiPattern.matcher(line).find()) {
-                            val valueStr = currencyMatcher.group(1)?.replace("[,.]".toRegex(), ".") ?: "0.0"
-                            val value = valueStr.toDoubleOrNull() ?: 0.0
-                            // Se la riga precedente conteneva "Mancia", accumula il valore nella lista delle mance
-                            if (detectedLabels.lastOrNull() in listOf("Mancia", "Tip")) {
+                    }
+                }
+
+                // Associa i valori alle etichette
+                val tipValues = mutableListOf<Double>() // Per accumulare le mance
+                for (i in detectedLabels.indices) {
+                    if (i < values.size) {
+                        val label = detectedLabels[i]
+                        val value = values[i]
+                        when (label) {
+                            in listOf("Ordini consegnati", "Order fee") -> {
+                                orderData.pagaBase = value
+                                Log.d("OCRHelper", "Assegnato $label a $value")
+                            }
+                            in listOf("Pagamento extra", "Extra fee") -> {
+                                orderData.pagaExtra = value
+                                Log.d("OCRHelper", "Assegnato $label a $value")
+                            }
+                            in listOf("Mancia", "Tip") -> {
                                 tipValues.add(value)
                                 Log.d("OCRHelper", "Mancia accumulata: $value")
-                            } else {
-                                values.add(value)
-                                Log.d("OCRHelper", "Valore estratto: $value")
                             }
                         }
                     }
                 }
 
-                // L'ultimo valore è il totale, lo rimuoviamo dai valori da assegnare
-                if (values.size > 1) {
-                    orderData.pagaTotale = values.last()
-                    values.removeAt(values.size - 1)
-                    Log.d("OCRHelper", "PagaTotale impostata come ultimo valore: ${orderData.pagaTotale}")
-                }
-
-                // Somma tutte le mance accumulate
+                // Somma tutte le mance
                 orderData.mancia = tipValues.sum()
                 Log.d("OCRHelper", "Totale mance: ${orderData.mancia}")
 
-                // Mappa le etichette rilevate ai valori (escluse le mance, già gestite)
-                var valueIndex = 0
-                for (label in labelsList) {
-                    if (label in listOf("Mancia", "Tip")) continue // Salta l'assegnazione delle mance, già calcolata
-                    if (detectedLabels.contains(label) && valueIndex < values.size) {
-                        val value = values[valueIndex]
-                        when (label) {
-                            in listOf("Ordini consegnati", "Order fee") -> orderData.pagaBase = value
-                            in listOf("Pagamento extra", "Extra fee") -> orderData.pagaExtra = value
-                        }
-                        Log.d("OCRHelper", "Assegnato $label a $value")
-                        valueIndex++
-                    }
+                // L'ultimo valore è il totale
+                if (values.isNotEmpty()) {
+                    orderData.pagaTotale = values.last()
+                    Log.d("OCRHelper", "PagaTotale impostata come ultimo valore: ${orderData.pagaTotale}")
                 }
 
-                // Se pagaTotale non è stato impostato (es. un solo valore), calcolalo
-                if (orderData.pagaTotale == 0.0 && values.isNotEmpty()) {
+                // Se pagaTotale non è stato impostato, calcolalo
+                if (orderData.pagaTotale == 0.0) {
                     orderData.pagaTotale = orderData.pagaBase + orderData.pagaExtra + orderData.mancia
                     Log.d("OCRHelper", "PagaTotale calcolata: ${orderData.pagaTotale}")
                 }
