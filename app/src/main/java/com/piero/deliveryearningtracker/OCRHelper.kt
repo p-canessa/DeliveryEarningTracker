@@ -155,6 +155,7 @@ enum class OcrResultCode {
                 val times = mutableListOf<Pair<Int, Int>>()
                 var ordersCount = 0
                 var parsingValues = false // Flag per passare alla fase dei valori
+                val tipValues = mutableListOf<Double>() // Lista per accumulare i valori delle mance
 
                 val processedLines = text.split("\n").filter { it.isNotBlank() }
                 Log.d("OCRHelper", "Lingua: $language")
@@ -206,8 +207,14 @@ enum class OcrResultCode {
                         if (currencyMatcher.find() && !riscossiPattern.matcher(line).find()) {
                             val valueStr = currencyMatcher.group(1)?.replace("[,.]".toRegex(), ".") ?: "0.0"
                             val value = valueStr.toDoubleOrNull() ?: 0.0
-                            values.add(value)
-                            Log.d("OCRHelper", "Valore estratto: $value")
+                            // Se la riga precedente conteneva "Mancia", accumula il valore nella lista delle mance
+                            if (detectedLabels.lastOrNull() in listOf("Mancia", "Tip")) {
+                                tipValues.add(value)
+                                Log.d("OCRHelper", "Mancia accumulata: $value")
+                            } else {
+                                values.add(value)
+                                Log.d("OCRHelper", "Valore estratto: $value")
+                            }
                         }
                     }
                 }
@@ -219,15 +226,19 @@ enum class OcrResultCode {
                     Log.d("OCRHelper", "PagaTotale impostata come ultimo valore: ${orderData.pagaTotale}")
                 }
 
-                // Mappa le etichette rilevate ai valori seguendo l'ordine canonico di labelsList
+                // Somma tutte le mance accumulate
+                orderData.mancia = tipValues.sum()
+                Log.d("OCRHelper", "Totale mance: ${orderData.mancia}")
+
+                // Mappa le etichette rilevate ai valori (escluse le mance, già gestite)
                 var valueIndex = 0
                 for (label in labelsList) {
+                    if (label in listOf("Mancia", "Tip")) continue // Salta l'assegnazione delle mance, già calcolata
                     if (detectedLabels.contains(label) && valueIndex < values.size) {
                         val value = values[valueIndex]
                         when (label) {
                             in listOf("Ordini consegnati", "Order fee") -> orderData.pagaBase = value
                             in listOf("Pagamento extra", "Extra fee") -> orderData.pagaExtra = value
-                            in listOf("Mancia", "Tip") -> orderData.mancia = value
                         }
                         Log.d("OCRHelper", "Assegnato $label a $value")
                         valueIndex++

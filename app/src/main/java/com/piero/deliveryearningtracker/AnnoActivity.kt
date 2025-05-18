@@ -22,7 +22,7 @@ class AnnoActivity : AppCompatActivity() {
     private lateinit var spinnerAnno: Spinner
     private var anni: MutableList<Int> = mutableListOf()
     private var adView: AdView? = null
-    private val dbHelper: DatabaseHelper = DatabaseHelper(this)
+    //private val dbHelper: DatabaseHelper = DatabaseHelper(this)
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView) // Pulizia

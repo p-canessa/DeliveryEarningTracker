@@ -84,7 +84,8 @@ class ImageRecognitionActivity : AppCompatActivity() {
 
         fields = mutableListOf()
 
-        this.adapter = DataAdapter(fields) { position, newValue ->
+        this.adapter = DataAdapter(fields,
+            onValueChanged = { position, newValue ->
             Log.d("ImageRecognitionActivity", "Updating position $position to $newValue")
             when (position) {
                 0 -> orderData.data = newValue
@@ -113,7 +114,11 @@ class ImageRecognitionActivity : AppCompatActivity() {
                 // Positions 8 (pagaTotale) and 9 (pagaOraria) are calculated, not directly edited
             }
             updateUI()
-        }
+        },
+        onValidationChanged = {isValid ->
+            // Abilita o disabilita il save_button in base alla validità
+            findViewById<Button>(R.id.save_button).isEnabled = isValid}
+        )
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -295,25 +300,25 @@ class ImageRecognitionActivity : AppCompatActivity() {
                                 ocrUsesLeft--
                                 saveOcrUsesLeft() // Salva lo stato aggiornato
                                 updateFields() // Aggiorna i campi con i dati estratti
-                                Toast.makeText(this, "OCR completato con successo!", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(this, "OCR completato con successo!", Toast.LENGTH_SHORT).show()
                             }
                             OcrResultCode.FILE_TOO_LARGE -> {
                                 // Questo caso non dovrebbe verificarsi qui, ma lo lasciamo per completezza
                                 orderData = OrderData()
                                 updateFields()
-                                Toast.makeText(this, getString(R.string.ocr_too_large), Toast.LENGTH_LONG).show()
+//                                Toast.makeText(this, getString(R.string.ocr_too_large), Toast.LENGTH_LONG).show()
                                 Log.d("MainActivity", "Immagine troppo grande (controllo ridondante)")
                             }
                             OcrResultCode.IMAGE_LOAD_FAILED -> {
                                 orderData = OrderData()
                                 updateFields()
-                                Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
+//                                Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
                                 Log.e("MainActivity", "Errore caricamento immagine")
                             }
                             OcrResultCode.OCR_PROCESSING_FAILED -> {
                                 orderData = OrderData()
                                 updateFields()
-                                Toast.makeText(this, getString(R.string.ocr_processing_failed), Toast.LENGTH_LONG).show()
+//                                Toast.makeText(this, getString(R.string.ocr_processing_failed), Toast.LENGTH_LONG).show()
                                 Log.e("MainActivity", "Errore elaborazione OCR")
                             }
                         }
@@ -321,14 +326,14 @@ class ImageRecognitionActivity : AppCompatActivity() {
                 } else {
                     orderData = OrderData()
                     updateFields()
-                    Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
+//                    Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
                     Log.e("MainActivity", "InputStream nullo")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 orderData = OrderData()
                 updateFields()
-                Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, getString(R.string.ocr_load_failed), Toast.LENGTH_LONG).show()
                 Log.e("MainActivity", "Errore in startOCR: ${e.message}")
             }
         }

@@ -21,6 +21,7 @@ import com.android.billingclient.api.queryPurchasesAsync
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Locale
@@ -188,6 +189,61 @@ class BillingManager private constructor(
         }
     }
 
+    private fun parseToListOfMaps(data: Any?, fieldName: String): List<Map<String, Any>> {
+        if (data == null) {
+            Log.w("BillingManager", "$fieldName: Dati null, restituisco lista vuota")
+            return emptyList()
+        }
+
+        // Caso 1: Lista di mappe (formato atteso)
+        if (data is List<*>) {
+            val result = data.filterIsInstance<Map<String, Any>>()
+            if (result.size != data.size) {
+                Log.w("BillingManager", "$fieldName: Alcuni elementi non sono mappe valide: $data")
+            }
+            return result
+        }
+
+        // Caso 2: Stringa JSON
+        if (data is String) {
+            try {
+                // Prova a parsare come JSONArray
+                val jsonArray = JSONArray(data)
+                val result = mutableListOf<Map<String, Any>>()
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    result.add(jsonObject.toMap())
+                }
+                Log.d("BillingManager", "$fieldName: Parsato JSON in lista di mappe: $result")
+                return result
+            } catch (e: JSONException) {
+                Log.w("BillingManager", "$fieldName: Non è un JSON valido: $data, errore: ${e.message}")
+            }
+        }
+
+        // Caso 3: Stringa CSV
+        if (data is String && data.contains(";")) {
+            try {
+                val lines = data.split("\n").filter { it.isNotBlank() }
+                val result = lines.mapNotNull { line ->
+                    val pairs = line.split(";").map { it.split(",") }
+                    if (pairs.all { it.size == 2 }) {
+                        pairs.associate { it[0].trim() to it[1].trim() as Any }
+                    } else {
+                        null
+                    }
+                }
+                Log.d("BillingManager", "$fieldName: Parsato CSV in lista di mappe: $result")
+                return result
+            } catch (e: Exception) {
+                Log.w("BillingManager", "$fieldName: Errore parsing CSV: $data, errore: ${e.message}")
+            }
+        }
+
+        // Caso di fallback: formato non riconosciuto
+        Log.w("BillingManager", "$fieldName: Formato non riconosciuto: $data")
+        return emptyList()
+    }
     suspend fun querySubscriptions(callback: (List<SubscriptionModel>?, String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         val isNewSubscriber = isNewSubscriber()
@@ -234,7 +290,7 @@ class BillingManager private constructor(
                         val descriptionTranslated = getTranslatedField(descriptionJson, "description", productDetails)
 
                         // Recupera basePlans da Firestore
-                        val basePlansFromFirestore = document?.get("basePlans") as? List<Map<String, Any>> ?: emptyList()
+                        val basePlansFromFirestore = parseToListOfMaps(document?.get("basePlans"), "basePlans")
                         val basePlanMap = mutableMapOf<String, MutableList<OfferModel>>()
 
                         // Processa le offerte da Google Play Billing
@@ -255,9 +311,11 @@ class BillingManager private constructor(
                             }
 
                             // Recupera dati da Firestore per l'offerta, se presenti
-                            val firestoreOffers = basePlansFromFirestore.find { it["basePlanId"] == basePlanId }
-                                ?.get("offers") as? List<Map<String, Any>>
-                            val offerData = firestoreOffers?.find { it["offerId"] == offerId }
+                            val firestoreOffers = parseToListOfMaps(
+                                basePlansFromFirestore.find { it["basePlanId"] == basePlanId }?.get("offers"),
+                                "offers"
+                            )
+                            val offerData = firestoreOffers.find { it["offerId"] == offerId }
 
                             // Determina il template di descrizione
                             val descriptionTemplate = offerData?.get("descriptionTemplate")?.let {
@@ -368,7 +426,7 @@ class BillingManager private constructor(
             }
     }
 
-    fun getTranslatedField(field: Any?, fieldName: String, productDetails: ProductDetails?): String {
+    private fun getTranslatedField(field: Any?, fieldName: String, productDetails: ProductDetails?): String {
         Log.d("BillingManager", "Tentativo di estrarre campo $fieldName, valore: $field")
         when (field) {
             is String -> {

@@ -1,6 +1,7 @@
 package com.piero.deliveryearningtracker
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 data class FieldItem(val name: String, var value: String, val isDate: Boolean = false)
 
 class DataAdapter(
     private val fields: MutableList<FieldItem>,
-    private val onValueChanged: (Int, String) -> Unit
+    private val onValueChanged: (Int, String) -> Unit,
+    private val onValidationChanged: (Boolean) -> Unit // Nuovo callback
 ) : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,6 +38,29 @@ class DataAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val field = fields[position]
+
+        // Determina se il campo è invalido
+        val isInvalid = (position in listOf(1, 2, 3, 8, 9) && field.value == "0")
+        val context = holder.itemView.context
+
+        // Imposta il colore del testo per fieldName e fieldValue
+        val textColor = ContextCompat.getColor(
+            context,
+            if (isInvalid) android.R.color.holo_red_dark else R.color.text_color
+        )
+        holder.fieldName.setTextColor(textColor)
+        holder.fieldValue.setTextColor(textColor)
+
+        // Imposta il colore dell'icona del pulsante di modifica
+        if (isInvalid) {
+            holder.editButton.setColorFilter(
+                ContextCompat.getColor(context, android.R.color.holo_red_dark),
+                PorterDuff.Mode.SRC_IN
+            )
+        } else {
+            holder.editButton.clearColorFilter() // Ripristina il colore originale
+        }
+        updateSaveButtonState()
         holder.fieldName.text = field.name
         holder.fieldValue.text = field.value
         // Controlla la posizione e gestisci la visibilità del bottone "edit"
@@ -68,6 +94,24 @@ class DataAdapter(
             holder.confirmButton.visibility = View.GONE
             holder.cancelButton.visibility = View.GONE
             hideKeyboard(holder.fieldEdit)
+
+            // Aggiorna il colore del testo, dell'icona e dello sfondo dopo la modifica
+            val isInvalidAfterEdit = (position in listOf(1, 2, 3, 8, 9) && newValue == "0")
+            val updatedTextColor = ContextCompat.getColor(
+                context,
+                if (isInvalidAfterEdit) android.R.color.holo_red_dark else R.color.text_color
+            )
+            holder.fieldName.setTextColor(updatedTextColor)
+            holder.fieldValue.setTextColor(updatedTextColor)
+            if (isInvalidAfterEdit) {
+                holder.editButton.setColorFilter(
+                    ContextCompat.getColor(context, android.R.color.holo_red_dark),
+                    PorterDuff.Mode.SRC_IN
+                )
+            } else {
+                holder.editButton.clearColorFilter()
+            }
+            updateSaveButtonState()
         }
 
         holder.cancelButton.setOnClickListener {
@@ -90,5 +134,16 @@ class DataAdapter(
     private fun hideKeyboard(editText: EditText) {
         val imm = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(editText.windowToken, 0)
+    }
+
+    private fun updateSaveButtonState() {
+        // Controlla se almeno uno dei campi in posizione 8, 9 ha valore "0"
+        // o se almeno uno dei campi in posizione 1, 2, 3 ha valore "0"
+        val isInvalid = fields.getOrNull(8)?.value == "0" ||
+                fields.getOrNull(9)?.value == "0" ||
+                fields.getOrNull(1)?.value == "0" ||
+                fields.getOrNull(2)?.value == "0" ||
+                fields.getOrNull(3)?.value == "0"
+        onValidationChanged(!isInvalid) // True se valido (abilita bottone), False se non valido
     }
 }

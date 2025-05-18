@@ -1,18 +1,15 @@
 package com.piero.deliveryearningtracker
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import android.content.ContentValues
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
-import androidx.preference.PreferenceManager
-import androidx.core.content.edit
-import java.util.Calendar
 import java.util.UUID
 
 data class Totali(

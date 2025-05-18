@@ -21,7 +21,7 @@ class TrimestreActivity : AppCompatActivity() {
     private lateinit var spinnerTrimestre: Spinner
     private var trimestri: MutableList<String> = mutableListOf()
     private var adView: AdView? = null
-    private var dbHelper: DatabaseHelper = DatabaseHelper(this)
+    //private var dbHelper: DatabaseHelper = DatabaseHelper(this)
 
     override fun onDestroy() {
         AdManager.destroyBannerAd(adView)
