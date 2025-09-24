@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Contenitore per le CardView degli ordini candidati -->
+    <LinearLayout
+        android:id="@+id/strategy_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <!-- Contenitore per i pulsanti -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <!-- Pulsante Annulla -->
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multiapp_cancel"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_rounded_red"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:minWidth="88dp"
+            android:textAllCaps="false" />
+
+        <!-- Pulsante Conferma -->
+        <Button
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/multiapp_confirm"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_rounded_green"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:minWidth="88dp"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</LinearLayout>
