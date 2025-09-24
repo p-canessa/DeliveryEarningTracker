@@ -11,6 +11,9 @@
     <string name="paga_totale">Paga Totale (%s)</string>
     <string name="new_order">Nuovo Ordine</string>
     <string name="edit_order">Modifica Ordine</string>
+    <string name="provider">Provider</string>
+    <string name="pagato_contanti_ristorante">Pagato contanti al ristorante (%1$s)</string>
+    <string name="warning_double_order_time">Attenzione: il tempo impiegato potrebbe non includere tutte le consegne. Correggilo per calcoli corretti della paga oraria.</string>
     <string name="save">Salva</string>
     <string name="cancel">Annulla</string>
     <string name="delete_confirmation_title">Conferma Eliminazione</string>
@@ -213,4 +216,23 @@
     <string name="recurrence_monthly">Rinnovo mensile</string>
     <string name="offer_12_monthly_payments_template">%s/mese per 12 mesi</string>
     <string name="offer_monthly_template">%s/mese</string>
+
+    <string name="normale">Normale</string>
+    <string name="seriale">Seriale</string>
+    <string name="parallelo">Parallelo</string>
+    <string name="seriale_parallelo">Seriale/Parallelo</string>
+    <string name="start_time">Ora di Ricezione</string>
+    <string name="end_time">Ora di Consegna</string>
+    <string name="order_strategy">Strategia Ordine</string>
+    <string name="ristorante">Ristorante</string>
+    <string name="hint_ristorante">Es: La Cantina</string>
+    <string name="hint_start_time">Es: 12:25</string>
+    <string name="hint_end_time">Es: 12:47</string>
+    <!-- Stringhe per la dialog multiapp -->
+    <string name="multiapp_dialog_title">Ordine multiapp rilevato</string>
+    <string name="multiapp_card_title">Modalità rispetto a %1$s da %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Parallelo</string>
+    <string name="multiapp_serial">Seriale</string>
+    <string name="multiapp_confirm">Conferma</string>
+    <string name="multiapp_cancel">Annulla</string>
 </resources>

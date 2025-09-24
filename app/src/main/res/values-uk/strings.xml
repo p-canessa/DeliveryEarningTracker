@@ -217,4 +217,25 @@
     <string name="offer_monthly_template">%s/місяць</string>
     <string name="description_unavailable">Indisponibil</string>
     <string name="recurrence_unknown">Necunoscut</string>
+
+    <string name="normale">Звичайний</string>
+    <string name="seriale">Послідовний</string>
+    <string name="parallelo">Паралельний</string>
+    <string name="seriale_parallelo">Послідовний/Паралельний</string>
+    <string name="start_time">Час отримання</string>
+    <string name="end_time">Час доставки</string>
+    <string name="order_strategy">Стратегія замовлення</string>
+    <string name="ristorante">Ресторан</string>
+    <string name="hint_ristorante">Напр.: La Cantina</string>
+    <string name="hint_start_time">Напр.: 12:25</string>
+    <string name="hint_end_time">Напр.: 12:47</string>
+    <string name="provider">Постачальник</string>
+    <string name="pagato_contanti_ristorante">Сплачено готівкою в ресторані (%1$s)</string>
+    <string name="warning_double_order_time">Попередження: Використаний час може не включати всі доставки. Виправте для точного розрахунку погодинної оплати.</string>
+    <string name="multiapp_dialog_title">Виявлено замовлення мультиапп</string>
+    <string name="multiapp_card_title">Режим щодо %1$s з %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Паралельний</string>
+    <string name="multiapp_serial">Послідовний</string>
+    <string name="multiapp_confirm">Підтвердити</string>
+    <string name="multiapp_cancel">Скасувати</string>
 </resources>

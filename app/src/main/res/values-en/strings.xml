@@ -221,4 +221,25 @@
     <string name="offer_12_monthly_payments_template">%s/month for 12 months</string>
     <string name="offer_monthly_template">%s/month</string>
 
+    <string name="normale">Normal</string>
+    <string name="seriale">Serial</string>
+    <string name="parallelo">Parallel</string>
+    <string name="seriale_parallelo">Serial/Parallel</string>
+
+    <string name="start_time">Pick-up Time</string>
+    <string name="end_time">Delivery Time</string>
+    <string name="order_strategy">Order Strategy</string>
+    <string name="ristorante">Restaurant</string>
+    <string name="hint_ristorante">E.g., La Cantina</string>
+    <string name="hint_start_time">E.g., 12:25</string>
+    <string name="hint_end_time">E.g., 12:47</string>
+    <string name="provider">Provider</string>
+    <string name="pagato_contanti_ristorante">Paid in cash at the restaurant (%1$s)</string>
+    <string name="warning_double_order_time">Warning: The time used may not include all deliveries. Correct it for accurate hourly pay calculations.</string>
+    <string name="multiapp_dialog_title">Multiapp order detected</string>
+    <string name="multiapp_card_title">Mode relative to %1$s from %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Parallel</string>
+    <string name="multiapp_serial">Serial</string>
+    <string name="multiapp_confirm">Confirm</string>
+    <string name="multiapp_cancel">Cancel</string>
 </resources>

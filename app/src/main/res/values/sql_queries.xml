@@ -14,6 +14,11 @@
             TempoImpiegato INTEGER NOT NULL DEFAULT 1 CHECK(TempoImpiegato > 0),
             PagaTotale REAL NOT NULL DEFAULT 0,
             PagaOraria REAL NOT NULL DEFAULT 0,
+            StartTime TEXT DEFAULT \'00:00:00\',
+            EndTime TEXT DEFAULT \'00:00:00\',
+            OrderStrategy INTEGER DEFAULT 0,
+            BatchMasterOrderID INTEGER DEFAULT NULL,
+            ristorante TEXT DEFAULT NULL,
             FOREIGN KEY(ProviderID) REFERENCES Providers(ID)
         )
     </string>
@@ -71,8 +76,53 @@
         )
     </string>
     <string name="Populate_Providers" translatable="false">
-        INSERT OR IGNORE INTO Providers (ID, Name) VALUES (1, \'Deliveroo\')
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (1, \'Deliveroo\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (2, \'Glovo\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (3, \'Justeat\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (4, \'Uber Eats\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (5, \'Foodora\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (6, \'FoodPanda\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (7, \'Delivery Hero\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (8, \'Rappi\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (9, \'Grab\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (10, \'Instacart\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (11, \'Grubhub\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (12, \'DoorDash\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (13, \'Wolt\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (14, \'Zomato\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (15, \'Bolt Food\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (16, \'Pyszne.pl\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (17, \'Lieferando\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (18, \'Mat.se\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (19, \'Talabat\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (20, \'iFood\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (21, \'PedidosYa\');
+    	INSERT OR IGNORE INTO Providers (ID, Name) VALUES (22, \'Yemeksepeti\');
     </string>
+    <string name="Providers_List" translatable="false"><![CDATA[
+1,Deliveroo
+2,Glovo
+3,Justeat
+4,Uber Eats
+5,Foodora
+6,FoodPanda
+7,Delivery Hero
+8,Rappi
+9,Grab
+10,Instacart
+11,Grubhub
+12,DoorDash
+13,Wolt
+14,Zomato
+15,Bolt Food
+16,Pyszne.pl
+17,Lieferando
+18,Mat.se
+19,Talabat
+20,iFood
+21,PedidosYa
+22,Yemeksepeti
+]]></string>
     <string name="Temporary_ordini" translatable="false">
         CREATE TABLE "ordini_new" (
             "ID" INTEGER,
@@ -114,14 +164,13 @@
     <string name="Drop_orddini" translatable="false">DROP TABLE "ordini"</string>
     <string name="Rename_ordini" translatable="false">ALTER TABLE "ordini_new" RENAME TO "ordini"</string>
     <string name="Get_Orders_Since_Id" translatable="false">
-    SELECT
-        ID,
-        NumeroOrdini,
-        PagaOraria
-    FROM ordini
-    WHERE ID > ?
+        SELECT
+            ID,
+            NumeroOrdini,
+            PagaOraria
+        FROM ordini
+        WHERE ID > ?
     </string>
     <string name="Table_InviteCode" translatable="false">CREATE TABLE IF NOT EXISTS InviteCode (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT UNIQUE NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)</string>
     <string name="Table_Subscriptions" translatable="false">CREATE TABLE IF NOT EXISTS Subscriptions (id INTEGER PRIMARY KEY AUTOINCREMENT, start_date TIMESTAMP NOT NULL, end_date TIMESTAMP NOT NULL, active BOOLEAN DEFAULT 1)</string>
-
 </resources>

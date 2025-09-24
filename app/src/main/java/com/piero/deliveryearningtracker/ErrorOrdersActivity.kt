@@ -1,6 +1,7 @@
 package com.piero.deliveryearningtracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ class ErrorOrdersActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
         recyclerView = findViewById(R.id.orders_recycler_view)
-        orderAdapter = OrderAdapter()
+        orderAdapter = OrderAdapter(dbHelper)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = orderAdapter
 
@@ -26,16 +27,17 @@ class ErrorOrdersActivity : AppCompatActivity() {
         val year = intent.getIntExtra("year", 2023)
 
         val sqlClause = when (errorType) {
-            "compenso", "entrambi" -> "WHERE Data = '$date'"
-            "mancia_minore" -> "WHERE strftime('%m', Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', Data) = '$year' AND (Mancia = ManciaContanti)"
-            "mancia_maggiore" -> "WHERE strftime('%m', Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', Data) = '$year' AND (Mancia != ManciaContanti)"
-            "contanti_maggiore" -> "WHERE strftime('%m', Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', Data) = '$year' AND RiscossiContanti > 0"
-            "contanti_minore" -> "WHERE strftime('%m', Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', Data) = '$year' AND RiscossiContanti = 0"
+            "compenso", "entrambi" -> "WHERE o.Data = '$date'"
+            "mancia_minore" -> "WHERE strftime('%m', o.Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', o.Data) = '$year' AND (o.Mancia = o.ManciaContanti)"
+            "mancia_maggiore" -> "WHERE strftime('%m', o.Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', o.Data) = '$year' AND (o.Mancia != o.ManciaContanti)"
+            "contanti_maggiore" -> "WHERE strftime('%m', o.Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', o.Data) = '$year' AND o.RiscossiContanti > 0"
+            "contanti_minore" -> "WHERE strftime('%m', o.Data) = '${month.toString().padStart(2, '0')}' AND strftime('%Y', o.Data) = '$year' AND o.RiscossiContanti = 0"
             else -> ""
         }
 
-        val orderIds = dbHelper.getOrderIds(sqlClause)
-        orderAdapter.updateOrders(orderIds)
+        val orders = dbHelper.getOrders(sqlClause)
+        Log.d("ErrorOrdersActivity", "Ordini trovati: $orders")
+        orderAdapter.updateOrders(orders, sqlClause)
 
         // Aggiorna i totali nella RiconciliazioneActivity quando un ordine viene salvato o eliminato
         orderAdapter.setOnOrderSavedListener { finish() }

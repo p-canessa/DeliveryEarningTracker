@@ -33,9 +33,39 @@ import java.util.UUID
 import androidx.core.content.edit
 import androidx.core.net.toUri
 
+/**
+ * MainActivity is the primary entry point of the delivery earnings tracking app. It serves as the main
+ * dashboard for riders to view and manage their delivery orders and earnings from multiple providers
+ * (Deliveroo and Glovo). Key features include:
+ * - Displaying a list of orders with provider-specific headers using a RecyclerView.
+ * - Showing aggregated totals (base pay, extra pay, tips, etc.) for a selected date range.
+ * - Providing navigation to export data, import PDFs, view monthly statements, and access settings.
+ * - Managing ads and subscriptions via AdManager and BillingManager.
+ * - Handling anonymous statistics upload if enabled.
+ * - Supporting referral tracking via InstallReferrerClient.
+ *
+ * External Dependencies:
+ * - Layout: res/layout/activity_main.xml (UI components like RecyclerView, buttons, and drawer).
+ * - Menu: res/menu/menu_main.xml (options menu for help action).
+ * - Classes: DatabaseHelper, OrderAdapter, DateRangeSelector, OrderItemView, AdManager,
+ *   BillingManager, CurrencyFormatter, MyApplication.
+ * - Utilities: utils.kt (sendAnonymousStats, scheduleStatsUpload).
+ * - Libraries: Firebase Firestore, Google Mobile Ads, InstallReferrerClient.
+ * - SharedPreferences: Default preferences for settings (night_mode, currency_symbol, share_anonymous_stats).
+ *
+ * Design Choices:
+ * - Uses a DrawerLayout for navigation to keep the UI clean and accessible.
+ * - Integrates multiple providers (Deliveroo, Glovo) by leveraging DatabaseHelper to store
+ *   provider-specific data and OrderAdapter to display provider-based order grouping.
+ * - Implements a subscription-based ad removal system to enhance user experience.
+ * - Ensures robust error handling for database and ad operations to prevent crashes.
+ */
 class MainActivity : AppCompatActivity() {
+    // Database helper for accessing order and provider data
     private lateinit var dbHelper: DatabaseHelper
+    // Custom view for selecting date ranges (day, week, month)
     private lateinit var dateRangeSelector: DateRangeSelector
+    // TextViews for displaying aggregated totals
     private lateinit var totalPagaBase: TextView
     private lateinit var totalPagaExtra: TextView
     private lateinit var totalMancia: TextView
@@ -43,18 +73,29 @@ class MainActivity : AppCompatActivity() {
     private lateinit var totalNumeroOrdini: TextView
     private lateinit var totalTempoImpiegato: TextView
     private lateinit var totalPagaOraria: TextView
+    // RecyclerView for displaying orders grouped by provider
     private lateinit var recyclerView: RecyclerView
+    // Adapter for managing order list with provider headers
     private lateinit var orderAdapter: OrderAdapter
+    // Buttons for adding orders manually or via OCR
     private lateinit var addOrderButton: Button
     private lateinit var addOrderButtonOCR: Button
+    // Drawer layout for navigation menu
     private lateinit var drawerLayout: DrawerLayout
+    // SharedPreferences for storing user settings
     private lateinit var sharedPref: SharedPreferences
+    // Listener for preference changes (e.g., currency symbol)
     private var preferenceListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
+    // AdView for displaying banner ads
     private var adView: AdView? = null
-
+    // InstallReferrerClient for tracking referral codes
     private lateinit var referrerClient: InstallReferrerClient
 
-    // Listener per aggiornamenti dello stato degli annunci
+    /**
+     * Listener for subscription updates from BillingManager.
+     * Updates ad visibility based on subscription status.
+     * Dependencies: AdManager, BillingManager.
+     */
     private val subscriptionListener: (Boolean, String?) -> Unit = { isSubscribed, message ->
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView)
@@ -66,11 +107,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Initializes the activity, setting up the UI, database, ads, and navigation.
+     * Applies night mode based on user preference and initializes key components.
+     * Dependencies: MyApplication, DatabaseHelper, CurrencyFormatter, AdManager, BillingManager,
+     * utils.kt (sendAnonymousStats, scheduleStatsUpload), activity_main.xml.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Load user preferences for night mode
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         val nightModeEnabled = sharedPref.getBoolean("night_mode", false)
 
-        // Imposta il modo notte prima di caricare il layout
+        // Apply night mode before loading the layout
         AppCompatDelegate.setDefaultNightMode(
             if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
@@ -78,9 +126,10 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // Inizializza DatabaseHelper da MyApplication
+        // Initialize DatabaseHelper from MyApplication
         dbHelper = (application as MyApplication).dbHelper
 
+        // Register listener for currency symbol changes
         preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == "currency_symbol") {
                 CurrencyFormatter.initialize(this)
@@ -90,20 +139,24 @@ class MainActivity : AppCompatActivity() {
         }
         sharedPref.registerOnSharedPreferenceChangeListener(preferenceListener)
 
+        // Set the main layout
         setContentView(R.layout.activity_main)
+        // Check for referral codes
         checkInstallReferrer()
 
+        // Initialize Google Mobile Ads
         MobileAds.initialize(this) {
             Log.d("AdMob", "Inizializzazione completata")
         }
 
-        // Registra il listener (solo tramite getInstance)
+        // Register subscription listener
         BillingManager.getInstance(this).addSubscriptionListener(subscriptionListener)
 
-        // Controlla lo stato degli annunci
+        // Set up banner ads
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView)
 
+        // Schedule anonymous stats upload if enabled
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
         val isStatsEnabled = sharedPrefs.getBoolean("share_anonymous_stats", false)
         if (isStatsEnabled) {
@@ -111,6 +164,7 @@ class MainActivity : AppCompatActivity() {
             scheduleStatsUpload(this)
         }
 
+        // Initialize add order buttons and ensure consistent height
         addOrderButton = findViewById(R.id.add_order_button)
         addOrderButtonOCR = findViewById(R.id.add_order_button_OCR)
         addOrderButton.post {
@@ -139,11 +193,11 @@ class MainActivity : AppCompatActivity() {
             addOrderButtonOCR.requestLayout()
         }
 
-        // Inizializza la Toolbar
+        // Set up the toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Inizializza il DrawerLayout
+        // Initialize the navigation drawer
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -154,7 +208,7 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Gestione delle selezioni del menu
+        // Handle navigation menu item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_csv_export -> {
@@ -186,7 +240,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_anno -> {
                     startActivity(Intent(this, AnnoActivity::class.java))
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    drawerLayout.closeDrawer(GravityCompat.END)
                     true
                 }
                 R.id.nav_riconciliazione -> {
@@ -198,6 +252,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Initialize UI components
         dateRangeSelector = findViewById(R.id.date_range_selector)
         totalPagaBase = findViewById(R.id.total_paga_base)
         totalPagaBase.text = getString(R.string.total_paga_base)
@@ -213,18 +268,20 @@ class MainActivity : AppCompatActivity() {
         totalTempoImpiegato.text = getString(R.string.total_tempo_impiegato)
         totalPagaOraria = findViewById(R.id.total_paga_oraria)
         totalPagaOraria.text = getString(R.string.total_paga_oraria)
+        // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.orders_recycler_view)
-
-        orderAdapter = OrderAdapter()
+        orderAdapter = OrderAdapter(dbHelper)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = orderAdapter
         recyclerView.isNestedScrollingEnabled = true
         Log.d("RecyclerDebug", "RecyclerView configurato")
 
+        // Log RecyclerView height
         recyclerView.post {
-            Log.d("RecyclerDebug", "Altezza RecyclerView: ${recyclerView.height}")
+            Log.d("RecyclerDebug", "Height: ${recyclerView.height}")
         }
 
+        // Set date range change listener to refresh data
         dateRangeSelector.setOnChangeListener(object : DateRangeSelector.OnChangeListener {
             override fun onChange() {
                 updateTotals()
@@ -232,6 +289,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        // Set up manual order addition
         addOrderButton.setOnClickListener {
             val orderItemView = OrderItemView(this)
             orderItemView.setOnOrderSavedListener {
@@ -241,29 +299,36 @@ class MainActivity : AppCompatActivity() {
             orderItemView.showEditDialog()
         }
 
+        // Set up OCR-based order addition
         addOrderButtonOCR.setOnClickListener {
             startActivity(Intent(this, ImageRecognitionActivity::class.java))
         }
 
+        // Set order deletion listener
         orderAdapter.setOnOrderDeletedListener {
             updateTotals()
             updateOrderList()
         }
 
+        // Set order saved listener
         orderAdapter.setOnOrderSavedListener {
             updateTotals()
             updateOrderList()
         }
 
+        // Initial data load
         updateTotals()
         updateOrderList()
     }
 
+    /**
+     * Resumes the activity, refreshing ads and data.
+     * Dependencies: AdManager, BillingManager.
+     */
     override fun onResume() {
         super.onResume()
         Log.d("MainActivity", "onResume chiamato")
         AdManager.resumeBannerAd(adView)
-        // Forza una verifica dello stato
         BillingManager.getInstance(this).checkSubscription()
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView)
@@ -271,28 +336,42 @@ class MainActivity : AppCompatActivity() {
         updateOrderList()
     }
 
+    /**
+     * Cleans up resources when the activity is destroyed.
+     * Dependencies: AdManager, BillingManager.
+     */
     override fun onDestroy() {
         Log.d("MainActivity", "onDestroy chiamato")
-        // Rimuovi il listener
         BillingManager.getInstance(this).removeSubscriptionListener(subscriptionListener)
         AdManager.destroyBannerAd(adView)
         adView = null
-
         sharedPref.unregisterOnSharedPreferenceChangeListener(preferenceListener)
         referrerClient.endConnection()
         super.onDestroy()
     }
 
+    /**
+     * Pauses banner ads when the activity is paused.
+     * Dependencies: AdManager.
+     */
     override fun onPause() {
         AdManager.pauseBannerAd(adView)
         super.onPause()
     }
 
+    /**
+     * Inflates the options menu.
+     * Dependencies: menu_main.xml.
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    /**
+     * Handles options menu item selections.
+     * Launches HelpActivity for the help action.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_help -> {
@@ -305,26 +384,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Updates the order list in the RecyclerView based on the selected date range.
+     * Queries DatabaseHelper for orders and updates OrderAdapter.
+     * Dependencies: DatabaseHelper, OrderAdapter, DateRangeSelector.
+     * Design Choice: Groups orders by provider (Deliveroo, Glovo) for clarity.
+     */
     private fun updateOrderList() {
         try {
-            val sqlClause = dateRangeSelector.getSqlClause("Data")
-            Log.d("RecyclerDebug", "Clausola SQL: $sqlClause")
-            val orderIds = dbHelper.getOrderIds(sqlClause)
-            Log.d("RecyclerDebug", "ID trovati: $orderIds")
-            orderAdapter.updateOrders(orderIds)
+            val sqlClause = dateRangeSelector.getSqlClause("o.Data")
+            Log.d("RecyclerDebug", "SQL Clause: $sqlClause}")
+            val orders = dbHelper.getOrders(sqlClause)
+            Log.d("RecyclerDebug", "Orders Found: $orders")
+            orderAdapter.updateOrders(orders, sqlClause)
         } catch (e: Exception) {
-            Log.e("MainActivity", "Errore durante l'aggiornamento della lista ordini: ${e.message}", e)
-            orderAdapter.updateOrders(emptyList())
+            Log.e("MainActivity", "Error updating order list: ${e.message}", e)
+            orderAdapter.updateOrders(emptyList(), "")
         }
     }
 
+    /**
+     * Converts minutes to a formatted string (e.g., "2h 30m").
+     * @param minutes Total minutes to convert.
+     * @return Formatted time string.
+     */
     private fun convertMinutesToHoursMinutes(minutes: Int): String {
         val hours = minutes / 60
         val remainingMinutes = minutes % 60
-        return if (minutes > 60) getString(R.string.time_format_hours_minutes, hours, remainingMinutes)
-        else getString(R.string.time_format_minutes, minutes)
+        return if (minutes > 60) {
+            getString(R.string.time_format_hours_minutes, hours, remainingMinutes)
+        } else {
+            getString(R.string.time_format_minutes, minutes)
+        }
     }
-
+    /**
+     * Updates the totals displayed in TextViews based on the selected date range.
+     * Dependencies: DatabaseHelper, CurrencyFormatter, DateRangeSelector.
+     * Design Choice: Shows both total and cash amounts for transparency.
+     */
     @SuppressLint("SetTextI18n")
     private fun updateTotals() {
         try {
@@ -363,10 +460,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Retrieves the ID of the latest monthly summary.
+     * Dependencies: DatabaseHelper.
+     */
     private fun getDefaultSummaryId(): Int {
         return dbHelper.getLatestSummaryId()
     }
 
+    /**
+     * Checks for referral codes using InstallReferrerClient and registers them in Firestore.
+     * Dependencies: Firebase Firestore, InviteManager.
+     */
     private fun checkInstallReferrer() {
         referrerClient = InstallReferrerClient.newBuilder(this).build()
         referrerClient.startConnection(object : InstallReferrerStateListener {
@@ -396,6 +501,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Registers a referral code in Firestore.
+     * Dependencies: Firebase Firestore, InviteManager.
+     */
     private fun registerInvite(codiceAmico: String) {
         val deviceId = InviteManager.getDeviceId(this)
         Firebase.firestore.collection("invites")
@@ -415,6 +524,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Manages device ID generation and storage for referral tracking.
+ * Dependencies: SharedPreferences ("AppPrefs").
+ */
 object InviteManager {
     fun getDeviceId(context: Context): String {
         val prefs = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)

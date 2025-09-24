@@ -213,4 +213,24 @@
     <string name="offer_monthly_template">%s/mois</string>
     <string name="description_unavailable">Non disponible</string>
     <string name="recurrence_unknown">Inconnu</string>
+    <string name="normale">Normal</string>
+    <string name="seriale">Série</string>
+    <string name="parallelo">Parallèle</string>
+    <string name="seriale_parallelo">Série/Parallèle</string>
+    <string name="start_time">Heure de prise en charge</string>
+    <string name="end_time">Heure de livraison</string>
+    <string name="order_strategy">Stratégie de commande</string>
+    <string name="ristorante">Restaurant</string>
+    <string name="hint_ristorante">Ex. : La Cantina</string>
+    <string name="hint_start_time">Ex. : 12:25</string>
+    <string name="hint_end_time">Ex. : 12:47</string>
+    <string name="provider">Fournisseur</string>
+    <string name="pagato_contanti_ristorante">Payé en espèces au restaurant (%1$s)</string>
+    <string name="warning_double_order_time">Attention : Le temps utilisé peut ne pas inclure toutes les livraisons. Corrigez-le pour des calculs précis du salaire horaire.</string>
+    <string name="multiapp_dialog_title">Commande multiapp détectée</string>
+    <string name="multiapp_card_title">Mode par rapport à %1$s de %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Parallèle</string>
+    <string name="multiapp_serial">Série</string>
+    <string name="multiapp_confirm">Confirmer</string>
+    <string name="multiapp_cancel">Annuler</string>
 </resources>

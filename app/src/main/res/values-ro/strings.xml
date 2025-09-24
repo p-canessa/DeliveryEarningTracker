@@ -213,4 +213,25 @@
     <string name="offer_monthly_template">%s/lună</string>
     <string name="description_unavailable">Indisponibil</string>
     <string name="recurrence_unknown">Necunoscut</string>
+
+    <string name="normale">Normal</string>
+    <string name="seriale">Serial</string>
+    <string name="parallelo">Paralel</string>
+    <string name="seriale_parallelo">Serial/Paralel</string>
+    <string name="start_time">Ora preluării</string>
+    <string name="end_time">Ora livrării</string>
+    <string name="order_strategy">Strategie comandă</string>
+    <string name="ristorante">Restaurant</string>
+    <string name="hint_ristorante">Ex.: La Cantina</string>
+    <string name="hint_start_time">Ex.: 12:25</string>
+    <string name="hint_end_time">Ex.: 12:47</string>
+    <string name="provider">Furnizor</string>
+    <string name="pagato_contanti_ristorante">Plătit cash la restaurant (%1$s)</string>
+    <string name="warning_double_order_time">Atenție: Timpul utilizat poate să nu includă toate livrările. Corectează-l pentru calcule precise ale salariului orar.</string>
+    <string name="multiapp_dialog_title">Comandă multiapp detectată</string>
+    <string name="multiapp_card_title">Mod față de %1$s de la %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Paralel</string>
+    <string name="multiapp_serial">Serial</string>
+    <string name="multiapp_confirm">Confirmă</string>
+    <string name="multiapp_cancel">Anulează</string>
 </resources>

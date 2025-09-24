@@ -210,4 +210,24 @@
     <string name="offer_monthly_template">%s/hónap</string>
     <string name="description_unavailable">Nem elérhető</string>
     <string name="recurrence_unknown">Ismeretlen</string>
+    <string name="normale">Normál</string>
+    <string name="seriale">Soros</string>
+    <string name="parallelo">Párhuzamos</string>
+    <string name="seriale_parallelo">Soros/Párhuzamos</string>
+    <string name="start_time">Átvétel ideje</string>
+    <string name="end_time">Kiszállítás ideje</string>
+    <string name="order_strategy">Rendelési stratégia</string>
+    <string name="ristorante">Étterem</string>
+    <string name="hint_ristorante">Pl.: La Cantina</string>
+    <string name="hint_start_time">Pl.: 12:25</string>
+    <string name="hint_end_time">Pl.: 12:47</string>
+    <string name="provider">Szolgáltató</string>
+    <string name="pagato_contanti_ristorante">Készpénzzel fizetve az étteremben (%1$s)</string>
+    <string name="warning_double_order_time">Figyelmeztetés: Az eltöltött idő nem feltétlenül tartalmazza az összes kiszállítást. Javítsd ki a pontos órabér kiszámításához.</string>
+    <string name="multiapp_dialog_title">Többalkalmazásos rendelés észlelve</string>
+    <string name="multiapp_card_title">Mód a %1$s-tól %2$s (%3$s–%4$s)</string>
+    <string name="multiapp_parallel">Párhuzamos</string>
+    <string name="multiapp_serial">Soros</string>
+    <string name="multiapp_confirm">Megerősítés</string>
+    <string name="multiapp_cancel">Mégse</string>
 </resources>

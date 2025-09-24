@@ -35,6 +35,22 @@
                 android:text="@string/orders"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/seriale_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_chain"
+                android:contentDescription="Ordine seriale"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/parallelo_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_parallel_lines"
+                android:contentDescription="Ordine parallelo"
+                android:visibility="gone" />
+
 
             <TextView
                 android:id="@+id/paga_totale"

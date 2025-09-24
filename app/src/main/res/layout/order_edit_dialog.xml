@@ -37,6 +37,52 @@
                 android:gravity="center" />
         </LinearLayout>
 
+        <!-- Campo Ristorante -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ristorante"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/ristorante_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:hint="@string/hint_ristorante" />
+        </LinearLayout>
+
+        <!-- Campo Provider -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/provider"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <Spinner
+                android:id="@+id/provider_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@android:drawable/edit_text"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
         <!-- Campo Paga Base -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,6 +101,7 @@
                 android:id="@+id/paga_base_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
@@ -79,6 +126,7 @@
                 android:id="@+id/riscossi_contanti_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
@@ -103,6 +151,7 @@
                 android:id="@+id/paga_extra_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
@@ -127,11 +176,13 @@
                 android:id="@+id/mancia_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,11 +200,13 @@
                 android:id="@+id/mancia_contanti_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
+
         <!-- Campo Numero Ordini -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,6 +224,7 @@
                 android:id="@+id/numero_ordini_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="number"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
@@ -194,11 +248,87 @@
                 android:id="@+id/tempo_impiegato_edit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:background="@android:drawable/edit_text"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:hint="@string/hint_tempo_impiegato" />
+        </LinearLayout>
+
+        <!-- Campo StartTime -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_time"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/start_time_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:hint="@string/hint_start_time" />
+        </LinearLayout>
+
+        <!-- Campo EndTime -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_time"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <EditText
+                android:id="@+id/end_time_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:background="@android:drawable/edit_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:hint="@string/hint_end_time" />
+        </LinearLayout>
+
+        <!-- Campo strategia (solo visualizzazione) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:layoutDirection="locale" >
+            <TextView
+                android:id="@+id/order_strategy_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_strategy"
+                android:textStyle="bold"
+                android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/strategy_text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@android:drawable/edit_text"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="" />
         </LinearLayout>
 
         <!-- Campo Paga Totale (solo visualizzazione) -->
@@ -225,6 +355,7 @@
                 android:gravity="center"
                 android:text="" />
         </LinearLayout>
+
         <!-- Spazio extra per la tastiera -->
         <Space
             android:layout_width="match_parent"
