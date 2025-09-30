@@ -54,7 +54,7 @@ class ExportActivity : AppCompatActivity() {
         editTextStartDate = findViewById(R.id.editTextStartDate)
         editTextEndDate = findViewById(R.id.editTextEndDate)
         buttonExport = findViewById(R.id.buttonExport)
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
 
         // Listener per aprire il DatePickerDialog
         editTextStartDate.setOnClickListener { showDatePickerDialog(editTextStartDate) }

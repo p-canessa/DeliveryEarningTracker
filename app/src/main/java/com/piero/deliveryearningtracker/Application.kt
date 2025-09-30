@@ -14,7 +14,7 @@ class MyApplication : Application() {
         Log.d("MyApplication", "Inizializzazione applicazione")
 
         CurrencyFormatter.initialize(this)
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
         dbHelper.initializeDatabase()
 //        billingManager = BillingManager.getInstance(this)
         BillingManager.getInstance(this).initialize()

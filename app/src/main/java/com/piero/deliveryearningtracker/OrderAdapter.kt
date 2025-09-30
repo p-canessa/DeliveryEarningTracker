@@ -8,8 +8,6 @@ import android.widget.TextView
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter // Added import
 
 sealed class OrderListItem {
     data class Header (
@@ -39,8 +37,11 @@ class OrderAdapter(
         private const val VIEW_TYPE_ORDER = 1
     }
     private var items: List<OrderListItem> = emptyList()
+    private var currentOrders: List<Order> = emptyList() // Cache ordini per refresh
+    private var currentSqlClause: String = "" // Cache SQL clause
     private var onOrderSavedListener: (() -> Unit)? = null
     private var onOrderDeletedListener: (() -> Unit)? = null
+    private var onHeaderClickListener: ((Int) -> Unit)? = null // Listener per notificare toggle
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
@@ -54,7 +55,7 @@ class OrderAdapter(
             VIEW_TYPE_HEADER -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_header, parent, false)
-                HeaderViewHolder(view) // Pass the root View (LinearLayout)
+                HeaderViewHolder(view, ::toggleProviderVisibility)
             }
             VIEW_TYPE_ORDER -> {
                 val orderItemView = OrderItemView(parent.context)
@@ -84,24 +85,48 @@ class OrderAdapter(
     override fun getItemCount(): Int = items.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateOrders(orders: List<Order>, sqlClause: String) {
-        items = buildSectionedList(orders, sqlClause)
+    fun updateOrders(orders: List<Order>, sqlClause: String, visibilityMap: Map<Int, Boolean> = emptyMap()) {
+        currentOrders = orders // Cache ordini
+        currentSqlClause = sqlClause // Cache SQL clause
+        items = buildSectionedList(orders, sqlClause, visibilityMap)
         Log.d("OrderAdapter", "Items generati: $items")
         notifyDataSetChanged()
     }
 
-    private fun buildSectionedList(orders: List<Order>, sqlClause: String): List<OrderListItem> {
+    private fun buildSectionedList(orders: List<Order>, sqlClause: String, visibilityMap: Map<Int, Boolean>): List<OrderListItem> {
         val result = mutableListOf<OrderListItem>()
-        val summaries = databaseAdapter.getProviderSummaries(sqlClause) // This should now return Headers with startTime and endTime
+        val summaries = databaseAdapter.getProviderSummaries(sqlClause)
         Log.d("OrderAdapter", "Summaries: $summaries")
         val groupedOrders = orders.groupBy { it.providerId }
         Log.d("OrderAdapter", "Ordini raggruppati: $groupedOrders")
         for (summary in summaries) {
-            result.add(summary) // summary is a Header, now containing startTime and endTime
-            val providerOrders = groupedOrders[summary.providerId] ?: emptyList()
-            result.addAll(providerOrders.map { OrderListItem.OrderItem(it.id, it.providerId, it.providerName) }) // OrderItem no longer takes startTime, endTime
+            result.add(summary)
+            // Includi ordini solo se visibilityMap è vuota o se il provider è visibile
+            if (visibilityMap[summary.providerId] != false) {
+                val providerOrders = groupedOrders[summary.providerId] ?: emptyList()
+                result.addAll(providerOrders.map {
+                    OrderListItem.OrderItem(it.id, it.providerId, it.providerName)
+                })
+            }
         }
         return result
+    }
+
+    private fun toggleProviderVisibility(providerId: Int) {
+        // Notifica l'Activity del toggle, passando il providerId
+        onHeaderClickListener?.invoke(providerId)
+
+        // Calcola il range di item da aggiornare (per aggiornare l'icona di toggle)
+        var startPosition = -1
+        for (i in items.indices) {
+            if (items[i] is OrderListItem.Header && (items[i] as OrderListItem.Header).providerId == providerId) {
+                startPosition = i
+                break
+            }
+        }
+        if (startPosition >= 0) {
+            notifyItemRangeChanged(startPosition, 1) // Aggiorna solo l'header per l'icona
+        }
     }
 
     fun setOnOrderSavedListener(listener: () -> Unit) {
@@ -112,11 +137,23 @@ class OrderAdapter(
         onOrderDeletedListener = listener
     }
 
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun setOnHeaderClickListener(listener: (Int) -> Unit) {
+        onHeaderClickListener = listener
+    }
+
+    class HeaderViewHolder(itemView: View, private val onHeaderClick: (Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val headerTextView: TextView = itemView.findViewById(R.id.header_text)
         private val statsContainer: LinearLayout = itemView.findViewById(R.id.stats_container)
 
+        init {
+            itemView.setOnClickListener {
+                val header = itemView.tag as? OrderListItem.Header
+                Log.d("OrderAdapter", "Header clicked, providerId: ${header?.providerId}")
+                header?.let { onHeaderClick(it.providerId) }
+            }
+        }
         fun bind(header: OrderListItem.Header) {
+            itemView.tag = header
             headerTextView.text = header.providerName
             statsContainer.removeAllViews()
             val context = itemView.context

@@ -63,7 +63,7 @@ class TrimestreActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed() // Torna all'activity precedente
         }
         spinnerTrimestre = findViewById(R.id.spinner_trimestre)
-        val dbHelper = DatabaseHelper(this)
+        val dbHelper = DatabaseHelper.getInstance(this)
         // Popola lo Spinner con i trimestri
         trimestri.addAll(generaTrimestriIniziali())
         trimestri.add("Altri...")

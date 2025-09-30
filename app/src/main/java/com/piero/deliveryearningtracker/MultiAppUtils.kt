@@ -16,31 +16,31 @@ object MultiAppUtils {
         context: Context,
         order: OrderData,
         candidates: List<CandidateOrder>,
-        dbHelper: DatabaseHelper,
-        onConfirm: (Int, Map<Long, Int>) -> Unit
+        onStrategySelected: (Int, Map<Long, Int>) -> Unit,
+        onCancel: () -> Unit = {}
     ) {
         val dialogBuilder = AlertDialog.Builder(context)
         dialogBuilder.setTitle(context.getString(R.string.multiapp_dialog_title))
 
-        // Crea un layout per la dialog
+        // Create dialog layout
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_multiapp, null)
         val container = dialogView.findViewById<LinearLayout>(R.id.strategy_container)
 
-        // Mappa per memorizzare le strategie selezionate per ogni ordine candidato
+        // Map to store selected strategies for each candidate order
         val selectedStrategies = mutableMapOf<Long, Int>()
         val currentStart = LocalTime.parse(order.startTime.toString().substring(0, 5), DateTimeFormatter.ofPattern("HH:mm"))
         val currentEnd = LocalTime.parse(order.endTime.toString().substring(0, 5), DateTimeFormatter.ofPattern("HH:mm"))
 
-        // Crea dinamicamente un CardView per ogni ordine candidato
+        // Dynamically create a CardView for each candidate order
         candidates.forEachIndexed { index, candidate ->
             val candidateStart = LocalTime.parse(candidate.StartTime.toString().substring(0, 5), DateTimeFormatter.ofPattern("HH:mm"))
             val candidateEnd = LocalTime.parse(candidate.EndTime.toString().substring(0, 5), DateTimeFormatter.ofPattern("HH:mm"))
             val isFullyContained = !candidateStart.isBefore(currentStart) && !candidateEnd.isAfter(currentEnd)
 
-            // Imposta la strategia di default
+            // Set default strategy
             selectedStrategies[candidate.ID] = if (isFullyContained) OrderStrategyConstants.PARALLEL else OrderStrategyConstants.SERIAL
 
-            // Crea un CardView per l'ordine candidato
+            // Create CardView for candidate order
             val cardView = CardView(context).apply {
                 id = View.generateViewId()
                 layoutParams = LinearLayout.LayoutParams(
@@ -54,7 +54,7 @@ object MultiAppUtils {
                 setCardBackgroundColor(ContextCompat.getColorStateList(context, android.R.color.background_light))
             }
 
-            // Contenitore interno del CardView
+            // Inner container for CardView
             val cardContainer = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = LinearLayout.LayoutParams(
@@ -99,7 +99,7 @@ object MultiAppUtils {
             val radioParallel = RadioButton(context).apply {
                 id = View.generateViewId()
                 text = context.getString(R.string.multiapp_parallel)
-                isChecked = isFullyContained // Default se solo parallelo
+                isChecked = isFullyContained // Default if fully contained
                 setTextColor(ContextCompat.getColorStateList(context, android.R.color.primary_text_light))
             }
 
@@ -107,7 +107,7 @@ object MultiAppUtils {
                 val radioSerial = RadioButton(context).apply {
                     id = View.generateViewId()
                     text = context.getString(R.string.multiapp_serial)
-                    isChecked = true // Default se possibile
+                    isChecked = true // Default if not fully contained
                     setTextColor(ContextCompat.getColorStateList(context, android.R.color.primary_text_light))
                 }
                 radioGroup.addView(radioSerial)
@@ -130,20 +130,20 @@ object MultiAppUtils {
 
         dialogBuilder.setView(dialogView)
 
-        // Crea e mostra la dialog
+        // Create and show dialog
         val dialog = dialogBuilder.create()
-        dialog.setCancelable(false) // Impedisce la chiusura con il tasto indietro
+        dialog.setCancelable(false) // Prevent closing with back button
         dialog.show()
 
-        // Collega i pulsanti personalizzati
-        dialogView.findViewById<Button>(R.id.button_confirm).setOnClickListener {
+        // Attach custom button listeners
+        dialogView.findViewById<Button>(R.id.button_confirm)?.setOnClickListener {
             val finalStrategy = selectedStrategies.values.reduceOrNull { acc, strategy -> acc or strategy }
                 ?: OrderStrategyConstants.PARALLEL
-            onConfirm(finalStrategy, selectedStrategies)
+            onStrategySelected(finalStrategy, selectedStrategies)
             dialog.dismiss()
         }
-        dialogView.findViewById<Button>(R.id.button_cancel).setOnClickListener {
-            onConfirm(order.orderStrategy, selectedStrategies)
+        dialogView.findViewById<Button>(R.id.button_cancel)?.setOnClickListener {
+            onCancel()
             dialog.dismiss()
         }
     }

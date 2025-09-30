@@ -137,6 +137,11 @@
             "TempoImpiegato" INTEGER NOT NULL DEFAULT 1 CHECK("TempoImpiegato" > 0),
             "PagaTotale" REAL NOT NULL DEFAULT 0,
             "PagaOraria" REAL NOT NULL DEFAULT 0,
+            "StartTime" TEXT DEFAULT \'00:00:00\',
+            "EndTime" TEXT DEFAULT \'00:00:00\',
+            "OrderStrategy" INTEGER DEFAULT 0,
+            "BatchMasterOrderID" INTEGER DEFAULT NULL,
+            "ristorante" TEXT DEFAULT NULL
             PRIMARY KEY("ID" AUTOINCREMENT),
             CONSTRAINT "Ordinante" FOREIGN KEY("ProviderID") REFERENCES "Providers"("ID")
             )

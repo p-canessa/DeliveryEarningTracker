@@ -581,7 +581,7 @@ class OCRHelper {
                 } else if (currencyPattern.containsMatchIn(element.text)) {
                     val currencyMatch = currencyPattern.find(element.text)
                     if (currencyMatch != null) {
-                        var cleanedValue = currencyMatch.value.replace(Regex("""\s+"""), "")
+                        val cleanedValue = currencyMatch.value.replace(Regex("""\s+"""), "")
                         LogHelper.log("OCRHelper", "Valore trovato: $cleanedValue, x: ${element.x}, y: ${element.y}, xPlusWidth: ${element.xPlusWidth}")
                         values.add(element.copy(text = cleanedValue))
                     } else {

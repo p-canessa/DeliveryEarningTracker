@@ -147,7 +147,7 @@ class PDFImport : AppCompatActivity() {
         textViewRisultati = findViewById(R.id.textview_risultati)
         btnViewStatement = findViewById(R.id.btn_view_statement)
 
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView)

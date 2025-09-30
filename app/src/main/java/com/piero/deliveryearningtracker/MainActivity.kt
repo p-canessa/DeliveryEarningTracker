@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -77,6 +78,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     // Adapter for managing order list with provider headers
     private lateinit var orderAdapter: OrderAdapter
+    private val visibilityMap = mutableMapOf<Int, Boolean>() // Mappa di visibilità
+    private var currentOrders: List<Order> = emptyList() // Cache ordini
+    private var currentSqlClause: String = "" // Cache SQL clause
     // Buttons for adding orders manually or via OCR
     private lateinit var addOrderButton: Button
     private lateinit var addOrderButtonOCR: Button
@@ -273,6 +277,32 @@ class MainActivity : AppCompatActivity() {
         orderAdapter = OrderAdapter(dbHelper)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = orderAdapter
+        // Imposta il listener per il click sull'header
+        orderAdapter.setOnHeaderClickListener { providerId ->
+            // Toggle visibilità
+            visibilityMap[providerId] = !(visibilityMap[providerId] ?: true)
+            // Aggiorna la lista con la nuova mappa di visibilità
+            orderAdapter.updateOrders(currentOrders, currentSqlClause, visibilityMap)
+            Log.d("MainActivity", "Toggled provider $providerId to ${visibilityMap[providerId]}")
+        }
+
+        // Ripristina lo stato della visibilità (se presente)
+        savedInstanceState?.let { bundle ->
+            @Suppress("DEPRECATION") // Necessario per compatibilità con minSdk 29
+            val savedVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle.getSerializable("visibilityMap", HashMap::class.java)
+            } else {
+                bundle.getSerializable("visibilityMap")
+            }
+            if (savedVisibility is HashMap<*, *> && savedVisibility.all { it.key is Int && it.value is Boolean }) {
+                @Suppress("UNCHECKED_CAST")
+                visibilityMap.putAll(savedVisibility as HashMap<Int, Boolean>)
+                Log.d("MainActivity", "Restored visibilityMap: $visibilityMap")
+            } else {
+                Log.w("MainActivity", "Invalid visibilityMap in savedInstanceState")
+            }
+        }
+
         recyclerView.isNestedScrollingEnabled = true
         Log.d("RecyclerDebug", "RecyclerView configurato")
 
@@ -284,6 +314,7 @@ class MainActivity : AppCompatActivity() {
         // Set date range change listener to refresh data
         dateRangeSelector.setOnChangeListener(object : DateRangeSelector.OnChangeListener {
             override fun onChange() {
+                visibilityMap.clear()
                 updateTotals()
                 updateOrderList()
             }
@@ -384,6 +415,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("visibilityMap", HashMap(visibilityMap))
+    }
+
     /**
      * Updates the order list in the RecyclerView based on the selected date range.
      * Queries DatabaseHelper for orders and updates OrderAdapter.
@@ -396,10 +432,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("RecyclerDebug", "SQL Clause: $sqlClause}")
             val orders = dbHelper.getOrders(sqlClause)
             Log.d("RecyclerDebug", "Orders Found: $orders")
-            orderAdapter.updateOrders(orders, sqlClause)
+            currentOrders = orders // Cache ordini
+            currentSqlClause = sqlClause // Cache SQL clause
+            orderAdapter.updateOrders(orders, sqlClause, visibilityMap)
         } catch (e: Exception) {
             Log.e("MainActivity", "Error updating order list: ${e.message}", e)
-            orderAdapter.updateOrders(emptyList(), "")
+            orderAdapter.updateOrders(emptyList(), "", visibilityMap)
         }
     }
 

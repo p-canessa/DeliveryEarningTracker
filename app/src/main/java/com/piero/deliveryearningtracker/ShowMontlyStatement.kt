@@ -51,7 +51,7 @@ class ShowMontlyStatement : AppCompatActivity() {
         MobileAds.initialize(this) {}
 
 
-        dbHelper = DatabaseHelper(this) // Inizializziamo dbHelper qui per usarlo subito
+        dbHelper = DatabaseHelper.getInstance(this) // Inizializziamo dbHelper qui per usarlo subito
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)
         adView = AdManager.updateAds(this, adContainer, adView)

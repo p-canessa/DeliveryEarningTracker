@@ -66,7 +66,7 @@ class AnnoActivity : AppCompatActivity() {
         }
 
         spinnerAnno = findViewById(R.id.spinner_anno)
-        val dbHelper = DatabaseHelper(this)
+        val dbHelper = DatabaseHelper.getInstance(this)
         // Popola lo Spinner con i trimestri
         anni.addAll(dbHelper.getYears())
 

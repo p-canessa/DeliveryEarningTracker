@@ -25,13 +25,13 @@ object TimeUtils {
 
     fun calculateTimeDifference(startTime: Time, endTime: Time): Int {
         Log.d("TimeUtils", "Start time: $startTime\nEnd time: $endTime")
-        var startMinutes = timeToMinutes(startTime)
+        val startMinutes = timeToMinutes(startTime)
         var endMinutes = timeToMinutes(endTime)
         Log.d("TimeUtils", "Start time in minutes: $startMinutes\nEnd time in minutes: $endMinutes")
         if (endMinutes < startMinutes) {
             endMinutes += 24 * 60
         }
-        var timeDifference = (endMinutes - startMinutes)
+        val timeDifference = (endMinutes - startMinutes)
         Log.d("TimeUtils", "Time difference in minutes: $timeDifference")
         return timeDifference
     }
@@ -41,6 +41,6 @@ object TimeUtils {
         if (adjustedEndMinutes < startMinutes) {
             adjustedEndMinutes += 24 * 60 // Correzione per mezzanotte
         }
-        return minutesToHours(adjustedEndMinutes - startMinutes).toInt()
+        return (adjustedEndMinutes - startMinutes)
     }
 }

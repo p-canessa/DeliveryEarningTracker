@@ -29,7 +29,7 @@ fun collectAnonymousStats(context: Context): AnonymousStats {
     val lastOcrScansSent = sharedPrefs.getInt("last_ocr_scans_sent", 0)
     val currentOcrScans = sharedPrefs.getInt("ocr_scan_count", 0)
 
-    val dbHelper = DatabaseHelper(context)
+    val dbHelper = DatabaseHelper.getInstance(context)
     val db = dbHelper.readableDatabase
     val query = context.getString(R.string.Get_Orders_Since_Id)
     val cursor = db.rawQuery(query, arrayOf(lastSentId.toString()))

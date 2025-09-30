@@ -64,7 +64,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
             }
         }
         loadOcrUsesLeft()
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
         isAdsEnabled = DisableAds.loadAdsEnabledState(this)
         AdManager.updateAds(this, null, null, false)
 
@@ -259,54 +259,60 @@ class ImageRecognitionActivity : AppCompatActivity() {
     }
 
     private fun recalculateTotals() {
-        // Calculate tempoImpiegato based on orderStrategy
+        // Calculate pagaTotale
         orderData.pagaTotale = orderData.pagaBase + orderData.pagaExtra + orderData.mancia + orderData.manciaContanti
         val start = TimeUtils.timeToMinutes(orderData.startTime)
         val end = TimeUtils.timeToMinutes(orderData.endTime)
         var totalPaga = orderData.pagaTotale
         Log.d("recalculateTotals", "Tempo Iniziale: $start - Tempo Finale: $end")
         Log.d("recalculateTotals", "orderStrategy: ${orderData.orderStrategy}")
-        Log.d("recalculateTotals", "candidateOrders: $candidateOrders")
+        //Log.d("recalculateTotals", "candidateOrders value: $candidateOrders")
+
         when (orderData.orderStrategy) {
             OrderStrategyConstants.NORMAL -> {
-                //orderData.tempoImpiegato =  TimeUtils.calculateTimeDifference(start, end)
+                Log.d("recalculateTotals", "Normal strategy selected")
+                orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(start, end)
+                Log.d("recalculateTotals", "Tempo impiegato calcolato: ${orderData.tempoImpiegato}")
                 orderData.batchMasterOrderID = null
             }
             OrderStrategyConstants.SERIAL -> {
-                if (candidateOrders.isNotEmpty()) {
+                Log.d("recalculateTotals", "Serial strategy selected")
+                if (::candidateOrders.isInitialized && candidateOrders.isNotEmpty()) {
+                    Log.d("recalculateTotals", "Candidati seriali inizializzati")
                     // 1. Verifica la serialità inversa e aggiorna relatedOrders
                     val toUpdate = mutableListOf<CandidateOrder>()
                     for (candidate in candidateOrders) {
-                        if (relatedOrders[candidate.ID] == 1 &&
+                        if (relatedOrders[candidate.ID] == OrderStrategyConstants.SERIAL &&
                             TimeUtils.timeToMinutes(orderData.endTime) < TimeUtils.timeToMinutes(candidate.EndTime)) {
                             relatedOrders[candidate.ID] = -1
-                            toUpdate.add(candidate) // Raccogli i candidati da aggiornare
+                            toUpdate.add(candidate)
                         }
                     }
 
-                    // 2. Trova il predecessore con il massimo EndTime tra i candidati con relatedOrders = 1
-                    val validPredecessors = candidateOrders.filter { relatedOrders[it.ID] == 1 }
+                    // 2. Trova il predecessore con il massimo EndTime tra i candidati con relatedOrders = SERIAL
+                    val validPredecessors = candidateOrders.filter { relatedOrders[it.ID] == OrderStrategyConstants.SERIAL }
                     val maxEndTimeCandidate = validPredecessors.maxByOrNull { TimeUtils.timeToMinutes(it.EndTime) }
 
                     if (maxEndTimeCandidate != null &&
                         TimeUtils.timeToMinutes(orderData.startTime) < TimeUtils.timeToMinutes(maxEndTimeCandidate.EndTime)) {
-                        Log.d("recalculateTotals", "Tempo Iniziale: ${maxEndTimeCandidate.EndTime}")
+                        Log.d("recalculateTotals", "Predecessore seriale trovato: ${maxEndTimeCandidate.EndTime}")
                         orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(maxEndTimeCandidate.EndTime, orderData.endTime)
                         orderData.batchMasterOrderID = null
                     } else {
-                        // Fallback: usa il tempo individuale se non ci sono predecessori validi
+                        // Fallback: usa il tempo individuale
                         orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(orderData.startTime, orderData.endTime)
                         orderData.batchMasterOrderID = null
                     }
-
                 } else {
-                    // Nessun candidato
+                    // Nessun candidato o non inizializzato
+                    Log.d("recalculateTotals", "Nessun candidato seriale disponibile o candidateOrders non inizializzato")
                     orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(orderData.startTime, orderData.endTime)
                     orderData.batchMasterOrderID = null
                 }
             }
             OrderStrategyConstants.PARALLEL -> {
-                if (candidateOrders.isNotEmpty()) {
+                Log.d("recalculateTotals", "Parallel strategy selected")
+                if (::candidateOrders.isInitialized && candidateOrders.isNotEmpty()) {
                     val timeIntervals = mutableListOf(Pair(orderData.startTime, orderData.endTime))
                     candidateOrders.forEach { candidate ->
                         timeIntervals.add(Pair(candidate.StartTime, candidate.EndTime))
@@ -321,14 +327,23 @@ class ImageRecognitionActivity : AppCompatActivity() {
                         TimeUtils.timeToMinutes(it.StartTime)
                     }?.ID
                 } else {
-                    // Nessun candidato
+                    // Nessun candidato o non inizializzato
+                    Log.d("recalculateTotals", "Nessun candidato parallelo disponibile o candidateOrders non inizializzato")
                     orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(orderData.startTime, orderData.endTime)
                     orderData.batchMasterOrderID = null
                 }
             }
             OrderStrategyConstants.SERIAL_PARALLEL -> {
-                val parallelCandidates = candidateOrders.filter { relatedOrders[it.ID] == OrderStrategyConstants.PARALLEL }
-                val serialCandidates = candidateOrders.filter { relatedOrders[it.ID] == OrderStrategyConstants.SERIAL }
+                val parallelCandidates = if (::candidateOrders.isInitialized) {
+                    candidateOrders.filter { relatedOrders[it.ID] == OrderStrategyConstants.PARALLEL }
+                } else {
+                    emptyList()
+                }
+                val serialCandidates = if (::candidateOrders.isInitialized) {
+                    candidateOrders.filter { relatedOrders[it.ID] == OrderStrategyConstants.SERIAL }
+                } else {
+                    emptyList()
+                }
 
                 // Calcola il tempo del gruppo parallelo
                 var parallelEndTime: Time?
@@ -338,7 +353,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
                     parallelCandidates.forEach { candidate ->
                         timeIntervals.add(Pair(candidate.StartTime, candidate.EndTime))
                     }
-                    val minStartTime = timeIntervals.minByOrNull { TimeUtils.timeToMinutes(it.first) }!!.first
+                    //val minStartTime = timeIntervals.minByOrNull { TimeUtils.timeToMinutes(it.first) }!!.first
                     parallelEndTime = timeIntervals.maxByOrNull { TimeUtils.timeToMinutes(it.second) }!!.second
                     totalPaga += parallelCandidates.sumOf { it.PagaTotale }
                     orderData.batchMasterOrderID = parallelCandidates.minByOrNull {
@@ -359,7 +374,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
                         }
                     }
 
-                    // 2. Trova il predecessore seriale con il massimo EndTime tra i candidati con relatedOrders = 1
+                    // 2. Trova il predecessore seriale con il massimo EndTime
                     val validSerialCandidates = serialCandidates.filter { relatedOrders[it.ID] == OrderStrategyConstants.SERIAL }
                     val maxSerialEndTimeCandidate = validSerialCandidates.maxByOrNull { TimeUtils.timeToMinutes(it.EndTime) }
 
@@ -367,7 +382,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
                         TimeUtils.timeToMinutes(orderData.startTime) < TimeUtils.timeToMinutes(parallelEndTime)) {
                         orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(parallelEndTime, maxSerialEndTimeCandidate.EndTime)
                     } else {
-                        // Fallback: usa il tempo seriale se l'ordine corrente precede il parallelo
+                        // Fallback: usa il tempo seriale o parallelo
                         orderData.tempoImpiegato = TimeUtils.calculateTimeDifference(
                             orderData.startTime,
                             maxSerialEndTimeCandidate?.EndTime ?: parallelEndTime
@@ -398,8 +413,7 @@ class ImageRecognitionActivity : AppCompatActivity() {
             Log.e("ImageRecognitionActivity", "Invalid time format in validation: ${e.message}")
             return false
         }
-        if (orderData.orderStrategy !in 0..3) return false
-        return true
+        return orderData.orderStrategy in 0..3
     }
 
     private fun saveOcrUsesLeft() {
@@ -455,18 +469,38 @@ class ImageRecognitionActivity : AppCompatActivity() {
                                 try {
                                     val startTime = orderData.startTime.toString().substring(0, 5)
                                     val endTime = orderData.endTime.toString().substring(0, 5)
-                                    val candidateOrders = dbHelper.getCandidateMultiAppOrders(orderData.data, startTime, endTime)
+                                    candidateOrders = dbHelper.getCandidateMultiAppOrders(orderData.data, startTime, endTime)
+                                    Log.d("ImageRecognitionActivity", "Candidate orders: $candidateOrders")
                                     if (candidateOrders.isNotEmpty()) {
-                                        MultiAppUtils.showMultiAppDialog(this, orderData, candidateOrders, dbHelper) { selectedStrategy, selectedStrategies ->
-                                            orderData.orderStrategy = selectedStrategy
-                                            relatedOrders.clear()
-                                            relatedOrders.putAll(selectedStrategies)
-                                            recalculateTotals()
-                                            updateFields()
-                                            adapter.updateSaveButtonState()
-                                            //Toast.makeText(this, "OCR completato e strategia aggiornata!", Toast.LENGTH_SHORT).show()
-                                        }
-                                    } else {
+                                        Log.d("ImageRecognitionActivity", "Showing multi-app dialog")
+                                        MultiAppUtils.showMultiAppDialog(
+                                            context = this,
+                                            order = orderData,
+                                            candidates = candidateOrders,
+                                            onStrategySelected = { selectedStrategy, selectedStrategies ->
+                                                orderData.orderStrategy = selectedStrategy
+                                                // Set batchMasterOrderID to the earliest candidate order ID
+                                                orderData.batchMasterOrderID = candidateOrders.minByOrNull { it.StartTime }?.ID
+                                                relatedOrders.clear()
+                                                relatedOrders.putAll(selectedStrategies)
+                                                recalculateTotals()
+                                                updateFields()
+                                                adapter.updateSaveButtonState()
+                                                Toast.makeText(this, "OCR completato e strategia aggiornata!", Toast.LENGTH_SHORT).show()
+                                            },
+                                            onCancel = {
+                                                Log.d("ImageRecognitionActivity", "Multi-app dialog canceled")
+                                                // Reset in-memory state if needed
+                                                relatedOrders.clear() // Or restore previous state
+                                                orderData.orderStrategy = OrderStrategyConstants.NORMAL
+                                                orderData.batchMasterOrderID = null
+                                                recalculateTotals()
+                                                updateFields()
+                                                adapter.updateSaveButtonState()
+                                            }
+                                        )
+                                        } else {
+                                        Log.d("ImageRecognitionActivity", "No candidate orders found, Order Is NORMAL")
                                         orderData.orderStrategy = OrderStrategyConstants.NORMAL
                                         relatedOrders.clear()
                                         updateFields()

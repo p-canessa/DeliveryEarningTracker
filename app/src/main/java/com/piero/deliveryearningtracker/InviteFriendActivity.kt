@@ -61,7 +61,7 @@ class InviteFriendActivity : AppCompatActivity() {
 
 
         // Inizializza DatabaseHelper
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
         dbHelper.initializeDatabase()
 
         val adContainer = findViewById<LinearLayout>(R.id.ad_container)

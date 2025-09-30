@@ -1,23 +1,31 @@
 package com.piero.deliveryearningtracker
 
-import android.text.TextWatcher
-import android.text.Editable
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentValues
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupMenu
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import java.sql.Time
 import java.time.format.DateTimeParseException
+import java.util.Calendar
+import java.util.Locale
 
 class OrderItemView @JvmOverloads constructor(
     context: Context,
@@ -26,7 +34,7 @@ class OrderItemView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private var orderId: Long? = null
-    private val dbHelper = DatabaseHelper(context)
+    private val dbHelper = DatabaseHelper.getInstance(context)
     private val decimalFormat = DecimalFormat("0.00")
     private val calendar = Calendar.getInstance()
     private var onOrderSavedListener: (() -> Unit)? = null
@@ -161,8 +169,10 @@ class OrderItemView @JvmOverloads constructor(
         var oldStrategy = OrderStrategyConstants.NORMAL
         var oldBatchMasterId: Long? = null
         if (orderId != null) {
+            Log.d("OrderItemView", "Loading order with ID: $orderId")
             val ordine = dbHelper.getOrdineById(orderId!!)
             if (ordine != null) {
+                Log.d("OrderItemView", "Loaded order: $ordine")
                 dataText.text = ordine.data
                 val providerIndex = providers.indexOfFirst { it.first == ordine.providerID }
                 if (providerIndex >= 0) {
@@ -186,6 +196,7 @@ class OrderItemView @JvmOverloads constructor(
                 strategyText.text = getStrategyDisplayString(ordine.orderStrategy) // Funzione helper per convertire int in string leggibile
             }
         } else {
+            Log.d("OrderItemView", "Loading new order")
             dataText.text = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             providerSpinner.setSelection(0)
             pagaBaseEdit.setText("")
@@ -305,6 +316,7 @@ class OrderItemView @JvmOverloads constructor(
                 )
 
                 // Gestisci salvataggio con controlli
+                Log.d("OrderItemView", "Saving order: $tempOrder")
                 handleSaveWithStrategyCheck(tempOrder, dialog)
             }
         }
@@ -335,7 +347,7 @@ class OrderItemView @JvmOverloads constructor(
         }
         val pagaTotale = pagaBaseNeta + pagaExtra + manciaTotale
         val pagaOraria = if (tempoImpiegato > 0) pagaTotale / (tempoImpiegato / 60.0) else 0.0
-
+        Log.d("OrderItemView", "Creating temp order with ID: $orderId")
         return OrderData(
             id = orderId ?: -1L,
             data = data,
@@ -357,35 +369,106 @@ class OrderItemView @JvmOverloads constructor(
         )
     }
 
+    private fun updateRelatedOrders(
+        db: DatabaseHelper,
+        newOrder: OrderData,
+        candidates: List<CandidateOrder>,
+        selectedStrategies: Map<Long, Int>
+    ) {
+        candidates.forEach { candidate ->
+            val strategy = selectedStrategies[candidate.ID] ?: OrderStrategyConstants.NORMAL
+            val contentValues = ContentValues().apply {
+                put("OrderStrategy", strategy)
+                put("BatchMasterOrderID", newOrder.id) // Or logic to determine master
+                // Update other fields like pagaTotale, tempoImpiegato if needed
+            }
+            db.writableDatabase.update("ordini", contentValues, "ID = ?", arrayOf(candidate.ID.toString()))
+            Log.d("OrderItemView", "Updated candidate order ID ${candidate.ID} with strategy $strategy")
+        }
+    }
+
+    private fun isOrderUnchanged(newOrder: OrderData, originalOrder: OrderData): Boolean {
+        return newOrder.data == originalOrder.data &&
+                newOrder.providerID == originalOrder.providerID &&
+                newOrder.tempoImpiegato == originalOrder.tempoImpiegato &&
+                newOrder.numeroOrdini == originalOrder.numeroOrdini &&
+                newOrder.pagaBase == originalOrder.pagaBase &&
+                newOrder.riscossiContanti == originalOrder.riscossiContanti &&
+                newOrder.pagatoContantiRistorante == originalOrder.pagatoContantiRistorante &&
+                newOrder.pagaExtra == originalOrder.pagaExtra &&
+                newOrder.mancia == originalOrder.mancia &&
+                newOrder.manciaContanti == originalOrder.manciaContanti &&
+                newOrder.pagaTotale == originalOrder.pagaTotale &&
+                newOrder.startTime == originalOrder.startTime &&
+                newOrder.endTime == originalOrder.endTime &&
+                newOrder.orderStrategy == originalOrder.orderStrategy &&
+                newOrder.batchMasterOrderID == originalOrder.batchMasterOrderID &&
+                newOrder.ristorante == originalOrder.ristorante
+    }
+
     private fun handleSaveWithStrategyCheck(tempOrder: OrderData, dialog: AlertDialog) {
         val db = dbHelper.writableDatabase
         db.beginTransaction()
+        var candidates: List<CandidateOrder> = emptyList()
         try {
-            // Cancella l'ordine esistente, se in modifica
-            if (tempOrder.id != -1L) {
-                dbHelper.deleteOrdine(tempOrder.id) // Usa la logica di cancellazione multi-app
-                tempOrder.id = -1L // Forza nuovo ID per l'insert
+            // Optional: Check if order changed (to avoid unnecessary DB ops)
+            val originalOrder = if (tempOrder.id != -1L) dbHelper.getOrdineById(tempOrder.id) else null
+            if (tempOrder.id != -1L && originalOrder != null && isOrderUnchanged(tempOrder, originalOrder)) {
+                Log.d("OrderItemView", "No changes to order ID ${tempOrder.id}, skipping save")
+                db.setTransactionSuccessful()
+                dialog.dismiss()
+                return
             }
 
-            // Controlla candidati multi-app
-            val candidates = dbHelper.getCandidateMultiAppOrders(
+            // Delete existing order if editing
+            if (tempOrder.id != -1L) {
+                Log.d("OrderItemView", "Deleting old order with ID: ${tempOrder.id}")
+                dbHelper.deleteOrdine(tempOrder.id)
+                tempOrder.id = -1L // Force new ID for insert
+            }
+
+            // Check for overlapping orders
+            candidates = dbHelper.getCandidateMultiAppOrders(
                 tempOrder.data,
                 tempOrder.startTime.toString().substring(0, 5),
-                tempOrder.endTime.toString().substring(0, 5)
+                tempOrder.endTime.toString().substring(0, 5),
+                tempOrder.id
             )
 
             if (candidates.isNotEmpty()) {
-                // Mostra dialog per selezionare strategia
-                MultiAppUtils.showMultiAppDialog(context, tempOrder, candidates, dbHelper) { selectedStrategy, selectedStrategies ->
-                    tempOrder.orderStrategy = selectedStrategy
-                    tempOrder.batchMasterOrderID = selectedStrategies.keys.firstOrNull()
-                    saveOrderToDb(tempOrder)
-                    db.setTransactionSuccessful()
-                    onOrderSavedListener?.invoke()
-                    dialog.dismiss()
-                }
+                // Show dialog, handle transaction in callback
+                MultiAppUtils.showMultiAppDialog(
+                    context = context,
+                    order = tempOrder,
+                    candidates = candidates,
+                    onStrategySelected = { selectedStrategy, selectedStrategies ->
+                        try {
+                            tempOrder.orderStrategy = selectedStrategy
+                            // Set batchMasterOrderID to the earliest candidate order ID
+                            tempOrder.batchMasterOrderID = candidates.minByOrNull { it.StartTime }?.ID
+                            saveOrderToDb(tempOrder)
+                            updateRelatedOrders(dbHelper, tempOrder, candidates, selectedStrategies)
+                            db.setTransactionSuccessful()
+                            onOrderSavedListener?.invoke()
+                            dialog.dismiss()
+                        } catch (e: Exception) {
+                            Log.e("OrderItemView", "Error in dialog callback: ${e.message}", e)
+                            Toast.makeText(context, "Errore salvataggio ordine", Toast.LENGTH_SHORT).show()
+                        } finally {
+                            db.endTransaction()
+                        }
+                    },
+                    onCancel = {
+                        try {
+                            Log.d("OrderItemView", "Cancel clicked, rolling back")
+                            // No save, transaction rolls back (undoes delete)
+                        } finally {
+                            db.endTransaction()
+                        }
+                    }
+                )
             } else {
-                // Nessun candidato, salva come ordine normale
+                // No overlaps, save synchronously
                 tempOrder.orderStrategy = OrderStrategyConstants.NORMAL
                 tempOrder.batchMasterOrderID = null
                 saveOrderToDb(tempOrder)
@@ -397,7 +480,10 @@ class OrderItemView @JvmOverloads constructor(
             Log.e("OrderItemView", "Errore durante salvataggio: ${e.message}", e)
             Toast.makeText(context, "Errore salvataggio ordine", Toast.LENGTH_SHORT).show()
         } finally {
-            db.endTransaction()
+            // Only end transaction if no dialog was shown
+            if (candidates.isEmpty()) {
+                db.endTransaction()
+            }
         }
     }
 

@@ -65,6 +65,13 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     companion object {
         private const val DATABASE_NAME = "ordini.db"
         private const val DATABASE_VERSION = 8
+        private var instance: DatabaseHelper? = null
+        fun getInstance(context: Context): DatabaseHelper {
+            if (instance == null) {
+                instance = DatabaseHelper(context.applicationContext)
+            }
+            return instance!!
+        }
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -163,7 +170,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                     Log.w("DatabaseHelper", "Database non trovato in assets, creazione di uno nuovo...")
                     val db = writableDatabase
                     createAllTables(db)
-                    db.close()
                 }
             }
             // Verifica e crea tabelle mancanti in ogni caso
@@ -171,7 +177,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             val db = writableDatabase
             ensureTablesExist(db)
             populateProvidersIfNeeded()
-            db.close()
         } catch (e: Exception) {
             Log.e("DatabaseHelper", "Errore durante l'inizializzazione del database: ${e.message}", e)
         }
@@ -297,7 +302,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                 var orderStrategy = if (relatedOrders.any { it.value == OrderStrategyConstants.SERIAL }) {
                     order.orderStrategy // Mantieni SERIAL o SERIAL_PARALLEL
                 } else {
-                    order.orderStrategy xor OrderStrategyConstants.SERIAL // Azzera il bit seriale
+                    order.orderStrategy and OrderStrategyConstants.PARALLEL // Azzera il bit seriale
                 }
                 // Se ci sono relazioni parallele, assicura che il bit parallelo sia settato
                 if (relatedOrders.any { it.value == OrderStrategyConstants.PARALLEL }) {
@@ -502,6 +507,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
     }
 
     fun deleteOrdine(id: Long, deleteRecord: Boolean = true) {
+        Log.d("DatabaseHelper", "deleteOrdine called with id: $id")
         val db = writableDatabase
         db.beginTransaction()
         try {
@@ -525,7 +531,8 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             val orderStrategy = orderCursor.getInt(4)
             orderCursor.close()
 
-            val candidateOrders = getCandidateMultiAppOrders(data, startTime.substring(0, 5), endTime.substring(0, 5))
+            val candidateOrders = getCandidateMultiAppOrders(data, startTime.substring(0, 5), endTime.substring(0, 5),id)
+            Log.d("DatabaseHelper", "Candidate orders: $candidateOrders")
             if (candidateOrders.isEmpty()) {
                 // Ordine isolato si può procedere con l'eliminazione.
                 if (deleteRecord) db.delete("ordini", "ID = ?", arrayOf(id.toString()))
@@ -595,7 +602,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             Log.e("DatabaseHelper", "Errore durante eliminazione ordine multiapp: ${e.message}", e)
         } finally {
             db.endTransaction()
-            db.close()
         }
     }
 
@@ -736,7 +742,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         } else {
             Log.d("DatabaseHelper", "Inserted new order with ID=$newId")
         }
-        db.close()
         return newId
     }
 
@@ -758,7 +763,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                     "FROM ordini o\n" +
                     "JOIN Providers p ON o.ProviderID = p.ID\n" +
                     "$sqlClause\n" +
-                    "ORDER BY o.ProviderID ASC, o.ID ASC",
+                    "ORDER BY o.ProviderID ASC, o.StartTime ASC, o.ID ASC",
             null
         )
         val orders = mutableListOf<Order>()
@@ -769,7 +774,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             orders.add(Order(id, providerId, providerName))
         }
         cursor.close()
-        db.close()
         Log.d("DatabaseHelper", "Ordini trovati (test diretto): $orders")
         return orders
     }
@@ -861,7 +865,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             )
         }
         cursor.close()
-        db.close()
         Log.d("DatabaseHelper", "Provider summaries: $summaries")
         return summaries
     }
@@ -920,7 +923,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             put("totale_dovuto", summary.totaleDovuto)
         }
         val id = db.insert("MonthlySummaries", null, values)
-        db.close()
         return id
     }
 
@@ -936,7 +938,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
             }
             db.insert("DailyOrders", null, values)
         }
-        db.close()
     }
 
     fun isDocumentNumberExists(documentNumber: String): Boolean {
@@ -1438,8 +1439,6 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         } else {
             Log.d("DatabaseHelper", "All 22 providers populated successfully")
         }
-
-        db.close()
     }
 
     private fun populateProviders(db: SQLiteDatabase) {
@@ -1473,28 +1472,30 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         }
 
         cursor.close()
-        db.close()
         return providers
     }
 
-    fun getCandidateMultiAppOrders(data: String, startTime: String, endTime: String): List<CandidateOrder> {
+    fun getCandidateMultiAppOrders(data: String, startTime: String, endTime: String, excludeID: Long? = null): List<CandidateOrder> {
         val orders = mutableListOf<CandidateOrder>()
         val db = readableDatabase
+        var params = mutableListOf<String>(data, "$endTime:00", "$startTime:00")
         try {
-            val startTimeFormatted = "$startTime:00"
-            val endTimeFormatted = "$endTime:00"
-            val query = """
+            var query = """
             SELECT Ordini.ID, Providers.name AS ProviderName, Ordini.ristorante, 
-                   Ordini.StartTime, Ordini.EndTime, Ordini.PagaTotale, ordini.OrderStrategy, ordini.BatchMasterOrderID, ordini.tempoImpiegato
+                   Ordini.StartTime, Ordini.EndTime, Ordini.PagaTotale, ordini.OrderStrategy, ordini.BatchMasterOrderID, ordini.TempoImpiegato
             FROM Ordini 
             INNER JOIN providers ON Ordini.ProviderID = Providers.ID
             WHERE Ordini.data = ? 
             AND Ordini.StartTime <= ?
             AND Ordini.EndTime >= ?
-            ORDER BY Ordini.StartTime, Ordini.EndTime ASC
-        """.trimIndent()
-            val cursor = db.rawQuery(query, arrayOf(data, endTimeFormatted, startTimeFormatted))
-            Log.d("DatabaseHelper", "Query: $query\nwith params $data, $startTimeFormatted, $endTimeFormatted \nreturned ${cursor.count} rows")
+            """.trimIndent()
+            if (excludeID != null && excludeID != -1L) {
+                query += " AND Ordini.ID != ?"
+                params.add(excludeID.toString())
+            }
+            query+= " ORDER BY Ordini.StartTime, Ordini.EndTime ASC"
+            val cursor = db.rawQuery(query, params.toTypedArray())
+            Log.d("DatabaseHelper", "Query: $query\nwith params $params \nreturned ${cursor.count} rows")
             while (cursor.moveToNext()) {
                 val order = CandidateOrder(
                     ID = cursor.getLong(cursor.getColumnIndexOrThrow("ID")),
@@ -1505,7 +1506,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
                     PagaTotale = cursor.getDouble(cursor.getColumnIndexOrThrow("PagaTotale")),
                     OrderStrategy = cursor.getInt(cursor.getColumnIndexOrThrow("OrderStrategy")),
                     BatchMasterOrderID = cursor.getLong(cursor.getColumnIndexOrThrow("BatchMasterOrderID")),
-                    TempoImpiegato = cursor.getInt(cursor.getColumnIndexOrThrow("tempoImpiegato"))
+                    TempoImpiegato = cursor.getInt(cursor.getColumnIndexOrThrow("TempoImpiegato"))
                 )
                 orders.add(order)
             }
@@ -1513,7 +1514,7 @@ class DatabaseHelper(private val context: Context) : SQLiteOpenHelper(context, D
         } catch (e: Exception) {
             Log.e("DatabaseHelper", "Errore nel recupero degli ordini candidati: ${e.message}")
         } finally {
-            db.close()
+            Log.d("DatabaseHelper", "Ordini candidati trovati: $orders")
         }
         return orders
     }

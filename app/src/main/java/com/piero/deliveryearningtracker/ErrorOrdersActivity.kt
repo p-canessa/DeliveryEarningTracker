@@ -15,7 +15,7 @@ class ErrorOrdersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_error_orders)
 
-        dbHelper = DatabaseHelper(this)
+        dbHelper = DatabaseHelper.getInstance(this)
         recyclerView = findViewById(R.id.orders_recycler_view)
         orderAdapter = OrderAdapter(dbHelper)
         recyclerView.layoutManager = LinearLayoutManager(this)
